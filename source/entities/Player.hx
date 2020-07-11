@@ -58,8 +58,18 @@ class Player extends FlxSprite {
 		// this.playerGroup = playerGroup;
 		// this.hitboxMgr = hitboxMgr;
 
-		loadDiveAnim();
-		loadWalkRunAnim();
+		loadGraphic(AssetPaths.WalkRun__png, true, 42, 84);
+
+        // an extra -2 on the y to help account for empty space at the bottom of the sprites
+        // TODO(JF): hurtbox offsets
+		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
+		// setSize(hurtboxSize.x, hurtboxSize.y);
+
+		animation.add("idle", [0], 5);
+		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
+		animation.add("run", [8, 9, 10, 11, 12], 10);
+		animation.add("divingAccel", [16, 17], 20, false);
+		animation.add("divingDecel", [18, 19, 20, 21, 22], 10, false);
 
 		// TODO(JF): This may need to be added to the two load methods above.
         // TODO(JF): Add hitbox stuff here
@@ -152,7 +162,6 @@ class Player extends FlxSprite {
 				// If direction pushed (accelerate) and dive pushed then dive and stop other movement
 				if (control.dive.check() && diveRecoveringTime == 0.0) {
 					if (divingState == NotDiving) {
-						loadDiveAnim();
 						animation.play("divingAccel");
 					}
 					divingState = DivingAccel;
@@ -215,7 +224,6 @@ class Player extends FlxSprite {
 			animation.finishCallback = (name) -> {
 				if (name == "divingDecel") {
 					divingState = NotDiving;
-					loadWalkRunAnim();
 					divingRest(delta);
 					}
 				};
@@ -237,42 +245,6 @@ class Player extends FlxSprite {
 		if (diveRecoveringTime > DIVE_RECOVERY_TIME) {
 			diveRecoveringTime = 0.0;
 		}
-	}
-
-	private function loadWalkRunAnim() {
-		var sWidth = 42;
-		var sHeight = 42;
-		
-		this.y += sHeight/2;
-		if (facing & FlxObject.RIGHT != 0) this.x -= sWidth/2;
-
-		loadGraphic(AssetPaths.WalkRun__png, true, sWidth, sHeight);
-
-        // an extra -2 on the y to help account for empty space at the bottom of the sprites
-        // TODO(JF): hurtbox offsets
-		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
-		// setSize(hurtboxSize.x, hurtboxSize.y);
-
-		animation.add("idle", [0], 5);
-		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
-		animation.add("run", [8, 9, 10, 11], 10);
-	}
-
-	private function loadDiveAnim() {
-		var sWidth = 42;
-		var sHeight = 84;
-
-		this.y -= (sHeight/4);
-
-		loadGraphic(AssetPaths.Dive__png, true, sWidth, sHeight);
-
-        // an extra -2 on the y to help account for empty space at the bottom of the sprites
-        // TODO(JF): hurtbox offsets
-		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
-		// setSize(hurtboxSize.x, hurtboxSize.y);
-
-		animation.add("divingAccel", [0, 1], 20, false);
-		animation.add("divingDecel", [2, 3, 4, 5, 6], 10, false);
 	}
 
 	// ########## FROM BRAWNFIRE ##########
