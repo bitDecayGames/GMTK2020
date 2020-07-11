@@ -1,5 +1,6 @@
 package states;
 
+import com.bitdecay.textpop.TextPop;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -52,6 +53,6 @@ class JakeState extends FlxState
 	}
 
 	private function handleCheckpointActivation(spr: FlxSprite) {
-		trace("Checkpoint Hit", checkpointManager.getLastCheckpoint());
+		TextPop.pop(cast(spr.x, Int), cast(spr.y, Int), "Checkpoint Reached");
 	}
 }
