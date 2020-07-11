@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxVector;
 import flixel.util.FlxSpriteUtil;
@@ -9,7 +10,7 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 
 class Car extends FlxSprite {
-	private var destination:FlxPoint;
+	private var destinations:Array<FlxPoint>;
 	private var target:FlxSprite;
 	private var maxSpeed:Float;
 	private var maxTurnRadius:Float;
@@ -22,7 +23,9 @@ class Car extends FlxSprite {
 		super(x, y, AssetPaths.car0__png);
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
-		this.destination = destination;
+		if (destination != null) {
+			this.destinations = [destination];
+		}
 		this.visionRadius = visionRadius;
 		this.slowingDistance = slowingDistance;
 	}
@@ -32,7 +35,15 @@ class Car extends FlxSprite {
 	}
 
 	public function setDestination(destination:FlxPoint) {
-		this.destination = destination;
+		if (destination != null) {
+			this.destinations = [destination];
+		} else {
+			this.destinations = [];
+		}
+	}
+
+	public function setDestinations(destinations:Array<FlxPoint>) {
+		this.destinations = destinations;
 	}
 
 	private function moveTowardsTarget(target:FlxPoint) {
@@ -44,12 +55,14 @@ class Car extends FlxSprite {
 		angleToVelocity();
 	}
 
-	private function moveTowardsDestination(destination:FlxPoint) {
+	private function moveTowardsDestination(destination:FlxPoint):Bool {
 		var position = getPosition().add(width / 2.0, height / 2.0);
 		var targetOffset = destination.subtract(position.x, position.y);
 		var distance = targetOffset.distanceTo(new FlxPoint(0, 0));
 		if (distance < slowingDistance * 0.1) {
 			velocity.set(0, 0);
+			angleToVelocity();
+			return true;
 		} else {
 			var cruisingMaxSpeed = maxSpeed * 0.8;
 			var rampedSpeed = cruisingMaxSpeed * (distance / slowingDistance);
@@ -57,8 +70,9 @@ class Car extends FlxSprite {
 			var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
 			var steering = desiredVelocity.subtract(velocity.x, velocity.y);
 			velocity.add(steering.x * .5, steering.y * .5);
+			angleToVelocity();
+			return false;
 		}
-		angleToVelocity();
 	}
 
 	private function angleToVelocity() {
@@ -117,9 +131,39 @@ class Car extends FlxSprite {
 		super.update(elapsed);
 		if (foundTarget && target != null) {
 			moveTowardsTarget(target.getPosition().add(target.width / 2.0, target.height / 2.0));
-		} else if (destination != null) {
-			moveTowardsDestination(destination);
+		} else if (destinations != null && destinations.length > 0) {
+			if (moveTowardsDestination(destinations[0])) {
+				destinations.pop();
+			}
 		}
 		checkForTargetVisibility();
+	}
+}
+
+class CarSpawner extends FlxTypedGroup<FlxSprite> {
+	public var x:Float;
+	public var y:Float;
+	public var carPath:Array<FlxPoint>;
+
+	public function new(x:Float, y:Float, carPath:Array<FlxPoint>) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.carPath = carPath;
+		var debugSprite = new FlxSprite(x, y);
+		debugSprite.makeGraphic(20, 20);
+		add(debugSprite);
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+	}
+
+	public function spawn():Car {
+		var car = new Car(x, y);
+		var carPathCopy = carPath.map((p) -> p);
+		car.setDestinations(carPathCopy);
+		add(car);
+		return car;
 	}
 }
