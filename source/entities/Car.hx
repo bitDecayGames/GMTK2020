@@ -50,52 +50,6 @@ class Car extends FlxSprite {
 		return this;
 	}
 
-	private function moveTowardsTarget(target:FlxPoint) {
-		var position = getPosition().add(width / 2.0, height / 2.0);
-		var desiredVelocity = new FlxVector(target.x - position.x, target.y - position.y);
-		var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-		addSteeringToVelocity(steering.scale(0.5));
-		angleToVelocity();
-	}
-
-	private function moveTowardsDestination(destination:FlxPoint):Bool {
-		var destCopy = new FlxPoint(destination.x, destination.y);
-		var position = getPosition().add(width / 2.0, height / 2.0);
-		var targetOffset = destCopy.subtract(position.x, position.y);
-		var distance = targetOffset.distanceTo(new FlxPoint(0, 0));
-		if (distance < slowingDistance * 0.1) {
-			velocity.set(0, 0);
-			angleToVelocity();
-			return true;
-		} else {
-			var cruisingMaxSpeed = maxSpeed * 0.5;
-			var rampedSpeed = cruisingMaxSpeed * (distance / slowingDistance);
-			var clippedSpeed = Math.min(rampedSpeed, cruisingMaxSpeed);
-			var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
-			var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-			addSteeringToVelocity(steering);
-			angleToVelocity();
-			return false;
-		}
-	}
-
-	private function addSteeringToVelocity(steering:FlxPoint) {
-		var vel = new FlxVector(velocity.x, velocity.y);
-		var speed = vel.length;
-		if (speed == 0) {
-			speed = 1;
-		}
-		var steeringX = steering.x * .1;
-		var steeringY = steering.y * .1;
-		velocity.add(steeringX, steeringY);
-	}
-
-	private function angleToVelocity() {
-		if (velocity.x != 0 && velocity.y != 0) {
-			angle = velocity.angleBetween(new FlxPoint(0, 1)) - 180;
-		}
-	}
-
 	private function moveTowardsDestinationByTurning(destination:FlxPoint):Bool {
 		var destCopy = new FlxVector(destination.x, destination.y);
 		var position = getPosition().add(width / 2.0, height / 2.0);
