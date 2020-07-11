@@ -53,12 +53,5 @@ class LukeState extends FlxState
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 	}
-
-	override function update(elapsed:Float){
-		super.update(elapsed);
-		for(o in objectiveManager.getObjectives()){
-			trace('time elapsed: ${elapsed} Objective:  ${o.getDescription()} has a status of: ${o.getStatus()}' );
-		}
-	}
 	
 }
