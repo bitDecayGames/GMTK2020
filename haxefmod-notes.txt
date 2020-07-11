@@ -1,4 +1,5 @@
 Notes:
 
-Sound names must be a single word (no spaces) OR the static variable name needs to have underscores put in using a javascript regex
-Selected location for fmod script needs to be the source folder, not the root of the project
+- Sound names must be a single word (no spaces) OR the static variable name needs to have underscores put in using a javascript regex
+- Selected location for fmod script needs to be the source folder, not the root of the project
+- There are docs for the c++ side, but not for the js side

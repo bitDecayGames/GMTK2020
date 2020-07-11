@@ -11,7 +11,9 @@ class FmodSongs {
 }
 
 class FmodSFX {
+    public static inline var Lightning:String = "event:/SFX/Lightning/Lightning";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
+    public static inline var Rain:String = "event:/SFX/Rain/Rain";
     public static inline var Mystery:String = "event:/SFX/SplashScreens/Mystery";
 }
