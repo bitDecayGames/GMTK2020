@@ -1,5 +1,8 @@
 package states;
 
+import objectives.ObjectiveManager;
+import entities.Player;
+import collisions.CollisionManager;
 import flixel.FlxSprite;
 import trigger.Trigger;
 import com.bitdecay.textpop.TextPop;
@@ -19,6 +22,7 @@ class LukeState extends FlxState
 	var triggerGroup: FlxGroup;
 
 	var checkpointManager: CheckpointManager;
+	var objectiveManager: ObjectiveManager;
 	var shader = new LightShader(); 
 	var filters:Array<BitmapFilter> = [];
 
@@ -26,45 +30,35 @@ class LukeState extends FlxState
 	override public function create()
 	{
 		super.create();
-		
-		camera.filtersEnabled = true;
-		filters.push(new ShaderFilter(shader));
-		camera.setFilters(filters);
 
 		FlxG.debugger.drawDebug = true;
+		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
+		add(level.walls);
+		add(level.background);
+		
+		var player:Player;
+		player = level.player;
+		add(player);
+		player.screenCenter();
 
-		checkpointManager = new CheckpointManager();
+		objectiveManager = level.objectiveManager;
 
-		boiGroup = new FlxGroup();
-		add(boiGroup);
-		triggerGroup = new FlxGroup();
-		add(triggerGroup);
+		for(o in objectiveManager.getObjectives())
+			add(o);
 
-		var boi = new Boi();
-		boi.x = 100;
-		boi.y = 100;
-		boiGroup.add(boi);
-
-		var trigger = checkpointManager.createCheckpoint();
-		trigger.register(handleCheckpointActivation);
-		trigger.x = 200;
-		trigger.y = 200;
-		triggerGroup.add(trigger);
+		// The camera. It's real easy. Flixel is nice.
+		FlxG.camera.follow(player, TOPDOWN, 1);
+		FlxG.camera.zoom = 0.5;
+		
+		var collisions = new CollisionManager(this);
+		collisions.setLevel(level);
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override function update(elapsed:Float){
 		super.update(elapsed);
-
-		FlxG.overlap(boiGroup, triggerGroup, handleBoiTriggerOverlap);
-	}
-
-	private function handleBoiTriggerOverlap(_boi:Boi, trigger:Trigger) {
-		trigger.activate();
-	}
-
-	private function handleCheckpointActivation(spr: FlxSprite) {
-		TextPop.pop(cast(spr.x, Int), cast(spr.y, Int), "Checkpoint Reached");
+		for(o in objectiveManager.getObjectives()){
+			trace('time elapsed: ${elapsed} Objective:  ${o.getDescription()} has a status of: ${o.getStatus()}' );
+		}
 	}
 	
 }

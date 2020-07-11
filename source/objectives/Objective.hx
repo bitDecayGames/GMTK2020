@@ -15,6 +15,14 @@ class Objective extends Trigger{
         register(completeObjective);
     }
 
+    public function getStatus():Bool{
+        return completed;
+    }
+
+    public function getDescription():String{
+        return description;
+    }
+
     private function completeObjective(spr:FlxSprite){
         completed = true;
     }

@@ -15,7 +15,7 @@ class ObjectiveManager{
         return objectives;
     }
 
-    private function createObjective(desc:String):Trigger  {
+    public function createObjective(desc:String):Trigger  {
         var objective = new Objective(desc);
         objectives.push(objective);
         return objective;
