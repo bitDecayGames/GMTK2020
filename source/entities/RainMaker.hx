@@ -39,13 +39,14 @@ class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 			pendingDrops--;
 			
 			drop = rainPool.get();
-			drop.parallaxFactor = 100;
-			drop.startAltitude = 200;
-			drop.fallRate = 500;
-
 			drop.fullReset();
 			drop.setCamera(cam);
+			drop.parallaxFactor = 100;
+			drop.startAltitude = 200;
+			drop.splashAltitude = 0;
+			drop.fallRate = 500;
 			drop.done = returnDrop;
+
 			drop.x = cam.x + cam.scroll.x + FlxG.random.float(-spawnBuffer, cam.width + spawnBuffer);
 			drop.y = cam.y + cam.scroll.y + FlxG.random.float(-spawnBuffer, cam.height + spawnBuffer);
 			add(drop);
@@ -56,7 +57,7 @@ class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 
 	private function returnDrop(drop:RainDrop) {
 		var splash = splashPool.get();
-		drop.getGraphicMidpoint(tempPos);
+		drop.getSplashPoint(tempPos);
 		splash.fullReset(tempPos.x, tempPos.y);
 		splash.done = returnSplash;
 		add(splash);
