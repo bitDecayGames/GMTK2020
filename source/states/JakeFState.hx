@@ -13,13 +13,16 @@ class JakeFState extends FlxState
 {
 	override public function create()
 	{
-		super.create();
-
 		var player:Player;
 
 		player = new Player();
 		add(player);
 		player.screenCenter();
+
+		// The camera. It's real easy. Flixel is nice.
+		FlxG.camera.follow(player, TOPDOWN, 1);
+
+		super.create();
 	}
 
 	override public function update(elapsed:Float)

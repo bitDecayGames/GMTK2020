@@ -101,6 +101,10 @@ class Player extends FlxSprite {
 		if (invincible > 0) invincible -= delta;
 		// ########## FROM BRAWNFIRE ##########
 
+		updateMovement(delta);
+	}
+
+	private function updateMovement(delta:Float) {
 		if (diveRecoveringTime > 0) divingRest(delta); 
 
 		if (divingState == NotDiving) {
