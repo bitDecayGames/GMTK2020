@@ -7,14 +7,32 @@ import actions.Actions;
 import flixel.math.FlxPoint;
 
 class Player extends FlxSprite {
+	// WALK
+	var MAX_WALK_SPEED:Float = 150.0;
+	var WALK_ACCELERATION:Float = 400.0;
+	var DECELERATION:Float = 600.0;
+	// RUN
+	var MAX_RUN_SPEED:Float = 300.0;
+	var RUN_ACCELERATION:Float = 600.0;
+	// DIVE
+	var DIVE_MAX_SPEED:Float = 800.0;
+	var DIVE_ACCELERATION:Float = 2000.0;
+	var DIVE_DECELERATION:Float = 10000.0;
+
+	var control = new Actions();
+
+	var diving = false;
+	var diveDeceling = false;
+	var currentSpeed = 0.0;
+	var facingAngle = 0.0;
+
+	// ########## FROM BRAWNFIRE ##########
     // TODO(JF): Potentially add based on brawnfire
 	// public var playerGroup:PlayerGroup;
 	// public var hitboxMgr:HitboxManager;
 
 	var inControl = false;
-	var control = new Actions();
 
-	var speed = 80;
 	var waitForFinish = false;
 	var invincible = 0.0;
 	var _invincibleMaxTime = 1.0;
@@ -22,6 +40,8 @@ class Player extends FlxSprite {
     // TODO(JF) Hurt box crap
 	var hurtboxSize = new FlxPoint(20, 4);
 	// var hitboxes:AttackHitboxes;
+
+	// ########## FROM BRAWNFIRE ##########
 
     // TODO(JF): Potentially add based on brawnfire
 	// public function new(playerGroup:PlayerGroup, hitboxMgr:HitboxManager) {
@@ -55,6 +75,8 @@ class Player extends FlxSprite {
 
 		// animation.callback = hitboxes.animCallback;
 		// animation.finishCallback = tagFinish;
+
+		health = 3;
 	}
 
     // TODO(JF): finish callback animation thing
@@ -69,69 +91,123 @@ class Player extends FlxSprite {
 		// playerGroup.update(delta);
 		// hitboxes.update(delta);
 
+		// ########## FROM BRAWNFIRE ##########
 		if (waitForFinish) {
 			return;
 		}
 		if (invincible > 0) {
 			invincible -= delta;
 		}
+		// ########## FROM BRAWNFIRE ##########
 
-		// determine our velocity based on angle and speed
-		velocity.set(speed, 0);
+		// Diving logic
+		if (diving && diveDeceling) {
+			divingDecel(delta);
+		}
+		else if (diving) {
+			divingAccel(delta);
+		}
+		else {
+			// whether to accelerate or decelerate;
+			var accelerate = false;
+			
+			// TODO(JF): Adjust facing based on actual sprites and animations
+			var newFacing = 0;
+			var newAngle:Float = 0;
+			if (control.up.check()) {
+				newFacing = newFacing | FlxObject.UP;
 
-        // TODO(JF): Adjust facing based on actual sprites and animations
-		var newFacing = 0;
-		var newAngle:Float = 0;
-		if (control.up.check()) {
-			newFacing = newFacing | FlxObject.UP;
+				newAngle = -90;
+				if (control.left.check()) {
+					newAngle -= 45;
+					newFacing = newFacing | FlxObject.LEFT;
+				} else if (control.right.check()) {
+					newAngle += 45;
+					newFacing = newFacing | FlxObject.RIGHT;
+				}
 
-			newAngle = -90;
-			if (control.left.check()) {
-				newAngle -= 45;
+				accelerate = true;
+			} else if (control.down.check()) {
+				newFacing = FlxObject.DOWN;
+				newAngle = 90;
+				if (control.left.check()) {
+					newAngle += 45;
+					newFacing = newFacing | FlxObject.LEFT;
+				} else if (control.right.check()) {
+					newAngle -= 45;
+					newFacing = newFacing | FlxObject.RIGHT;
+				}
+
+				accelerate = true;
+			} else if (control.left.check()) {
+				newAngle = 180;
 				newFacing = newFacing | FlxObject.LEFT;
+
+				accelerate = true;
 			} else if (control.right.check()) {
-				newAngle += 45;
+				newAngle = 0;
 				newFacing = newFacing | FlxObject.RIGHT;
+
+				accelerate = true;
 			}
-		} else if (control.down.check()) {
-			newFacing = FlxObject.DOWN;
-			newAngle = 90;
-			if (control.left.check()) {
-				newAngle += 45;
-				newFacing = newFacing | FlxObject.LEFT;
-			} else if (control.right.check()) {
-				newAngle -= 45;
-				newFacing = newFacing | FlxObject.RIGHT;
+
+			if (accelerate)
+			{
+				facingAngle = newAngle;
+				facing = newFacing;
+
+				// If direction pushed (accelerate) and dive pushed then dive and stop other movement
+				if (control.dive.check())
+				{
+					diving = true;
+				}
+				else if (control.run.check())
+				{
+					// adjust current speed based on WALK_ACCELERATION of time
+					currentSpeed += delta * RUN_ACCELERATION;
+					if (currentSpeed > MAX_RUN_SPEED) currentSpeed = MAX_RUN_SPEED;
+				}
+				else
+				{
+					// adjust current speed based on WALK_ACCELERATION of time
+					currentSpeed += delta * WALK_ACCELERATION;
+					if (currentSpeed > MAX_WALK_SPEED) currentSpeed = MAX_WALK_SPEED;
+				}
 			}
-		} else if (control.left.check()) {
-			newAngle = 180;
-			newFacing = newFacing | FlxObject.LEFT;
-		} else if (control.right.check()) {
-			newAngle = 0;
-			newFacing = newFacing | FlxObject.RIGHT;
-		} else {
-			// no keys pressed, don't move
-			velocity.set(0, 0);
+			else
+			{
+				currentSpeed -= delta * DECELERATION;
+				if (currentSpeed < 0) currentSpeed = 0;
+			}
 		}
 
-        // TODO(JF): Fill with dive information
-		// if (control.attack.check()) {
-		// 	// Filler punch controls
-		// 	if (playerGroup.activelyCarrying) {
-		// 		velocity.set(0, 0);
-		// 		playerGroup.throwThing();
-		// 	} else {
-		// 		animation.play("punch");
-		// 		waitForFinish = true;
-		// 		velocity.set(0, 0);
-		// 	}
-		// 	return;
-		// }
+		velocity.set(currentSpeed, 0);
 
-		facing = newFacing;
-
-		velocity.rotate(FlxPoint.weak(0, 0), newAngle);
+		velocity.rotate(FlxPoint.weak(0, 0), facingAngle);
 	}
+
+	private function divingAccel(delta:Float) {
+		currentSpeed += delta * DIVE_ACCELERATION;
+
+		if (currentSpeed > DIVE_MAX_SPEED)
+		{
+			currentSpeed = DIVE_MAX_SPEED;
+			diveDeceling = true;
+		}
+	}
+
+	private function divingDecel(delta:Float) {
+		currentSpeed -= delta * DIVE_DECELERATION;
+
+		if (currentSpeed < MAX_RUN_SPEED)
+		{
+			currentSpeed = MAX_RUN_SPEED;
+			diveDeceling = false;
+			diving = false;
+		}
+	}
+
+	// ########## FROM BRAWNFIRE ##########
 
     // TODO(JF): Add logic for getting hit by cars
 	// public function getHit(direction:FlxVector, force:Float = 1) {
@@ -148,7 +224,7 @@ class Player extends FlxSprite {
 	// }
 
     // TODO(JF): Potentially use for dive / get hit direction
-	// public function getThrowDir():FlxPoint {
+	// public function getDiveDir():FlxPoint {
 	// 	var throwDirX = 0;
 	// 	var throwDirY = 0;
 	// 	// If facing not set, use flipX
@@ -167,6 +243,7 @@ class Player extends FlxSprite {
 	// 			throwDirX = 1;
 	// 		}
 	// 	}
+	// }
 
 	// 	// Always check up/down
 	// 	if (facing & FlxObject.UP != 0) {
@@ -185,4 +262,6 @@ class Player extends FlxSprite {
 	// 	var facingLeft = flipX;
 	// 	return (toTheLeft && facingLeft) || (!toTheLeft && !facingLeft) ? "left" : "right";
 	// }
+
+	// ########## FROM BRAWNFIRE ##########
 }

@@ -1,21 +1,28 @@
 package states;
 
+import com.bitdecay.textpop.TextPop;
+import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import trigger.Boi;
 import trigger.Trigger;
+import checkpoint.CheckpointManager;
 
 class JakeState extends FlxState
 {
 	var boiGroup: FlxGroup;
 	var triggerGroup: FlxGroup;
 
+	var checkpointManager: CheckpointManager;
+
 	override public function create()
 	{
 		super.create();
 
 		FlxG.debugger.drawDebug = true;
+
+		checkpointManager = new CheckpointManager();
 
 		boiGroup = new FlxGroup();
 		add(boiGroup);
@@ -27,8 +34,8 @@ class JakeState extends FlxState
 		boi.y = 100;
 		boiGroup.add(boi);
 
-		var trigger = new Trigger();
-		trigger.register(handleTriggerActivation);
+		var trigger = checkpointManager.createCheckpoint();
+		trigger.register(handleCheckpointActivation);
 		trigger.x = 200;
 		trigger.y = 200;
 		triggerGroup.add(trigger);
@@ -45,7 +52,7 @@ class JakeState extends FlxState
 		trigger.activate();
 	}
 
-	private function handleTriggerActivation() {
-		trace("Trigger Hit");
+	private function handleCheckpointActivation(spr: FlxSprite) {
+		TextPop.pop(cast(spr.x, Int), cast(spr.y, Int), "Checkpoint Reached");
 	}
 }

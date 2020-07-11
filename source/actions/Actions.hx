@@ -12,6 +12,7 @@ class Actions {
 	public var left = new FlxActionDigital();
 	public var right = new FlxActionDigital();
 	public var dive = new FlxActionDigital();
+	public var run = new FlxActionDigital();
 
 	public function new() {
 		up.addKey(FlxKey.W, PRESSED);
@@ -28,5 +29,7 @@ class Actions {
 
 		dive.addKey(FlxKey.SPACE, JUST_PRESSED);
 		dive.addMouse(FlxMouseButtonID.LEFT, JUST_PRESSED);
+
+		run.addKey(FlxKey.SHIFT, PRESSED);
 	}
 }
