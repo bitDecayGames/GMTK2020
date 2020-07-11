@@ -28,7 +28,7 @@ class Boi extends FlxSprite
 		right.addKey(FlxKey.D, PRESSED);
 		right.addKey(FlxKey.RIGHT, PRESSED);
 
-		super.loadGraphic("assets/images/car/0.png", true, 60, 130);
+		super.loadGraphic("assets/images/car/car0.png", true, 60, 130);
 	}
 
 	override public function update(delta:Float):Void {
