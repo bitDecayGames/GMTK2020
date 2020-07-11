@@ -1,15 +1,11 @@
 package collisions;
 
+import entities.Player;
+import trigger.Trigger;
 import flixel.FlxG;
-import flixel.util.FlxCollision;
 import levels.Level;
-import flixel.util.FlxSort;
 import flixel.FlxState;
 import flixel.FlxBasic;
-import flixel.group.FlxSpriteGroup;
-import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import sorting.ZSorter;
 
 class CollisionManager extends FlxBasic {
 
@@ -30,5 +26,11 @@ class CollisionManager extends FlxBasic {
 		super.update(elapsed);
 
 		FlxG.collide(level.player, level.walls);
+
+		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
+	}
+
+	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {
+		trigger.activate();
 	}
 }

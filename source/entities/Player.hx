@@ -1,11 +1,11 @@
 package entities;
 
-import haxe.Exception;
 import flixel.FlxObject;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxSprite;
 import actions.Actions;
 import flixel.math.FlxPoint;
+import flixel.group.FlxGroup;
 
 class Player extends FlxSprite {
 	// WALK
@@ -55,7 +55,7 @@ class Player extends FlxSprite {
 		// this.playerGroup = playerGroup;
 		// this.hitboxMgr = hitboxMgr;
 
-		loadGraphic(AssetPaths.PlayerImage__JPG, true);
+		loadGraphic(AssetPaths.PlayerImage__png, true);
 
         // an extra -2 on the y to help account for empty space at the bottom of the sprites
         // TODO(JF): hurtbox offsets
@@ -188,7 +188,8 @@ class Player extends FlxSprite {
 				case DivingDecel:
 					divingDecel(delta);
 
-				default: throw new Exception("Diving state not handled. SOMETHING HAS GONE WRONG!! : " + divingState);
+				default:
+					throw "Diving state not handled. SOMETHING HAS GONE WRONG!! : " + divingState;
 			}
 		}
 

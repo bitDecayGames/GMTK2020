@@ -1,2 +1,2 @@
-lime test html5 --debug -D dev_analytics
+lime test html5 -debug -D dev_analytics
 

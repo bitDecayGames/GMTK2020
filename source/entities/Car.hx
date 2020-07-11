@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.math.FlxMath;
 import flixel.math.FlxVector;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxG;
@@ -13,47 +14,101 @@ class Car extends FlxSprite {
 	private var maxSpeed:Float;
 	private var maxTurnRadius:Float;
 	private var visionRadius:Float;
+	private var slowingDistance:Float;
 	private var foundTarget:Bool;
 
-	public function new(x:Float, y:Float, destination:FlxPoint, maxSpeed:Float = 1000, maxTurnRadius:Float = 1, visionRadius:Float = 100) {
+	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 100, maxTurnRadius:Float = 1, visionRadius:Float = 200,
+			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
 		this.destination = destination;
 		this.visionRadius = visionRadius;
+		this.slowingDistance = slowingDistance;
 	}
 
 	public function setTarget(target:FlxSprite) {
 		this.target = target;
 	}
 
+	public function setDestination(destination:FlxPoint) {
+		this.destination = destination;
+	}
+
 	private function moveTowardsTarget(target:FlxPoint) {
-		var position = getPosition();
+		var position = getPosition().add(width / 2.0, height / 2.0);
 		var desiredVelocity = new FlxVector(target.x - position.x, target.y - position.y).normalize().scale(maxSpeed);
 		var steering = desiredVelocity.subtract(velocity.x, velocity.y);
 		var steeringNormalized = new FlxVector(steering.x, steering.y).normalize();
 		velocity.add(steeringNormalized.x * maxTurnRadius, steeringNormalized.y * maxTurnRadius);
+		angleToVelocity();
 	}
 
 	private function moveTowardsDestination(destination:FlxPoint) {
-		var slowingDistance = 100.0;
-		var position = getPosition();
+		var position = getPosition().add(width / 2.0, height / 2.0);
 		var targetOffset = destination.subtract(position.x, position.y);
 		var distance = targetOffset.distanceTo(new FlxPoint(0, 0));
-		var rampedSpeed = maxSpeed * (distance / slowingDistance);
-		var clippedSpeed = Math.min(rampedSpeed, maxSpeed);
-		var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
-		var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-		var steeringNormalized = new FlxVector(steering.x, steering.y).normalize();
-		velocity.add(steeringNormalized.x * maxTurnRadius, steeringNormalized.y * maxTurnRadius);
+		if (distance < slowingDistance * 0.1) {
+			velocity.set(0, 0);
+		} else {
+			var cruisingMaxSpeed = maxSpeed * 0.8;
+			var rampedSpeed = cruisingMaxSpeed * (distance / slowingDistance);
+			var clippedSpeed = Math.min(rampedSpeed, cruisingMaxSpeed);
+			var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
+			var steering = desiredVelocity.subtract(velocity.x, velocity.y);
+			velocity.add(steering.x * .5, steering.y * .5);
+		}
+		angleToVelocity();
 	}
 
-	private function rotateToVelocity() {
-		this.angle = this.velocity.angleBetween(new FlxPoint(0, 1));
+	private function angleToVelocity() {
+		if (velocity.x != 0 && velocity.y != 0) {
+			angle = velocity.angleBetween(new FlxPoint(0, 1)) - 180;
+		}
+	}
+
+	private function moveTowardsDestinationByTurning(destination:FlxPoint) {
+		var position = getPosition().add(width / 2.0, height / 2.0);
+		var targetOffset = destination.subtract(position.x, position.y);
+		var targetAngle = velocity.angleBetween(targetOffset);
+		var angleDif = targetAngle - angle;
+		angle += Math.min(angleDif, maxTurnRadius);
+		velocityToAngle();
+		speedUp(1);
+		clampToSpeed(maxSpeed * .8);
+	}
+
+	private function velocityToAngle() {
+		var zero = new FlxPoint(0, 0);
+		var vel = new FlxPoint(0, -velocity.distanceTo(zero));
+		vel.rotate(zero, angle);
+		velocity.set(vel.x, vel.y);
+	}
+
+	private function speedUp(amount:Float) {
+		var zero = new FlxPoint(0, 0);
+		var up = new FlxPoint(0, -1);
+		up.rotate(zero, angle);
+		up.scale(amount);
+		velocity.add(up.x, up.y);
+	}
+
+	private function clampToSpeed(maxSpeed:Float) {
+		var vel = new FlxVector(velocity.x, velocity.y);
+		var curSpeed = vel.length;
+		vel.normalize();
+		vel.scale(Math.min(maxSpeed, curSpeed));
+		velocity.set(vel.x, vel.y);
+	}
+
+	private function pointToString(point:FlxPoint):String {
+		return "(" + FlxMath.roundDecimal(point.x, 2) + ", " + FlxMath.roundDecimal(point.y, 2) + ")";
 	}
 
 	private function checkForTargetVisibility() {
-		if (target != null && getPosition().distanceTo(target.getPosition()) < visionRadius) {
+		if (!foundTarget
+			&& target != null
+			&& getPosition().distanceTo(target.getPosition().add(target.width / 2.0, target.height / 2.0)) < visionRadius) {
 			foundTarget = true;
 		}
 	}
@@ -61,11 +116,10 @@ class Car extends FlxSprite {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		if (foundTarget && target != null) {
-			moveTowardsTarget(target.getPosition());
-		} else {
+			moveTowardsTarget(target.getPosition().add(target.width / 2.0, target.height / 2.0));
+		} else if (destination != null) {
 			moveTowardsDestination(destination);
-			checkForTargetVisibility();
 		}
-		rotateToVelocity();
+		checkForTargetVisibility();
 	}
 }
