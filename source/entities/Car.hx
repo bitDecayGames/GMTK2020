@@ -18,9 +18,10 @@ class Car extends FlxSprite {
 	private var slowingDistance:Float;
 	private var foundTarget:Bool;
 
-	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 100, maxTurnRadius:Float = 1, visionRadius:Float = 200,
+	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 200,
 			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
+		origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
 		if (destination != null) {
@@ -51,10 +52,9 @@ class Car extends FlxSprite {
 
 	private function moveTowardsTarget(target:FlxPoint) {
 		var position = getPosition().add(width / 2.0, height / 2.0);
-		var desiredVelocity = new FlxVector(target.x - position.x, target.y - position.y).normalize().scale(maxSpeed);
+		var desiredVelocity = new FlxVector(target.x - position.x, target.y - position.y);
 		var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-		var steeringNormalized = new FlxVector(steering.x, steering.y).normalize();
-		velocity.add(steeringNormalized.x * maxTurnRadius, steeringNormalized.y * maxTurnRadius);
+		addSteeringToVelocity(steering.scale(0.5));
 		angleToVelocity();
 	}
 
@@ -68,15 +68,26 @@ class Car extends FlxSprite {
 			angleToVelocity();
 			return true;
 		} else {
-			var cruisingMaxSpeed = maxSpeed * 0.8;
+			var cruisingMaxSpeed = maxSpeed * 0.5;
 			var rampedSpeed = cruisingMaxSpeed * (distance / slowingDistance);
 			var clippedSpeed = Math.min(rampedSpeed, cruisingMaxSpeed);
 			var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
 			var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-			velocity.add(steering.x * .5, steering.y * .5);
+			addSteeringToVelocity(steering);
 			angleToVelocity();
 			return false;
 		}
+	}
+
+	private function addSteeringToVelocity(steering:FlxPoint) {
+		var vel = new FlxVector(velocity.x, velocity.y);
+		var speed = vel.length;
+		if (speed == 0) {
+			speed = 1;
+		}
+		var steeringX = steering.x * .1;
+		var steeringY = steering.y * .1;
+		velocity.add(steeringX, steeringY);
 	}
 
 	private function angleToVelocity() {
@@ -85,16 +96,32 @@ class Car extends FlxSprite {
 		}
 	}
 
-	private function moveTowardsDestinationByTurning(destination:FlxPoint) {
-		var destCopy = new FlxPoint(destination.x, destination.y);
+	private function moveTowardsDestinationByTurning(destination:FlxPoint):Bool {
+		var destCopy = new FlxVector(destination.x, destination.y);
 		var position = getPosition().add(width / 2.0, height / 2.0);
 		var targetOffset = destCopy.subtract(position.x, position.y);
-		var targetAngle = velocity.angleBetween(targetOffset);
+		var targetAngle = FlxPoint.get(0, 1).angleBetween(targetOffset);
 		var angleDif = targetAngle - angle;
-		angle += Math.min(angleDif, maxTurnRadius);
+		if (Math.abs(angleDif) > Math.abs(targetAngle + 360 - angle)) {
+			angleDif = targetAngle + 360 - angle;
+		} else if (Math.abs(angleDif) > Math.abs(targetAngle - 360 - angle)) {
+			angleDif = targetAngle - 360 - angle;
+		}
+		angle += Math.max(-maxTurnRadius, Math.min(angleDif, maxTurnRadius));
+		if (angle > 180) {
+			angle -= 360;
+		} else if (angle < -180) {
+			angle += 360;
+		}
+		trace(FlxMath.roundDecimal(angle, 2));
 		velocityToAngle();
-		speedUp(1);
+		if (Math.abs(angleDif) < 45) {
+			speedUp(1);
+		} else {
+			speedUp(-3);
+		}
 		clampToSpeed(maxSpeed * .8);
+		return targetOffset.length < slowingDistance * 0.1;
 	}
 
 	private function velocityToAngle() {
@@ -128,6 +155,8 @@ class Car extends FlxSprite {
 		if (!foundTarget
 			&& target != null
 			&& getPosition().distanceTo(target.getPosition().add(target.width / 2.0, target.height / 2.0)) < visionRadius) {
+			// TODO: FX the car JUST saw the player, so maybe some tire squeels here?
+			// TODO: FX you could also maybe play a revving sound since car speeds up
 			foundTarget = true;
 		}
 	}
@@ -135,9 +164,9 @@ class Car extends FlxSprite {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		if (foundTarget && target != null) {
-			moveTowardsTarget(target.getPosition().add(target.width / 2.0, target.height / 2.0));
+			moveTowardsDestinationByTurning(target.getPosition().add(target.width / 2.0, target.height / 2.0));
 		} else if (destinations != null && destinations.length > 0) {
-			if (moveTowardsDestination(destinations[0])) {
+			if (moveTowardsDestinationByTurning(destinations[0])) {
 				destinations.shift();
 			}
 		}
