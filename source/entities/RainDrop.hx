@@ -8,11 +8,11 @@ class RainDrop extends FlxSprite {
 	private var cam:FlxCamera;
 	
 	public var done:RainDrop -> Void;
+	public var parallaxFactor:Float = 150;
+	public var startAltitude:Float;
+	public var fallRate:Float;
 
-	private var startAltitude:Float;
 	private var altitude:Float;
-	private var fallRate:Float;
-	private var parallaxFactor:Float = 150;
 
 	// hidden stuff to save on allocations
 	private var drawOffset = FlxPoint.get();
@@ -50,6 +50,7 @@ class RainDrop extends FlxSprite {
 		this.offset.set(drawOffset.x, drawOffset.y);
 		
 		if (altitude <= 0) {
+			kill();
 			done(this);
 		}
 	}
@@ -59,8 +60,7 @@ class RainDrop extends FlxSprite {
 	}
 
 	public function fullReset() {
-		startAltitude = 30;
+		revive();
 		altitude = startAltitude;
-		fallRate = 90;
 	}
 }

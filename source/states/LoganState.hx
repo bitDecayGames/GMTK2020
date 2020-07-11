@@ -21,7 +21,7 @@ class LoganState extends FlxState
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 
-		var rain = new RainMaker(camera, 5);
+		var rain = new RainMaker(camera, 250);
 		add(rain);
 
 		camera.follow(player);
