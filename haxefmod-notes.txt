@@ -1,0 +1,4 @@
+Notes:
+
+Sound names must be a single word (no spaces) OR the static variable name needs to have underscores put in using a javascript regex
+Selected location for fmod script needs to be the source folder, not the root of the project
