@@ -1,5 +1,6 @@
 package states;
 
+import flixel.input.keyboard.FlxKey;
 import haxefmod.flixel.FmodFlxUtilities;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -16,9 +17,17 @@ class MainMenuState extends FlxUIState {
 
     var _txtTitle:FlxText;
 
+    var rainReference:String = FmodSFX.Rain + "-0";
+
     override public function create():Void {
         super.create();
-		FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
+        if (!FmodManager.IsSongPlaying()) {
+            // I know the reference string, so I don't grab it here.
+            FmodManager.PlaySoundWithReference(FmodSFX.Rain);
+        }
+        FmodManager.RegisterLightning(rainReference);
+        FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
+
         FlxG.log.notice("loaded scene");
         bgColor = FlxColor.TRANSPARENT;
 
@@ -51,6 +60,10 @@ class MainMenuState extends FlxUIState {
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
         FmodManager.Update();
+
+        if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
+            FlxG.camera.flash(FlxColor.WHITE, 0.5);
+        }
 
         _txtTitle.x = FlxG.width/2 - _txtTitle.width/2;
     }
