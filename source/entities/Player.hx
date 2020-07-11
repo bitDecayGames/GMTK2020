@@ -1,10 +1,13 @@
 package entities;
 
+import openfl.Assets;
 import flixel.FlxObject;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxSprite;
 import actions.Actions;
 import flixel.math.FlxPoint;
+
+using extensions.FlxObjectExt;
 
 class Player extends FlxSprite {
 	// WALK
@@ -17,7 +20,7 @@ class Player extends FlxSprite {
 	// DIVE
 	var DIVE_MAX_SPEED:Float = 800.0;
 	var DIVE_ACCELERATION:Float = 2000.0;
-	var DIVE_DECELERATION:Float = 10000.0;
+	var DIVE_DECELERATION:Float = 2000.0;
 	var DIVE_RECOVERY_TIME:Float = 0.5;
 
 	var control = new Actions();
@@ -27,7 +30,7 @@ class Player extends FlxSprite {
 
 	var currentSpeed = 0.0;
 
-	var facingAngle = 0.0;
+	var facingAngle:Int = 0;
 
 	// ########## FROM BRAWNFIRE ##########
     // TODO(JF): Potentially add based on brawnfire
@@ -54,24 +57,10 @@ class Player extends FlxSprite {
 		// this.playerGroup = playerGroup;
 		// this.hitboxMgr = hitboxMgr;
 
-		loadGraphic(AssetPaths.PlayerImage__png, true);
+		loadDiveAnim();
+		loadWalkRunAnim();
 
-        // an extra -2 on the y to help account for empty space at the bottom of the sprites
-        // TODO(JF): hurtbox offsets
-		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
-		// setSize(hurtboxSize.x, hurtboxSize.y);
-
-		setFacingFlip(FlxObject.UP | FlxObject.RIGHT, false, false);
-		setFacingFlip(FlxObject.DOWN | FlxObject.RIGHT, false, false);
-		setFacingFlip(FlxObject.RIGHT, false, false);
-
-		setFacingFlip(FlxObject.UP | FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.DOWN | FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.LEFT, true, false);
-
-        // TODO(JF): add animations har
-		// animation.add("idle", [0, 1, 2, 3, 4, 5, 6, 7], 5);
-
+		// TODO(JF): This may need to be added to the two load methods above.
         // TODO(JF): Add hitbox stuff here
 		// hitboxes = new AttackHitboxes(this);
 		// hitboxes.register(hitboxMgr.addPlayerHitbox, "punch", 2, [new HitboxLocation(13, 15, 13, 0)]);
@@ -101,6 +90,7 @@ class Player extends FlxSprite {
 		// ########## FROM BRAWNFIRE ##########
 
 		updateMovement(delta);
+		// trace('Player (x,y): (${this.x},${this.y}');
 	}
 
 	private function updateMovement(delta:Float) {
@@ -112,7 +102,7 @@ class Player extends FlxSprite {
 			
 			// TODO(JF): Adjust facing based on actual sprites and animations
 			var newFacing = 0;
-			var newAngle:Float = 0;
+			var newAngle:Int = 0;
 			if (control.up.check()) {
 				newFacing = newFacing | FlxObject.UP;
 				newAngle = -90;
@@ -160,6 +150,10 @@ class Player extends FlxSprite {
 
 				// If direction pushed (accelerate) and dive pushed then dive and stop other movement
 				if (control.dive.check() && diveRecoveringTime == 0.0) {
+					if (divingState == NotDiving) {
+						loadDiveAnim();
+						animation.play("divingAccel");
+					}
 					divingState = DivingAccel;
 
 				} else if (control.run.check()) {
@@ -168,16 +162,26 @@ class Player extends FlxSprite {
 
 					if (currentSpeed > MAX_RUN_SPEED) currentSpeed = MAX_RUN_SPEED;
 
+					animation.play("run");
 				} else {
 					// adjust current speed based on WALK_ACCELERATION of time
 					currentSpeed += delta * WALK_ACCELERATION;
 
 					if (currentSpeed > MAX_WALK_SPEED) currentSpeed = MAX_WALK_SPEED;
+
+					animation.play("walk");
 				}
 			} else {
 				currentSpeed -= delta * DECELERATION;
 
-				if (currentSpeed < 0) currentSpeed = 0;
+				if (currentSpeed < 0) {
+					currentSpeed = 0;
+
+					animation.play("idle");
+				}
+				else {
+					animation.play("walk");
+				}
 			}
 		} else {
 			switch divingState {
@@ -195,6 +199,9 @@ class Player extends FlxSprite {
 		velocity.set(currentSpeed, 0);
 
 		velocity.rotate(FlxPoint.weak(0, 0), facingAngle);
+
+		// Sprite angle is pointing up which is 90 degrees off
+		angle = facingAngle + 90;
 	}
 
 
@@ -203,6 +210,14 @@ class Player extends FlxSprite {
 
 		if (currentSpeed > DIVE_MAX_SPEED) {
 			currentSpeed = DIVE_MAX_SPEED;
+			animation.play("divingDecel");
+			animation.finishCallback = (name) -> {
+				if (name == "divingDecel") {
+					divingState = NotDiving;
+					loadWalkRunAnim();
+					divingRest(delta);
+					}
+				};
 			divingState = DivingDecel;
 		}
 	}
@@ -212,8 +227,6 @@ class Player extends FlxSprite {
 
 		if (currentSpeed < MAX_RUN_SPEED) {
 			currentSpeed = MAX_RUN_SPEED;
-			divingState = NotDiving;
-			divingRest(delta);
 		}
 	}
 
@@ -223,6 +236,42 @@ class Player extends FlxSprite {
 		if (diveRecoveringTime > DIVE_RECOVERY_TIME) {
 			diveRecoveringTime = 0.0;
 		}
+	}
+
+	private function loadWalkRunAnim() {
+		var sWidth = 42;
+		var sHeight = 42;
+		
+		this.y += sHeight/2;
+		if (facing & FlxObject.RIGHT != 0) this.x -= sWidth/2;
+
+		loadGraphic(AssetPaths.WalkRun__png, true, sWidth, sHeight);
+
+        // an extra -2 on the y to help account for empty space at the bottom of the sprites
+        // TODO(JF): hurtbox offsets
+		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
+		// setSize(hurtboxSize.x, hurtboxSize.y);
+
+		animation.add("idle", [0], 5);
+		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
+		animation.add("run", [8, 9, 10, 11], 10);
+	}
+
+	private function loadDiveAnim() {
+		var sWidth = 42;
+		var sHeight = 84;
+
+		this.y -= (sHeight/4);
+
+		loadGraphic(AssetPaths.Dive__png, true, sWidth, sHeight);
+
+        // an extra -2 on the y to help account for empty space at the bottom of the sprites
+        // TODO(JF): hurtbox offsets
+		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
+		// setSize(hurtboxSize.x, hurtboxSize.y);
+
+		animation.add("divingAccel", [0, 1], 20, false);
+		animation.add("divingDecel", [2, 3, 4, 5, 6], 10, false);
 	}
 
 	// ########## FROM BRAWNFIRE ##########
