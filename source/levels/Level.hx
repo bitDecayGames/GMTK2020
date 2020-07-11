@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.math.FlxPoint;
 import objectives.ObjectiveManager;
 import checkpoint.CheckpointManager;
 import trigger.Trigger;
@@ -12,6 +13,7 @@ import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 class Level {
 	public var walls:flixel.tile.FlxTilemap;
 	public var background:flixel.tile.FlxTilemap;
+	public var groundType:Map<String, Array<FlxPoint>>;
 	public var player:Player;
 
 	public var triggers:FlxTypedGroup<Trigger>;
@@ -21,6 +23,7 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.cityTiles__png, "Walls");
+		groundType = map.loadGridMap("GroundType");
 		// walls.setTileProperties(1, FlxObject.ANY);
  		// walls.setTileProperties(2, FlxObject.ANY);
  		// walls.setTileProperties(3, FlxObject.ANY);
