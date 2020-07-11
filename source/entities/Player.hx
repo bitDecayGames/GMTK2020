@@ -5,6 +5,7 @@ import flixel.util.FlxSpriteUtil;
 import flixel.FlxSprite;
 import actions.Actions;
 import flixel.math.FlxPoint;
+import flixel.group.FlxGroup;
 
 class Player extends FlxSprite {
 	// WALK

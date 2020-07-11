@@ -12,7 +12,7 @@ class Trigger extends FlxSprite
         callbacks = [];
 
         // TODO Remove
-        super.loadGraphic("assets/images/car/car1.png", true, 60, 130);
+        super.loadGraphic(AssetPaths.car0__png, true, 60, 130);
     }
     
     public function register(callback: FlxSprite->Void) {
