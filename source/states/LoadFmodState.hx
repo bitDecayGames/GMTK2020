@@ -12,7 +12,6 @@ import flixel.FlxState;
 class LoadFmodState extends FlxState {
 	override public function create():Void {
 		FmodManager.Initialize();
-
 		var loadingText = new FlxText(0, 0, "Loading...");
 		loadingText.setFormat(null, 20, FlxColor.WHITE, FlxTextAlign.CENTER, NONE, FlxColor.BLACK);
 		loadingText.x = (FlxG.width / 2) - loadingText.width / 2;
@@ -35,9 +34,9 @@ class LoadFmodState extends FlxState {
 			#elseif mike
 			FlxG.switchState(new MikeState());
 			#elseif jakef
-			FlxG.switchState(new SplashScreenState());
+			FlxG.switchState(new JakeFState());
 			#elseif jakect
-			FlxG.switchState(new SplashScreenState());
+			FlxG.switchState(new JakeState());
 			#else
 			FlxG.switchState(new SplashScreenState());
 			#end

@@ -18,10 +18,12 @@ class SplashScreenState extends FlxState {
 	override public function create():Void {
 		super.create();
 
+		FmodManager.PlaySoundOneShot(FmodSFX.Mystery);
+
 		// List splash screen image paths here
 		loadSplashImages([
 			AssetPaths.bitdecaygamesinverted__png,
-			AssetPaths.ld_logo__png
+			AssetPaths.ld_logo__png,
 		]);
 
 		timer = splashDuration;
