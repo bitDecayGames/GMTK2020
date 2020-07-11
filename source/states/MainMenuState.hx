@@ -23,6 +23,7 @@ class MainMenuState extends FlxUIState {
         super.create();
         if (!FmodManager.IsSongPlaying()) {
             // I know the reference string, so I don't grab it here.
+            // Remove the rain from the title screen before releasing the game. It is buggy
             FmodManager.PlaySoundWithReference(FmodSFX.Rain);
         }
         FmodManager.RegisterLightning(rainReference);
