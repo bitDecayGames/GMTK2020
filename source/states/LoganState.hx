@@ -1,9 +1,11 @@
 package states;
 
+import flixel.FlxG;
 import collisions.CollisionManager;
 import entities.Player;
 import flixel.FlxState;
 import levels.Loader;
+import entities.RainMaker;
 
 class LoganState extends FlxState
 {
@@ -18,6 +20,11 @@ class LoganState extends FlxState
 		
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
+
+		var rain = new RainMaker(camera, 5);
+		add(rain);
+
+		camera.follow(player);
 	}
 
 	override public function update(elapsed:Float) {
