@@ -4,24 +4,24 @@ import flixel.FlxSprite;
 
 class Trigger extends FlxSprite
 {
-    var callbacks:Array<Void->Void>;
+    var callbacks:Array<FlxSprite->Void>;
 
 	public function new()
 	{
-		super();
-
+        super();
         callbacks = [];
 
-		super.loadGraphic("assets/images/car/0.png", true, 60, 130);
+        // TODO Remove
+        super.loadGraphic("assets/images/car/0.png", true, 60, 130);
     }
     
-    public function register(callback: Void->Void) {
+    public function register(callback: FlxSprite->Void) {
         callbacks.push(callback);
     }
 
     public function activate() {
         for (c in callbacks) {
-            c();
+            c(this);
         }
         kill();
     }
