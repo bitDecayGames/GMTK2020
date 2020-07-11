@@ -24,7 +24,8 @@ class InstructionState extends FlxUIState {
         _movementText.size = 20;
         _movementText.alignment = FlxTextAlign.CENTER;
         _movementText.text = "Move with WASD or Arrow keys.";
-        
+        _movementText.x = FlxG.width/2 - _movementText.width/2;
+
         add(_movementText);
 
         _dodgeText = new FlxText();
@@ -33,6 +34,7 @@ class InstructionState extends FlxUIState {
         _dodgeText.alignment = FlxTextAlign.CENTER;
         _dodgeText.y = _dodgeText.y + 30;
         _dodgeText.text = "Dodge using the space key.";
+        _dodgeText.x = FlxG.width/2 - _dodgeText.width/2;
         
         add(_dodgeText);
 
@@ -42,6 +44,7 @@ class InstructionState extends FlxUIState {
         _objectiveText.alignment = FlxTextAlign.CENTER;
         _objectiveText.y = _objectiveText.y + 60;
         _objectiveText.text = "Complete objectives by running into them.";
+        _objectiveText.x = FlxG.width/2 - _objectiveText.width/2;
         
         add(_objectiveText);
 
@@ -55,9 +58,6 @@ class InstructionState extends FlxUIState {
         super.update(elapsed);
         FmodManager.Update();
 
-        _movementText.x = FlxG.width/2 - _movementText.width/2;
-        _dodgeText.x = FlxG.width/2 - _dodgeText.width/2;
-        _objectiveText.x = FlxG.width/2 - _objectiveText.width/2;
     }
 
     function clickBack():Void {
