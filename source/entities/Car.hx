@@ -30,20 +30,23 @@ class Car extends FlxSprite {
 		this.slowingDistance = slowingDistance;
 	}
 
-	public function setTarget(target:FlxSprite) {
+	public function setTarget(target:FlxSprite):Car {
 		this.target = target;
+		return this;
 	}
 
-	public function setDestination(destination:FlxPoint) {
+	public function setDestination(destination:FlxPoint):Car {
 		if (destination != null) {
 			this.destinations = [destination];
 		} else {
 			this.destinations = [];
 		}
+		return this;
 	}
 
-	public function setDestinations(destinations:Array<FlxPoint>) {
+	public function setDestinations(destinations:Array<FlxPoint>):Car {
 		this.destinations = destinations;
+		return this;
 	}
 
 	private function moveTowardsTarget(target:FlxPoint) {
@@ -56,8 +59,9 @@ class Car extends FlxSprite {
 	}
 
 	private function moveTowardsDestination(destination:FlxPoint):Bool {
+		var destCopy = new FlxPoint(destination.x, destination.y);
 		var position = getPosition().add(width / 2.0, height / 2.0);
-		var targetOffset = destination.subtract(position.x, position.y);
+		var targetOffset = destCopy.subtract(position.x, position.y);
 		var distance = targetOffset.distanceTo(new FlxPoint(0, 0));
 		if (distance < slowingDistance * 0.1) {
 			velocity.set(0, 0);
@@ -82,8 +86,9 @@ class Car extends FlxSprite {
 	}
 
 	private function moveTowardsDestinationByTurning(destination:FlxPoint) {
+		var destCopy = new FlxPoint(destination.x, destination.y);
 		var position = getPosition().add(width / 2.0, height / 2.0);
-		var targetOffset = destination.subtract(position.x, position.y);
+		var targetOffset = destCopy.subtract(position.x, position.y);
 		var targetAngle = velocity.angleBetween(targetOffset);
 		var angleDif = targetAngle - angle;
 		angle += Math.min(angleDif, maxTurnRadius);
@@ -133,7 +138,7 @@ class Car extends FlxSprite {
 			moveTowardsTarget(target.getPosition().add(target.width / 2.0, target.height / 2.0));
 		} else if (destinations != null && destinations.length > 0) {
 			if (moveTowardsDestination(destinations[0])) {
-				destinations.pop();
+				destinations.shift();
 			}
 		}
 		checkForTargetVisibility();
