@@ -1,5 +1,10 @@
 Notes:
 
-- Sound names must be a single word (no spaces) OR the static variable name needs to have underscores put in using a javascript regex
-- Selected location for fmod script needs to be the source folder, not the root of the project
+- Fix each thing and make it look right in the GMTK2020 game
+
+- For the constants file to be formatted correctly, FMOD Studio event names must be a single word (no spaces) OR the static variable name needs to have underscores put in using a javascript regex
+- Selected location for fmod studio script needs to be the source folder, not the root of the project
 - There are docs for the c++ side, but not for the js side
+- Check if a given reference is currently playing
+- Assign a reference to a given sound (and return error if the reference name is taken)
+- Error strings don't give any context around what call failed

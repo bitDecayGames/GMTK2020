@@ -17,13 +17,16 @@ class MainMenuState extends FlxUIState {
 
     var _txtTitle:FlxText;
 
-    var rain:String;
+    var rainReference:String = FmodSFX.Rain + "-0";
 
     override public function create():Void {
         super.create();
-		FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
-        rain = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
-        FmodManager.RegisterLightning(rain);
+        if (!FmodManager.IsSongPlaying()) {
+            // I know the reference string, so I don't grab it here.
+            FmodManager.PlaySoundWithReference(FmodSFX.Rain);
+        }
+        FmodManager.RegisterLightning(rainReference);
+        FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
 
         FlxG.log.notice("loaded scene");
         bgColor = FlxColor.TRANSPARENT;
@@ -58,7 +61,7 @@ class MainMenuState extends FlxUIState {
         super.update(elapsed);
         FmodManager.Update();
 
-        if (FmodManager.HasLightningStruck(rain) || FlxG.keys.pressed.P) {
+        if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
             FlxG.camera.flash(FlxColor.WHITE, 0.5);
         }
 
