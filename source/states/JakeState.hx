@@ -16,11 +16,12 @@ class JakeState extends FlxState
 
 		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.JakeLevel__json);
 		add(level.walls);
+		add(level.triggers);
 		
 		var player:Player;
 		player = level.player;
 		add(player);
-		
+
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 	}
