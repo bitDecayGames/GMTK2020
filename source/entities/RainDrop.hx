@@ -10,6 +10,7 @@ class RainDrop extends FlxSprite {
 	public var done:RainDrop -> Void;
 	public var parallaxFactor:Float = 150;
 	public var startAltitude:Float;
+	public var splashAltitude:Float = 0;
 	public var fallRate:Float;
 
 	private var altitude:Float;
@@ -49,10 +50,14 @@ class RainDrop extends FlxSprite {
 
 		this.offset.set(drawOffset.x, drawOffset.y);
 		
-		if (altitude <= 0) {
+		if (altitude <= splashAltitude) {
 			kill();
 			done(this);
 		}
+	}
+
+	public function getSplashPoint(p:FlxPoint) {
+		getGraphicMidpoint(p).add(-drawOffset.x, -drawOffset.y);
 	}
 
 	override public function destroy() {

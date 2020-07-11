@@ -13,6 +13,7 @@ import lime.system.System;
 class MainMenuState extends FlxUIState {
     var _btnPlay:FlxButton;
     var _btnCredits:FlxButton;
+    var _btnInstructions:FlxButton;
     var _btnExit:FlxButton;
 
     var _txtTitle:FlxText;
@@ -45,8 +46,13 @@ class MainMenuState extends FlxUIState {
         _btnPlay.updateHitbox();
         add(_btnPlay);
 
+        _btnInstructions = UiHelpers.CreateMenuButton("Instructions", clickInstructions);
+        _btnInstructions.setPosition(FlxG.width/2 - _btnInstructions.width/2, FlxG.height - _btnInstructions.height - 70);
+        _btnInstructions.updateHitbox();
+        add(_btnInstructions);
+
         _btnCredits = UiHelpers.CreateMenuButton("Credits", clickCredits);
-        _btnCredits.setPosition(FlxG.width/2 - _btnCredits.width/2, FlxG.height - _btnCredits.height - 70);
+        _btnCredits.setPosition(FlxG.width/2 - _btnCredits.width/2, FlxG.height - _btnCredits.height - 40);
         _btnCredits.updateHitbox();
         add(_btnCredits);
 
@@ -75,6 +81,10 @@ class MainMenuState extends FlxUIState {
 
     function clickCredits():Void {
         FmodFlxUtilities.TransitionToState(new CreditsState());
+    }
+
+    function clickInstructions():Void{
+        FmodFlxUtilities.TransitionToState(new InstructionState());
     }
 
     #if windows

@@ -15,6 +15,7 @@ class RainDropSplash extends FlxSprite {
 		animation.play("do");
 		animation.finishCallback = (name) -> {
 			if (name == "do") {
+				kill();
 				done(this);
 			}
 		};
@@ -25,6 +26,7 @@ class RainDropSplash extends FlxSprite {
 	}
 
 	public function fullReset(x:Float, y:Float) {
+		revive();
 		setPosition(x, y);
 		angle = 90 * FlxG.random.int(0, 3);
 		animation.play("do");
