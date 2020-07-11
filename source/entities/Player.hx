@@ -31,7 +31,7 @@ class Player extends FlxSprite {
 		// this.playerGroup = playerGroup;
 		// this.hitboxMgr = hitboxMgr;
 
-		loadGraphic(AssetPaths.PlayerImage__JPG, true, 256, 256);
+		loadGraphic(AssetPaths.PlayerImage__png, true);
 
         // an extra -2 on the y to help account for empty space at the bottom of the sprites
         // TODO(JF): hurtbox offsets
