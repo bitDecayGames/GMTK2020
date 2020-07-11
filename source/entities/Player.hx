@@ -18,12 +18,15 @@ class Player extends FlxSprite {
 	var DIVE_MAX_SPEED:Float = 800.0;
 	var DIVE_ACCELERATION:Float = 2000.0;
 	var DIVE_DECELERATION:Float = 10000.0;
+	var DIVE_RECOVERY_TIME:Float = 0.5;
 
 	var control = new Actions();
 
-	var diving = false;
-	var diveDeceling = false;
+	var divingState = NotDiving;
+	var diveRecoveringTime = 0.0;
+
 	var currentSpeed = 0.0;
+
 	var facingAngle = 0.0;
 
 	// ########## FROM BRAWNFIRE ##########
@@ -92,22 +95,18 @@ class Player extends FlxSprite {
 		// hitboxes.update(delta);
 
 		// ########## FROM BRAWNFIRE ##########
-		if (waitForFinish) {
-			return;
-		}
-		if (invincible > 0) {
-			invincible -= delta;
-		}
+		if (waitForFinish) return;
+
+		if (invincible > 0) invincible -= delta;
 		// ########## FROM BRAWNFIRE ##########
 
-		// Diving logic
-		if (diving && diveDeceling) {
-			divingDecel(delta);
-		}
-		else if (diving) {
-			divingAccel(delta);
-		}
-		else {
+		updateMovement(delta);
+	}
+
+	private function updateMovement(delta:Float) {
+		if (diveRecoveringTime > 0) divingRest(delta); 
+
+		if (divingState == NotDiving) {
 			// whether to accelerate or decelerate;
 			var accelerate = false;
 			
@@ -116,8 +115,8 @@ class Player extends FlxSprite {
 			var newAngle:Float = 0;
 			if (control.up.check()) {
 				newFacing = newFacing | FlxObject.UP;
-
 				newAngle = -90;
+
 				if (control.left.check()) {
 					newAngle -= 45;
 					newFacing = newFacing | FlxObject.LEFT;
@@ -127,9 +126,11 @@ class Player extends FlxSprite {
 				}
 
 				accelerate = true;
+
 			} else if (control.down.check()) {
 				newFacing = FlxObject.DOWN;
 				newAngle = 90;
+
 				if (control.left.check()) {
 					newAngle += 45;
 					newFacing = newFacing | FlxObject.LEFT;
@@ -139,11 +140,13 @@ class Player extends FlxSprite {
 				}
 
 				accelerate = true;
+
 			} else if (control.left.check()) {
 				newAngle = 180;
 				newFacing = newFacing | FlxObject.LEFT;
 
 				accelerate = true;
+
 			} else if (control.right.check()) {
 				newAngle = 0;
 				newFacing = newFacing | FlxObject.RIGHT;
@@ -151,33 +154,41 @@ class Player extends FlxSprite {
 				accelerate = true;
 			}
 
-			if (accelerate)
-			{
+			if (accelerate) {
 				facingAngle = newAngle;
 				facing = newFacing;
 
 				// If direction pushed (accelerate) and dive pushed then dive and stop other movement
-				if (control.dive.check())
-				{
-					diving = true;
-				}
-				else if (control.run.check())
-				{
-					// adjust current speed based on WALK_ACCELERATION of time
+				if (control.dive.check() && diveRecoveringTime == 0.0) {
+					divingState = DivingAccel;
+
+				} else if (control.run.check()) {
+					// adjust current speed based on RUN_ACCELERATION of time
 					currentSpeed += delta * RUN_ACCELERATION;
+
 					if (currentSpeed > MAX_RUN_SPEED) currentSpeed = MAX_RUN_SPEED;
-				}
-				else
-				{
+
+				} else {
 					// adjust current speed based on WALK_ACCELERATION of time
 					currentSpeed += delta * WALK_ACCELERATION;
+
 					if (currentSpeed > MAX_WALK_SPEED) currentSpeed = MAX_WALK_SPEED;
 				}
-			}
-			else
-			{
+			} else {
 				currentSpeed -= delta * DECELERATION;
+
 				if (currentSpeed < 0) currentSpeed = 0;
+			}
+		} else {
+			switch divingState {
+				case DivingAccel:
+					divingAccel(delta);
+
+				case DivingDecel:
+					divingDecel(delta);
+
+				default:
+					throw "Diving state not handled. SOMETHING HAS GONE WRONG!! : " + divingState;
 			}
 		}
 
@@ -186,24 +197,31 @@ class Player extends FlxSprite {
 		velocity.rotate(FlxPoint.weak(0, 0), facingAngle);
 	}
 
+
 	private function divingAccel(delta:Float) {
 		currentSpeed += delta * DIVE_ACCELERATION;
 
-		if (currentSpeed > DIVE_MAX_SPEED)
-		{
+		if (currentSpeed > DIVE_MAX_SPEED) {
 			currentSpeed = DIVE_MAX_SPEED;
-			diveDeceling = true;
+			divingState = DivingDecel;
 		}
 	}
 
 	private function divingDecel(delta:Float) {
 		currentSpeed -= delta * DIVE_DECELERATION;
 
-		if (currentSpeed < MAX_RUN_SPEED)
-		{
+		if (currentSpeed < MAX_RUN_SPEED) {
 			currentSpeed = MAX_RUN_SPEED;
-			diveDeceling = false;
-			diving = false;
+			divingState = NotDiving;
+			divingRest(delta);
+		}
+	}
+
+	private function divingRest(delta:Float) {
+		diveRecoveringTime += delta;
+
+		if (diveRecoveringTime > DIVE_RECOVERY_TIME) {
+			diveRecoveringTime = 0.0;
 		}
 	}
 
@@ -264,4 +282,10 @@ class Player extends FlxSprite {
 	// }
 
 	// ########## FROM BRAWNFIRE ##########
+}
+
+enum DiveState {
+	NotDiving;
+	DivingAccel;
+	DivingDecel;
 }
