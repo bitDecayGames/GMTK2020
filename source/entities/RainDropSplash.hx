@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 
 class RainDropSplash extends FlxSprite {
@@ -25,6 +26,7 @@ class RainDropSplash extends FlxSprite {
 
 	public function fullReset(x:Float, y:Float) {
 		setPosition(x, y);
+		angle = 90 * FlxG.random.int(0, 3);
 		animation.play("do");
 	}
 }
