@@ -10,6 +10,8 @@ class Objective extends Trigger{
 
     public function new(desc:String) {
         super();
+        // TODO Remove
+        super.loadGraphic(AssetPaths.ObjectiveIcon__png, true);
         description = desc;
         completed = false;
         register(completeObjective);
