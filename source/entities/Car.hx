@@ -17,7 +17,7 @@ class Car extends FlxSprite {
 	private var slowingDistance:Float;
 	private var foundTarget:Bool;
 
-	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 10, maxTurnRadius:Float = 1, visionRadius:Float = 200,
+	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 100, maxTurnRadius:Float = 1, visionRadius:Float = 200,
 			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		this.maxSpeed = maxSpeed;
@@ -41,6 +41,7 @@ class Car extends FlxSprite {
 		var steering = desiredVelocity.subtract(velocity.x, velocity.y);
 		var steeringNormalized = new FlxVector(steering.x, steering.y).normalize();
 		velocity.add(steeringNormalized.x * maxTurnRadius, steeringNormalized.y * maxTurnRadius);
+		angleToVelocity();
 	}
 
 	private function moveTowardsDestination(destination:FlxPoint) {
@@ -55,17 +56,14 @@ class Car extends FlxSprite {
 			var clippedSpeed = Math.min(rampedSpeed, cruisingMaxSpeed);
 			var desiredVelocity = targetOffset.scale(clippedSpeed / distance);
 			var steering = desiredVelocity.subtract(velocity.x, velocity.y);
-			var steeringNormalized = new FlxVector(steering.x, steering.y).normalize();
-			var steeringDirection = velocity.angleBetween(steeringNormalized);
-			var normalizedVelocity = new FlxVector(velocity.x, velocity.y).normalize();
-			normalizedVelocity.scale(Math.min(steering.distanceTo(new FlxPoint(0, 0)), maxTurnRadius));
-			if (steeringDirection < 0) {
-				velocity.add(-normalizedVelocity.y, normalizedVelocity.x);
-			} else if (steeringDirection > 0) {
-				velocity.add(normalizedVelocity.y, -normalizedVelocity.x);
-			} else {
-				velocity.add(normalizedVelocity.x, normalizedVelocity.y);
-			}
+			velocity.add(steering.x * .5, steering.y * .5);
+		}
+		angleToVelocity();
+	}
+
+	private function angleToVelocity() {
+		if (velocity.x != 0 && velocity.y != 0) {
+			angle = velocity.angleBetween(new FlxPoint(0, 1)) - 180;
 		}
 	}
 
@@ -120,7 +118,7 @@ class Car extends FlxSprite {
 		if (foundTarget && target != null) {
 			moveTowardsTarget(target.getPosition().add(target.width / 2.0, target.height / 2.0));
 		} else if (destination != null) {
-			moveTowardsDestinationByTurning(destination);
+			moveTowardsDestination(destination);
 		}
 		checkForTargetVisibility();
 	}
