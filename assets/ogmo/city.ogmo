@@ -1,0 +1,90 @@
+{
+  "name": "GMTK2020",
+  "ogmoVersion": "3.3.0",
+  "levelPaths": ["."],
+  "backgroundColor": "#282c34ff",
+  "gridColor": "#3c4049cc",
+  "anglesRadians": true,
+  "directoryDepth": 5,
+  "layerGridDefaultSize": {"x": 8, "y": 8},
+  "levelDefaultSize": {"x": 320, "y": 240},
+  "levelMinSize": {"x": 128, "y": 128},
+  "levelMaxSize": {"x": 4096, "y": 4096},
+  "levelValues": [],
+  "defaultExportMode": ".json",
+  "compactExport": false,
+  "externalScript": "",
+  "playCommand": "",
+  "entityTags": [],
+  "layers": [
+    {
+      "definition": "tile",
+      "name": "Ground",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "42242616",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "Test Tiles"
+    },
+    {
+      "definition": "decal",
+      "name": "Foreground",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "42516133",
+      "folder": "..\\images\\decals",
+      "includeImageSequence": true,
+      "scaleable": false,
+      "rotatable": false,
+      "values": []
+    },
+    {
+      "definition": "entity",
+      "name": "Entities",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "42580690",
+      "requiredTags": [],
+      "excludedTags": []
+    }
+  ],
+  "entities": [
+    {
+      "exportID": "42603973",
+      "name": "PlayerSpawn",
+      "limit": -1,
+      "size": {"x": 8, "y": 8},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 8, "y": 8},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": []
+    }
+  ],
+  "tilesets": [
+    {"label": "Test Tiles", "path": "../images/tilesets/tiles.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAICAMAAACvWw2dAAAAAXNSR0IArs4c6QAAAGBQTFRFAAAAIiA0RSg8Zjkxj1Y733Em2aBm7sOa+/I2meVQar4wN5RuS2kvUkskMjw5Pz90MGCCW27hY5v/X83ky9v8////m623hH6HaWpqWVZSdkKKrDIy2Vdj13u6j5dKim8w+2O8zwAAACB0Uk5TAP////////////////////////////////////////+Smq12AAAAUElEQVQYlYXOsQ6AUAhDUVZlqa7V//9NG2jylMW7cgJEuMNdbncxADyn5/kCp4LArSiwqfwAoAHZIHMCb6A35NzwdwKV/qv0X7UADGjQ83wA7WoNtYIoKHwAAAAASUVORK5CYII=", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0}
+  ]
+}

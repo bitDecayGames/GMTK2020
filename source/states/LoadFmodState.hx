@@ -21,7 +21,25 @@ class LoadFmodState extends FlxState {
     }
     override public function update(elapsed:Float):Void {
         if(FmodManager.IsInitialized()){
+            #if logan
+            FlxG.switchState(new LoganState());
+            #elseif tristan
             FlxG.switchState(new SplashScreenState());
+            #elseif luke
+            FlxG.switchState(new SplashScreenState());
+            #elseif tanner
+            FlxG.switchState(new SplashScreenState());
+            #elseif erik
+            FlxG.switchState(new SplashScreenState());
+            #elseif mike
+            FlxG.switchState(new SplashScreenState());
+            #elseif jakef
+            FlxG.switchState(new SplashScreenState());
+            #elseif jakect
+            FlxG.switchState(new SplashScreenState());
+            #else
+            FlxG.switchState(new SplashScreenState());
+            #end
         }
     }
 }
