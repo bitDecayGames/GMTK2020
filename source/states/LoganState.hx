@@ -50,7 +50,7 @@ class LoganState extends FlxState
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		FlxG.camera.pixelPerfectRender = true;
 		
-		notebookHUD = new NotebookHUD();
+		notebookHUD = new NotebookHUD(player);
 		for (o in level.objectiveManager.getObjectives()) {
 			notebookHUD.addObjective(o);
 		}

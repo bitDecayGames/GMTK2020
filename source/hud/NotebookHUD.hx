@@ -1,5 +1,8 @@
 package hud;
 
+import entities.Player;
+import flixel.math.FlxVector;
+import flixel.math.FlxPoint;
 import objectives.Objective;
 import flixel.ui.FlxSpriteButton;
 import flixel.tweens.FlxTween;
@@ -10,20 +13,24 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	private var notebook:FlxSprite;
 	private var button:FlxSpriteButton;
+	private var compass:FlxSprite;
 
 	public var hudVisible:Bool = false;
 
 	public var showTime = 0.2;
 	public var hideTime = 0.2;
 
+	private var player:Player;
 	private var objectives:Array<ObjectiveHUDElement> = [];
+	private var activeObj:Objective;
 
 	private var xPad:Float;
 	private var yPad:Float;
 	private var lineSpacing = 25;
 
-	public function new() {
+	public function new(player:Player) {
 		super();
+		this.player = player;
 		scrollFactor.set(0, 0);
 		button = new FlxSpriteButton(showBook);
 		button.loadGraphic(AssetPaths.noteButton__png);
@@ -40,7 +47,9 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 		notebook.setPosition(xPad, FlxG.height);
 		add(notebook);
 
-		
+		compass = new FlxSprite(AssetPaths.raindrop__png);
+		compass.setPosition(compass.height / 2, FlxG.height - compass.height);
+		add(compass);
 	}
 
 	private function onClick() {
@@ -89,6 +98,8 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 			);
 
 			if (!obj.obj.completed) {
+				var vec:FlxVector = player.getPosition().subtractPoint(obj.obj.getPosition());
+				compass.angle = vec.degrees - 90;
 				// don't render past our first incomplete objective
 				break;
 			}
