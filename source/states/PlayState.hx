@@ -36,6 +36,7 @@ class PlayState extends FlxState {
 
 	var checkpointManager:CheckpointManager;
 	var objectiveManager:ObjectiveManager;
+	var isShaderEnabled:Bool = false;
 	var shader = new LightShader();
 	var filters:Array<BitmapFilter> = [];
 	var level:Level;
@@ -92,8 +93,11 @@ class PlayState extends FlxState {
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 0.1);
 		FlxG.camera.pixelPerfectRender = true;
-		filters.push(new ShaderFilter(shader));
-		FlxG.camera.setFilters(filters);
+
+		if (isShaderEnabled) {
+			filters.push(new ShaderFilter(shader));
+			FlxG.camera.setFilters(filters);
+		}
 		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width / 2 - deadzone.x / 2, FlxG.camera.height / 2 - deadzone.y / 2, deadzone.x, deadzone.y);
@@ -117,7 +121,9 @@ class PlayState extends FlxState {
 		remove(notebookHUD, true);
 		add(notebookHUD);
 
-		updateLightShader();
+		if (isShaderEnabled) {
+			updateLightShader();
+		}
 	}
 
 	override public function onFocusLost() {
