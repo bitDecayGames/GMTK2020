@@ -61,7 +61,7 @@ class Level {
 						triggers.add(checkpoint);
 						return;
 					case "Objective":
-						var objective = objectiveManager.createObjective(entity.values.description);
+						var objective = objectiveManager.createObjective(entity.values.description, entity.values.index);
 						objective.x = entity.x;
 						objective.y = entity.y;
 						triggers.add(objective);
@@ -71,6 +71,10 @@ class Level {
 				}
 			}, "Entities");
 
+			var objectives = objectiveManager.getObjectives();
+			objectives.sort(ObjectiveManager.compare);
+			objectiveManager.setupObjectives();
+						
 			map.loadEntities(function loadEntity(entity:EntityData)
 				{
 					switch (entity.name)
@@ -86,13 +90,13 @@ class Level {
 					}
 				}, "Objects");
 
-		map.loadEntities((entity : EntityData) -> {
-			if (entity.name == "CarSpawn") {
-				var carPath:Array<FlxPoint> = entity.nodes.map((n) -> FlxPoint.get(n.x, n.y));
-				var carSpawn = new CarSpawner(entity.x, entity.y, carPath);
-				carSpawners.push(carSpawn);
-			}
-		}, "CarPaths");
+			map.loadEntities((entity : EntityData) -> {
+				if (entity.name == "CarSpawn") {
+					var carPath:Array<FlxPoint> = entity.nodes.map((n) -> FlxPoint.get(n.x, n.y));
+					var carSpawn = new CarSpawner(entity.x, entity.y, carPath);
+					carSpawners.push(carSpawn);
+				}
+			}, "CarPaths");
 	}
 
 	public function spawnCar() {
