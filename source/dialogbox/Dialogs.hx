@@ -3,7 +3,7 @@ package dialogbox;
 class Dialogs {
     var ArraytextList = ["Ugh its raining... and its cold...", "Gotta get some cigs"];
     public static var DialogArray:Array<Array<String>> = [
-        ["Move: WSAD/Arrow Keys", "Run: Shift", "Dive roll: Z/Space - You can dive over cars.", "Ugh its raining... and its cold...", "Gotta get some cigs.", "The compass points to your next objective.", "Click the book at bottom right to view all objectives.", "You have 3 hitpoints."],
+        ["Move: WSAD/Arrow Keys", "Run: Shift", "Dive roll: Z/Space - You can dive through cars.", "Ugh its raining... and its cold...", "Gotta get some cigs.", "The compass points to your next objective.", "Click the book at bottom right to view all objectives.", "You have 3 hitpoints."],
         ["Wait, I need a mask to shop here? Ok... I think Tony has one on the south side of town."],
         ["Great, a rainy mask.", "Feels like a wet diaper is on my face...", "Anything for a smoke I guess."],
         ["Ah! Finally some peace. Maybe Tillies has a good show tonight."],

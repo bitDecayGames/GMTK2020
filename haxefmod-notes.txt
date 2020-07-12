@@ -14,3 +14,4 @@ Notes:
 - Add ability to pause and resume a sound
 - Typewriter text doesn't stop on windows, but does on html5
 - Proximity volume
+- Make a "stop all sounds" button

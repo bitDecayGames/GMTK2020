@@ -43,4 +43,9 @@ class DialogManager {
 		typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
 		parentState.add(typeText);
     }
+
+    public function stopSounds() {
+		FmodManager.StopSoundImmediately(soundId);
+    }
+
 }

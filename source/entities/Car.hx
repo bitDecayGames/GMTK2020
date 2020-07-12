@@ -218,6 +218,11 @@ class Car extends FlxSprite {
 			FlxG.state.add(deadCar);
 		}
 	}
+
+	override function destroy() {
+		super.destroy();
+		FmodManager.StopSoundImmediately(engineReference);
+	}
 }
 
 class DeadCar extends FlxSprite {

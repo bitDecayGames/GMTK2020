@@ -43,6 +43,11 @@ class PlayState extends FlxState {
 
 	var dialogManager:dialogbox.DialogManager;
 
+	override public function switchTo(nextState:FlxState):Bool {
+		dialogManager.stopSounds();
+		return super.switchTo(nextState);
+	}
+
 	override public function create() {
 		Bitlytics.Instance().Queue(Common.GameStarted, 1);
 		FmodManager.PlaySong(FmodSongs.MainGame);
