@@ -67,7 +67,6 @@ class CollisionManager extends FlxBasic {
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
-		trace("Car collided with wall");
 		_car.kill();
 	}
 }
