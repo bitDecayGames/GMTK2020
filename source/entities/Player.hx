@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxState;
 import flixel.FlxBasic;
 import haxe.macro.Expr.Case;
 import openfl.Assets;
@@ -29,8 +30,12 @@ class Player extends FlxSprite {
 	var DIVE_RECOVERY_TIME:Float = 0.5;
 	// BONK
 	var BONK_MAX_SPEED = 75.0;
+	var BONK_CAR_MAX_SPEED = 500.0;
 	var BONK_DECELERATION = 150.0;
+	var BONK_CAR_DECELERATION = 500.0;
 	var BONK_MAX_TIME:Float = 1;
+	// INVINCIBLE
+	var INVINCIBLE_MAX_TIME = 1.0;
 
 	var control = new Actions();
 
@@ -38,6 +43,7 @@ class Player extends FlxSprite {
 	var diveRecoveringTime = 0.0;
 
 	var bonked = false;
+	var bonkedByCar = false;
 	var bonkTime = 0.0;
 
 	var currentSpeed = 0.0;
@@ -52,8 +58,6 @@ class Player extends FlxSprite {
 	var inControl = false;
 
 	var waitForFinish = false;
-	var invincible = 0.0;
-	var _invincibleMaxTime = 1.0;
 
     // TODO(JF) Hurt box crap
 	var hurtboxSize = new FlxPoint(24, 24);
@@ -61,14 +65,17 @@ class Player extends FlxSprite {
 
 	public var groundType = "grass";
 
-	public var blood = new Blood();
+	var blood:Blood = new Blood();
+
+	public var state:FlxState;
 
 	// ########## FROM BRAWNFIRE ##########
 
     // TODO(JF): Potentially add based on brawnfire
 	// public function new(playerGroup:PlayerGroup, hitboxMgr:HitboxManager) {
     public function new(x:Float = 0, y:Float = 0) {
-        super(x, y);
+		super(x, y);
+
         // TODO(JF): Potentially add based on brawnfire
 		// this.playerGroup = playerGroup;
 		// this.hitboxMgr = hitboxMgr;
@@ -152,8 +159,8 @@ class Player extends FlxSprite {
 	// 	hitboxes.finishAnimation();
 	// }
 
-	public function extras():Array<FlxBasic> {
-		return [blood];
+	public function setState(_state:FlxState) {
+		state = _state;
 	}
 
 	override public function update(delta:Float):Void {
@@ -164,20 +171,10 @@ class Player extends FlxSprite {
 
 		// ########## FROM BRAWNFIRE ##########
 		if (waitForFinish) return;
-
-		if (invincible > 0) invincible -= delta;
 		// ########## FROM BRAWNFIRE ##########
 
 		updateMovement(delta);
 		// trace('Player (x,y): (${this.x},${this.y}');
-
-		blood.setPosition(this.x, this.y);
-
-		if (FlxG.keys.justPressed.T) {
-			var middle = getMidpoint();
-			blood.setPosition(middle.x, middle.y);
-			blood.blast(90);
-		}
 	}
 
 	private function updateMovement(delta:Float) {
@@ -295,8 +292,19 @@ class Player extends FlxSprite {
 
 		// Sprite angle is pointing up which is 90 degrees off
 		angle = facingAngle + 90;
+
+		attemptDeath();
 	}
 
+	public function isBonked() {
+		if (bonked) return true;
+		return false;
+	}
+
+	public function isDiving() {
+		if (divingState != NotDiving) return true;
+		return false;
+	}
 
 	private function divingAccel(delta:Float) {
 		currentSpeed += delta * DIVE_ACCELERATION;
@@ -337,18 +345,38 @@ class Player extends FlxSprite {
 		}
 	}
 
+	public function hitByCar() {
+		bonked = true;
+		bonkedByCar = true;
+		blood.destroy();
+		blood = new Blood();
+		blood.setPosition(this.x, this.y);
+		state.add(blood);
+		blood.blast((facingAngle + 180) % 360);
+		health -= 1;
+	}
+
 	private function bonking(delta:Float){
 		if (bonkTime == 0.0) {
 			bonkTime += delta;
 
-			currentSpeed = BONK_MAX_SPEED;
-
+			if (bonkedByCar) {
+				currentSpeed = BONK_CAR_MAX_SPEED;
+			} else {
+				currentSpeed = BONK_MAX_SPEED;
+			}
+			
 			animation.play("bonked");
 		}
 		else {
 			bonkTime += delta;
-			currentSpeed -= delta * BONK_DECELERATION;
 
+			if (bonkedByCar) {
+				currentSpeed -= delta * BONK_CAR_DECELERATION;
+			} else {
+				currentSpeed -= delta * BONK_DECELERATION;
+			}
+			
 			if (currentSpeed < 0) {
 				currentSpeed = 0;
 			}
@@ -363,6 +391,13 @@ class Player extends FlxSprite {
 			currentSpeed = 0;
 			bonkTime = 0.0;
 			bonked = false;
+			bonkedByCar = false;
+		}
+	}
+
+	private function attemptDeath() {
+		if (health <= 0) {
+
 		}
 	}
 
