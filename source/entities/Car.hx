@@ -74,7 +74,7 @@ class Car extends FlxSprite {
 		} else {
 			speedUp(-3);
 		}
-		clampToSpeed(maxSpeed * .8);
+		clampToSpeed(!foundTarget ? maxSpeed * .8 : maxSpeed);
 		return targetOffset.length < slowingDistance * 0.1;
 	}
 
