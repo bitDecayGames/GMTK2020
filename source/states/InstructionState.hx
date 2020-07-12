@@ -38,7 +38,7 @@ class InstructionState extends FlxUIState {
         _runText.size = 20;
         _runText.alignment = FlxTextAlign.CENTER;
         _runText.y = _movementText.y + 30;
-        _runText.text = "Dodge using the space key";
+        _runText.text = "Dodge using the space or z key";
         _runText.x = FlxG.width/2 - _runText.width/2;
         add(_runText);
 
