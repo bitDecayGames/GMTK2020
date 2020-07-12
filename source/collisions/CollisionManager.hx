@@ -32,7 +32,7 @@ class CollisionManager extends FlxBasic {
 		FlxG.collide(level.player, level.walls, handlerPlayerBonk);
 
 		for(hydrant in level.hydrants){
-			FlxG.collide(hydrant, level.player);
+			FlxG.collide(level.player, hydrant);
 		}
 
 		for (car in level.cars) {
@@ -64,7 +64,7 @@ class CollisionManager extends FlxBasic {
 	}
 	
 	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant){
-		_hydrant.destroy();
+		_hydrant.asplode();
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
