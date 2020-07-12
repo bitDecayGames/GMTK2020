@@ -15,10 +15,28 @@ class ObjectiveManager{
         return objectives;
     }
 
-    public function createObjective(desc:String):Trigger  {
-        var objective = new Objective(desc);
+    public function createObjective(desc:String, index:Int):Trigger  {
+        var objective = new Objective(this, desc, index);
         objectives.push(objective);
         return objective;
     }
 
+    public static function compare(a:Objective, b:Objective):Int {
+        return a.index - b.index;
+    }
+
+    public function setupObjectives(){
+        for(o in objectives)
+            if(o.index != 1)
+                o.kill();
+    }
+
+    public function moveOn(){
+        for(o in objectives){
+            if(!o.completed){
+                o.revive();
+                return;
+            }
+        }
+    }
 }

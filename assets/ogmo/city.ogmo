@@ -157,7 +157,7 @@
       "exportID": "49689277",
       "name": "Objective",
       "limit": -1,
-      "size": {"x": 16, "y": 16},
+      "size": {"x": 40, "y": 40},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -174,7 +174,7 @@
       "color": "#004dffff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {"x": 40, "y": 40},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -188,7 +188,8 @@
       "nodeGhost": true,
       "tags": [],
       "values": [
-        {"name": "description", "definition": "String", "defaults": "", "maxLength": 255, "trimWhitespace": true}
+        {"name": "description", "definition": "String", "defaults": "", "maxLength": 255, "trimWhitespace": true},
+        {"name": "index", "definition": "Integer", "defaults": 0, "bounded": false, "min": 0, "max": 100}
       ],
       "texture": "../images/ObjectiveIcon.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAe0lEQVR42u3WQQqAQAhA0ekC3dD7X6B90aZFUuSMOhL/g0vhgRtbo7j25LHhlm1NHSvyWoyuNFBEuoEK6X3SUVwo0gsXgvTGuSKjcC7IaNwQMgvXhczGmZCzcJ+Qs3GvyCo4hTxh1XCP308lnEJWxN2fXCIiIiIiol90AFFAxaOlD1baAAAAAElFTkSuQmCC"

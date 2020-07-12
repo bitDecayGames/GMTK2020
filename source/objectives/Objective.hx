@@ -6,14 +6,18 @@ import flixel.math.FlxPoint;
 
 class Objective extends Trigger{
     var description:String;
-    var completed:Bool;
+    public var completed:Bool;
+    public var index:Int;
+    var objectiveManager:ObjectiveManager;
 
-    public function new(desc:String) {
+    public function new(_objManager:ObjectiveManager, desc:String, _index:Int) {
         super();
         // TODO Remove
         super.loadGraphic(AssetPaths.ObjectiveIcon__png, true);
+        objectiveManager = _objManager;
         description = desc;
         completed = false;
+        index = _index;
         register(completeObjective);
     }
 
@@ -27,5 +31,11 @@ class Objective extends Trigger{
 
     private function completeObjective(spr:FlxSprite){
         completed = true;
+    }
+
+    override function activate() {
+        super.activate();
+        completed = true;
+        objectiveManager.moveOn();
     }
 }
