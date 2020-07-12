@@ -1,5 +1,7 @@
 package entities;
 
+import fx.Blood;
+import flixel.FlxBasic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxVector;
@@ -17,11 +19,16 @@ class Car extends FlxSprite {
 	private var visionRadius:Float;
 	private var slowingDistance:Float;
 	private var foundTarget:Bool;
+	private var naturalDeath:Bool = false;
+	private var bloodEmitter:Blood;
 
 	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
-		// origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
+		width *= .8;
+		height = width;
+		origin.x = width / 2.0;
+		origin.y = height / 2.0;
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
 		if (destination != null) {
@@ -48,6 +55,29 @@ class Car extends FlxSprite {
 	public function setDestinations(destinations:Array<FlxPoint>):Car {
 		this.destinations = destinations;
 		return this;
+	}
+
+	public function snapAngleTowardsDestination() {
+		if (destinations != null && destinations.length > 0) {
+			var destination = destinations[0];
+			var destCopy = new FlxVector(destination.x, destination.y);
+			var position = getPosition().add(width / 2.0, height / 2.0);
+			var targetOffset = destCopy.subtract(position.x, position.y);
+			var targetAngle = FlxPoint.get(0, 1).angleBetween(targetOffset);
+			var angleDif = targetAngle - angle;
+			if (Math.abs(angleDif) > Math.abs(targetAngle + 360 - angle)) {
+				angleDif = targetAngle + 360 - angle;
+			} else if (Math.abs(angleDif) > Math.abs(targetAngle - 360 - angle)) {
+				angleDif = targetAngle - 360 - angle;
+			}
+			angle = angleDif;
+			if (angle > 180) {
+				angle -= 360;
+			} else if (angle < -180) {
+				angle += 360;
+			}
+			velocityToAngle();
+		}
 	}
 
 	private function moveTowardsDestinationByTurning(destination:FlxPoint):Bool {
@@ -126,6 +156,10 @@ class Car extends FlxSprite {
 		} else if (destinations != null && destinations.length > 0) {
 			if (moveTowardsDestinationByTurning(destinations[0])) {
 				destinations.shift();
+				if (destinations.length == 0) {
+					naturalDeath = true;
+					kill();
+				}
 			}
 		}
 		checkForTargetVisibility();
@@ -133,22 +167,43 @@ class Car extends FlxSprite {
 
 	override function kill() {
 		super.kill();
-		// TODO: FX car explosion
-		// TODO: spawn car explosion
-		FlxG.state.add(new DeadCar(x, y, angle));
+		if (!naturalDeath) {
+			// TODO: FX car explosion
+
+			var bloodEmitter = new Blood();
+			var middle = getMidpoint();
+			bloodEmitter.setPosition(middle.x, middle.y);
+			FlxG.state.add(bloodEmitter);
+			bloodEmitter.blast(angle - 90);
+
+			var deadCar = new DeadCar(x, y, angle, bloodEmitter);
+			deadCar.width = width;
+			deadCar.height = height;
+			deadCar.origin.set(origin.x, origin.y);
+			FlxG.state.add(deadCar);
+		}
 	}
 }
 
 class DeadCar extends FlxSprite {
-	public function new(x:Float, y:Float, angle:Float) {
+	private var bloodEmitter:Blood;
+
+	public function new(x:Float, y:Float, angle:Float, bloodEmitter:Blood) {
 		super(x, y, AssetPaths.car1__png);
 		this.angle = angle;
 		health = 3; // 3 seconds to live
+		this.bloodEmitter = bloodEmitter;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		hurt(elapsed);
+		alpha = health / 3.0;
+	}
+
+	override function kill() {
+		super.kill();
+		bloodEmitter.kill();
 	}
 }
 
@@ -162,6 +217,7 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		this.x = x;
 		this.y = y;
 		this.carPath = carPath;
+		// TODO: MW remove this debug sprite
 		var debugSprite = new FlxSprite(x, y);
 		debugSprite.makeGraphic(20, 20);
 		add(debugSprite);
@@ -175,6 +231,7 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		var car = new Car(x, y);
 		var carPathCopy = carPath.map((p) -> p);
 		car.setDestinations(carPathCopy);
+		car.snapAngleTowardsDestination();
 		add(car);
 		return car;
 	}
