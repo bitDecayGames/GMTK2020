@@ -107,5 +107,6 @@ class PlayState extends FlxState
 		dialogManager.update();
 
 		super.update(elapsed);
+		level.update(elapsed);
 	}
 }
