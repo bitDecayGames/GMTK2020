@@ -50,7 +50,7 @@ class Player extends FlxSprite {
 	var hurtboxSize = new FlxPoint(24, 24);
 	// var hitboxes:AttackHitboxes;
 
-	public var groundType = "Grass";
+	public var groundType = "grass";
 
 	// ########## FROM BRAWNFIRE ##########
 
@@ -80,11 +80,27 @@ class Player extends FlxSprite {
 				case "idle":
 				case "walk":
 					if (frameNumber == 2 || frameNumber == 6) {
-						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+						switch groundType {
+							case "grass":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+							case "concrete":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+							case "metal":
+							default:
+								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
+						}
 					}
 				case "run":
 					if (frameNumber == 0 || frameNumber == 2) {
-						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+						switch groundType {
+							case "grass":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+							case "concrete":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+							case "metal":
+							default:
+								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
+						}
 					}
 				case "divingAccel":
 					if (frameNumber == 0) {
