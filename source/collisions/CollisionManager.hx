@@ -1,5 +1,6 @@
 package collisions;
 
+import flixel.math.FlxPoint;
 import entities.Player;
 import trigger.Trigger;
 import flixel.FlxG;
@@ -26,9 +27,16 @@ class CollisionManager extends FlxBasic {
 		super.update(elapsed);
 
 		FlxG.collide(level.player, level.walls);
+		for(car in level.cars){
+			FlxG.collide(car, level.walls);
+		}
 
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);
+	}
+
+	public function isRoof(p:FlxPoint):Bool {
+		return level.walls.overlapsPoint(p);
 	}
 
 	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {

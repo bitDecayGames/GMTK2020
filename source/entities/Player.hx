@@ -47,10 +47,10 @@ class Player extends FlxSprite {
 	var _invincibleMaxTime = 1.0;
 
     // TODO(JF) Hurt box crap
-	var hurtboxSize = new FlxPoint(20, 4);
+	var hurtboxSize = new FlxPoint(24, 24);
 	// var hitboxes:AttackHitboxes;
 
-	public var groundType = "Grass";
+	public var groundType = "grass";
 
 	// ########## FROM BRAWNFIRE ##########
 
@@ -66,8 +66,8 @@ class Player extends FlxSprite {
 
         // an extra -2 on the y to help account for empty space at the bottom of the sprites
         // TODO(JF): hurtbox offsets
-		// offset.set(width / 2 - hurtboxSize.x / 2, height - hurtboxSize.y - 2);
-		// setSize(hurtboxSize.x, hurtboxSize.y);
+		offset.set(width / 2 - hurtboxSize.x / 2, height / 2 - hurtboxSize.y / 2);
+		setSize(hurtboxSize.x, hurtboxSize.y);
 
 		animation.add("idle", [0], 5);
 		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
@@ -80,11 +80,27 @@ class Player extends FlxSprite {
 				case "idle":
 				case "walk":
 					if (frameNumber == 2 || frameNumber == 6) {
-						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+						switch groundType {
+							case "grass":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+							case "concrete":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+							case "metal":
+							default:
+								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
+						}
 					}
 				case "run":
 					if (frameNumber == 0 || frameNumber == 2) {
-						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+						switch groundType {
+							case "grass":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+							case "concrete":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+							case "metal":
+							default:
+								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
+						}
 					}
 				case "divingAccel":
 					if (frameNumber == 0) {
