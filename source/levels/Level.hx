@@ -21,7 +21,7 @@ class Level {
 	public var objectiveManager:ObjectiveManager; 
 
 	public function new(map:FlxOgmo3Loader) {
-		//background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
+		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
 		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
 		groundType.setTileProperties(1, FlxObject.ANY, (a,b)->{ player.groundType = "concrete";});

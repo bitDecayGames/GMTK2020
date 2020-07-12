@@ -34,7 +34,7 @@ class LukeState extends FlxState
 		FlxG.debugger.drawDebug = true;
 		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
 		add(level.walls);
-		//add(level.background);
+		add(level.background);
 		
 		var player:Player;
 		player = level.player;
