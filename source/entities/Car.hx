@@ -225,10 +225,10 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		this.x = x;
 		this.y = y;
 		this.carPath = carPath;
-		// TODO: MW remove this debug sprite
-		var debugSprite = new FlxSprite(x, y);
-		debugSprite.makeGraphic(20, 20);
-		add(debugSprite);
+		// remove this debug sprite
+		// var debugSprite = new FlxSprite(x, y);
+		// debugSprite.makeGraphic(20, 20);
+		// add(debugSprite);
 	}
 
 	override function update(elapsed:Float) {
