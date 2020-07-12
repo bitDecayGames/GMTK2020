@@ -1,5 +1,6 @@
 package entities;
 
+import collisions.CollisionManager;
 import flixel.math.FlxPoint;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.FlxG;
@@ -11,7 +12,9 @@ import flixel.util.FlxPool;
 class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 	private var rainPool:FlxPool<RainDrop>;
 	private var splashPool:FlxPool<RainDropSplash>;
+
 	private var cam:FlxCamera;
+	private var collisions:CollisionManager;
 
 	private var spawnBuffer:Float = 200;
 
@@ -20,9 +23,16 @@ class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 
 	private var tempPos = FlxPoint.get();
 
-	public function new(cam:FlxCamera, rate:Int = 200) {
+	public var parallaxFactor = 100;
+	public var startAltitude = 200;
+	public var fallRate = 500;
+	public var roofHeight = 150;
+
+	public function new(cam:FlxCamera, collisions:CollisionManager, rate:Int = 200) {
 		super();
 		this.cam = cam;
+		this.collisions = collisions;
+
 		this.rate = rate;
 		rainPool = new FlxPool<RainDrop>(RainDrop);
 		rainPool.preAllocate(100);
@@ -41,14 +51,20 @@ class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 			drop = rainPool.get();
 			drop.fullReset();
 			drop.setCamera(cam);
-			drop.parallaxFactor = 100;
-			drop.startAltitude = 200;
-			drop.splashAltitude = 0;
-			drop.fallRate = 500;
+			drop.parallaxFactor = parallaxFactor;
+			drop.startAltitude = startAltitude;
+			drop.fallRate = fallRate;
 			drop.done = returnDrop;
 
 			drop.x = cam.x + cam.scroll.x + FlxG.random.float(-spawnBuffer, cam.width + spawnBuffer);
 			drop.y = cam.y + cam.scroll.y + FlxG.random.float(-spawnBuffer, cam.height + spawnBuffer);
+
+			if (collisions.isRoof(drop.getGroundImpactPoint(tempPos))) {
+				drop.splashAltitude = roofHeight;
+			} else {
+				drop.splashAltitude = 0;
+			}
+
 			add(drop);
 		}
 
@@ -59,6 +75,10 @@ class RainMaker extends FlxTypedSpriteGroup<FlxSprite> {
 		var splash = splashPool.get();
 		drop.getSplashPoint(tempPos);
 		splash.fullReset(tempPos.x, tempPos.y);
+
+		var scale = 1 + (drop.splashAltitude/startAltitude);
+		splash.scale.set(scale, scale);
+
 		splash.done = returnSplash;
 		add(splash);
 

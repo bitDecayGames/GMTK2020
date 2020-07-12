@@ -15,7 +15,7 @@
   "compactExport": false,
   "externalScript": "",
   "playCommand": "",
-  "entityTags": [],
+  "entityTags": ["car"],
   "layers": [
     {
       "definition": "decal",
@@ -70,6 +70,14 @@
       "exportMode": 0,
       "arrayMode": 0,
       "defaultTileset": "Test Tiles"
+      },
+      {
+      "definition": "entity",
+      "name": "CarPaths",
+      "gridSize": {"x": 100, "y": 100},
+      "exportID": "52064963",
+      "requiredTags": ["car"],
+      "excludedTags": []
     }
   ],
   "entities": [
@@ -222,6 +230,42 @@
       "values": [],
       "texture": "../images/objects/Hydrant.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAe0lEQVR42oWRgQ3AIAgEmcgx3IIt3IItXNTmTb55iLYkX429h681KzXnXCr7qohY7p6Es1+4tZbWZOJo7aiR9ByrEWBHhRSEeu/ZAKkZAGNhvw14jDFeiB0JHA2QxgBEKbwNLEao18opx6ulSXWF9X9A+K4U4VZ1Qn3/AHdS06tbUNFhAAAAAElFTkSuQmCC"
+    },
+    {
+      "exportID": "52070682",
+      "name": "CarSpawn",
+      "limit": -1,
+      "size": {"x": 100, "y": 100},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#0038ffff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 100, "y": 100},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": true,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": ["car"],
+      "values": []
     }
   ],
   "tilesets": [

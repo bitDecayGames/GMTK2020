@@ -57,6 +57,8 @@ class LukeState extends FlxState
 		for(hydrant in level.hydrants)
 			add(hydrant);
 
+		var collisions = new CollisionManager(this);
+		collisions.setLevel(level);
 		
 		var x = 500.0;
 		var y = 200.0;
@@ -74,8 +76,6 @@ class LukeState extends FlxState
 		FlxG.camera.zoom = 0.5;
 		//needed to correctly create collision data for things off camera
 		FlxG.worldBounds.set(0,0,2000,2000);
-		var collisions = new CollisionManager(this);
-		collisions.setLevel(level);
 	}
 	
 }

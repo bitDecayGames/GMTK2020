@@ -56,6 +56,10 @@ class RainDrop extends FlxSprite {
 		}
 	}
 
+	public function getGroundImpactPoint(p:FlxPoint):FlxPoint {
+		return getGraphicMidpoint(p);
+	}
+
 	public function getSplashPoint(p:FlxPoint) {
 		getGraphicMidpoint(p).add(-drawOffset.x, -drawOffset.y);
 	}
