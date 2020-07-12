@@ -28,7 +28,7 @@ class InstructionState extends FlxUIState {
         _movementText.setPosition(FlxG.width/2, FlxG.height/4);
         _movementText.size = 20;
         _movementText.alignment = FlxTextAlign.CENTER;
-        _movementText.text = "Move with WASD or Arrow keys";
+        _movementText.text = "Move with WASD or Arrow keys.";
         _movementText.x = FlxG.width/2 - _movementText.width/2;
 
         add(_movementText);
@@ -38,7 +38,7 @@ class InstructionState extends FlxUIState {
         _runText.size = 20;
         _runText.alignment = FlxTextAlign.CENTER;
         _runText.y = _movementText.y + 30;
-        _runText.text = "Dodge using the space or z key";
+        _runText.text = "Dodge using the SPACE or Z keys.";
         _runText.x = FlxG.width/2 - _runText.width/2;
         add(_runText);
 
@@ -47,7 +47,7 @@ class InstructionState extends FlxUIState {
         _dodgeText.size = 20;
         _dodgeText.alignment = FlxTextAlign.CENTER;
         _dodgeText.y = _runText.y + 30;
-        _dodgeText.text = "Run using the shift key";
+        _dodgeText.text = "Run using the SHIFT key.";
         _dodgeText.x = FlxG.width/2 - _dodgeText.width/2;
         
         add(_dodgeText);
@@ -57,7 +57,7 @@ class InstructionState extends FlxUIState {
         _objectiveText.size = 20;
         _objectiveText.alignment = FlxTextAlign.CENTER;
         _objectiveText.y = _dodgeText.y + 30;
-        _objectiveText.text = "Complete objectives by running into them";
+        _objectiveText.text = "Complete objectives by running into them.";
         _objectiveText.x = FlxG.width/2 - _objectiveText.width/2;
         
         add(_objectiveText);
