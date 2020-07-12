@@ -16,6 +16,7 @@ class FmodSFX {
     public static inline var Dive:String = "event:/SFX/Dive/Dive";
     public static inline var DiveBonk:String = "event:/SFX/Dive/DiveBonk";
     public static inline var DiveLand:String = "event:/SFX/Dive/DiveLand";
+    public static inline var EngineIdle:String = "event:/SFX/EngineIdle/EngineIdle";
     public static inline var FootstepConcrete:String = "event:/SFX/Footsteps/FootstepConcrete";
     public static inline var FootstepConcreteRun:String = "event:/SFX/Footsteps/FootstepConcreteRun";
     public static inline var FootstepGrass:String = "event:/SFX/Footsteps/FootstepGrass";

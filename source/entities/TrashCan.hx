@@ -9,7 +9,7 @@ class TrashCan extends FlxSprite{
     public function new()
     {
         super();
-        super.loadGraphic(AssetPaths.trashCanPaticle__png, true);
+        super.loadGraphic(AssetPaths.Trashcan__png, true);
         this.immovable = true;
     }
 
