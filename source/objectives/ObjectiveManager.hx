@@ -48,8 +48,6 @@ class ObjectiveManager{
     public function moveOn(){
         ObjectiveManager.hackObjectivesComplete = 0;
         for(o in objectives){
-            ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
-
             if(!o.completed){
                 var lastCompleted = o.index-1;
                 if (lastCompleted > lastReportedMissionComplete) {
@@ -60,6 +58,8 @@ class ObjectiveManager{
                 dialogManager.loadDialog(o.index-1);
                 return;
             }
+
+            ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
         }
 
         FmodFlxUtilities.TransitionToState(new VictoryState());
