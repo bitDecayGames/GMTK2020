@@ -1,5 +1,6 @@
 package states;
 
+import dialogbox.DialogManager;
 import com.bitdecay.analytics.Common;
 import com.bitdecay.analytics.Bitlytics;
 import hud.NotebookHUD;
@@ -38,6 +39,8 @@ class PlayState extends FlxState
 	var shader = new LightShader(); 
 	var filters:Array<BitmapFilter> = [];
 	var level:Level;
+
+	var dialogManager:dialogbox.DialogManager;
 
 	override public function create()
 	{
@@ -83,6 +86,9 @@ class PlayState extends FlxState
 
 		var rain = new RainMaker(camera, collisions, 250);
 		add(rain);
+
+		dialogManager = new DialogManager(this);
+		objectiveManager.setDialogManager(dialogManager);
 
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
