@@ -26,7 +26,6 @@ class Car extends FlxSprite {
 		height = width;
 		origin.x = width / 2.0;
 		origin.y = height / 2.0;
-		// origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
 		if (destination != null) {
