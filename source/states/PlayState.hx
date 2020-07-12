@@ -98,5 +98,6 @@ class PlayState extends FlxState
 		}
 
 		super.update(elapsed);
+		level.update(elapsed);
 	}
 }
