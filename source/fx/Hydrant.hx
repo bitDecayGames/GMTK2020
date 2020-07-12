@@ -23,6 +23,5 @@ class Hydrant extends FlxEmitter {
 
 		this.angle.set(angle - 15, angle - 15, angle + 75, angle + 75);
 		this.start(true, 0, 1);
-		trace("Hydrant emitting now");
 	}
 }

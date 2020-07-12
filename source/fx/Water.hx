@@ -21,7 +21,6 @@ class Water extends FlxEmitter {
 
 		this.angle.set(randomAngle(), randomAngle(), randomAngle(), randomAngle());
 		this.start(true, 0, 0);
-		trace("Water emitting now");
 	}
 
 	private function randomAngle() {
