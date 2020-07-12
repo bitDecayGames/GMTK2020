@@ -5,11 +5,11 @@ import flixel.math.FlxVector;
 import flixel.effects.particles.FlxEmitter;
 import flixel.effects.particles.FlxParticle;
 
-class Hydrant extends FlxEmitter {
+class TrashCan extends FlxEmitter {
 
 	public function new() {
 		super();
-		loadParticles(AssetPaths.Hydrant__png, true);
+		loadParticles(AssetPaths.trashCanPaticle__png, true);
 		
 		this.lifespan.set(0.2,0.5);
 		launchMode = CIRCLE;
