@@ -170,8 +170,8 @@ class Car extends FlxSprite {
 		if (!naturalDeath) {
 			// TODO: FX car explosion
 
-			var bloodEmitter = new Blood();
 			var middle = getMidpoint();
+			var bloodEmitter = new Blood();
 			bloodEmitter.setPosition(middle.x, middle.y);
 			FlxG.state.add(bloodEmitter);
 			bloodEmitter.blast(angle - 90);
