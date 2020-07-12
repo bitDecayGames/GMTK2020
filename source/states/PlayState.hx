@@ -84,7 +84,7 @@ class PlayState extends FlxState
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 
-		var rain = new RainMaker(camera, collisions, 250);
+		var rain = new RainMaker(camera, collisions, 500);
 		add(rain);
 
 		dialogManager = new DialogManager(this);
@@ -112,6 +112,9 @@ class PlayState extends FlxState
 
 		super.update(elapsed);
 		level.update(elapsed);
+
+		remove(notebookHUD,true);
+		add(notebookHUD);
 	}
 
 	override public function onFocusLost() {
