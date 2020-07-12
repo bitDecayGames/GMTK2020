@@ -63,7 +63,7 @@ class CreditsState extends FlxUIState {
         creditsTextVerticalOffset = FlxG.height;
 
         for (flxText in _txtCreator) {
-            flxText.setPosition(FlxG.width - 250, creditsTextVerticalOffset);
+            flxText.setPosition(0, creditsTextVerticalOffset);
             creditsTextVerticalOffset += 25;
         } 
 
@@ -115,9 +115,9 @@ class CreditsState extends FlxUIState {
             // Make an offset entry for the roles array
             finalRoleArray.push(new FlxText());
 
-            var creatorText = new FlxText();
-            creatorText.size = 15;
-            creatorText.text = creator;
+            var creatorText = new FlxText(0, 0, FlxG.width, creator, 15);
+            creatorText.autoSize = false;
+            creatorText.alignment = FlxTextAlign.RIGHT;
             add(creatorText);
             finalCreatorsArray.push(creatorText);
             _allCreditElements.push(creatorText);
