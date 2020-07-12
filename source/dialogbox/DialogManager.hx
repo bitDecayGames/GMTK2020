@@ -28,9 +28,13 @@ class DialogManager {
 
     public function loadDialog(index:Int){
         if (typeText != null) {
-            typeText.flxTypeText.destroy();
-            typeText.destroy();
+            typeText.flxTypeText.kill();
+            typeText.kill();
         }
+    if (index >= Dialogs.DialogArray.length) {
+      trace("index out of bounds for dialogs");
+      return;
+    }
 		typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
 		parentState.add(typeText);
     }

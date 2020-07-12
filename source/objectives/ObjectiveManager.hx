@@ -2,6 +2,8 @@ package objectives;
 
 import haxefmod.flixel.FmodFlxUtilities;
 import states.VictoryState;
+import analytics.Measurements;
+import com.bitdecay.analytics.Bitlytics;
 import dialogbox.DialogManager;
 import flixel.FlxSprite;
 import trigger.Trigger;
@@ -12,6 +14,8 @@ class ObjectiveManager{
 
     var objectives:Array<Objective>;
     var dialogManager:DialogManager;
+
+    var lastReportedMissionComplete = 0;
 
     public function new() {
         objectives = new Array<Objective>();
@@ -47,6 +51,11 @@ class ObjectiveManager{
             ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
 
             if(!o.completed){
+                var lastCompleted = o.index-1;
+                if (lastCompleted > lastReportedMissionComplete) {
+                    Bitlytics.Instance().Queue(Measurements.MissionComplete, lastCompleted);
+                    lastReportedMissionComplete = lastCompleted;
+                }
                 o.revive();
                 dialogManager.loadDialog(o.index-1);
                 return;
