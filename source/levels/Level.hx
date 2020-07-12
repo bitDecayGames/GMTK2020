@@ -46,45 +46,45 @@ class Level {
 		carSpawners = [];
 
 		hydrants = new Array<Hydrant>();
-		
-		map.loadEntities(function loadEntity(entity:EntityData)
-			{
-				switch (entity.name)
-				{
-					case "PlayerSpawn":
-						player = new Player(entity.x, entity.y);
-						return;
-					case "Checkpoint":
-						var checkpoint = checkpointManager.createCheckpoint();
-						checkpoint.x = entity.x;
-						checkpoint.y = entity.y;
-						triggers.add(checkpoint);
-						return;
-					case "Objective":
-						var objective = objectiveManager.createObjective(entity.values.description);
-						objective.x = entity.x;
-						objective.y = entity.y;
-						triggers.add(objective);
-						return;
-					default:
-						throw 'Unrecognized actor type ${entity.name}';
-				}
-			}, "Entities");
 
-			map.loadEntities(function loadEntity(entity:EntityData)
-				{
-					switch (entity.name)
-					{
-						case "Hydrant":						
-							var hydrant = new Hydrant();
-							hydrant.x = entity.x;
-							hydrant.y = entity.y;
-							hydrants.push(hydrant);
-							return;
-						default:
-							throw 'Unrecognized actor type ${entity.name}';
-					}
-				}, "Objects");
+		map.loadEntities(function loadEntity(entity:EntityData) {
+			switch (entity.name) {
+				case "PlayerSpawn":
+					player = new Player(entity.x, entity.y);
+					return;
+				case "Checkpoint":
+					var checkpoint = checkpointManager.createCheckpoint();
+					checkpoint.x = entity.x;
+					checkpoint.y = entity.y;
+					triggers.add(checkpoint);
+					return;
+				case "Objective":
+					var objective = objectiveManager.createObjective(entity.values.description, entity.values.index);
+					objective.x = entity.x;
+					objective.y = entity.y;
+					triggers.add(objective);
+					return;
+				default:
+					throw 'Unrecognized actor type ${entity.name}';
+			}
+		}, "Entities");
+
+		var objectives = objectiveManager.getObjectives();
+		objectives.sort(ObjectiveManager.compare);
+		objectiveManager.setupObjectives();
+
+		map.loadEntities(function loadEntity(entity:EntityData) {
+			switch (entity.name) {
+				case "Hydrant":
+					var hydrant = new Hydrant();
+					hydrant.x = entity.x;
+					hydrant.y = entity.y;
+					hydrants.push(hydrant);
+					return;
+				default:
+					throw 'Unrecognized actor type ${entity.name}';
+			}
+		}, "Objects");
 
 		map.loadEntities((entity : EntityData) -> {
 			if (entity.name == "CarSpawn") {

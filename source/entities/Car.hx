@@ -1,5 +1,8 @@
 package entities;
 
+import fx.Blood;
+import fx.CarJunk;
+import flixel.FlxBasic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxVector;
@@ -166,8 +169,19 @@ class Car extends FlxSprite {
 		super.kill();
 		if (!naturalDeath) {
 			// TODO: FX car explosion
-			// TODO: spawn car explosion
-			var deadCar = new DeadCar(x, y, angle);
+
+			var middle = getMidpoint();
+			var bloodEmitter = new Blood();
+			bloodEmitter.setPosition(middle.x, middle.y);
+			FlxG.state.add(bloodEmitter);
+			bloodEmitter.blast(angle - 90);
+
+			var junkEmitter = new CarJunk();
+			junkEmitter.setPosition(middle.x, middle.y);
+			FlxG.state.add(junkEmitter);
+			junkEmitter.blast(angle - 90);
+
+			var deadCar = new DeadCar(x, y, angle, bloodEmitter, junkEmitter);
 			deadCar.width = width;
 			deadCar.height = height;
 			deadCar.origin.set(origin.x, origin.y);
@@ -177,15 +191,27 @@ class Car extends FlxSprite {
 }
 
 class DeadCar extends FlxSprite {
-	public function new(x:Float, y:Float, angle:Float) {
+	private var bloodEmitter:Blood;
+	private var junkEmitter:CarJunk;
+
+	public function new(x:Float, y:Float, angle:Float, bloodEmitter:Blood, junkEmitter:CarJunk) {
 		super(x, y, AssetPaths.car1__png);
 		this.angle = angle;
 		health = 3; // 3 seconds to live
+		this.bloodEmitter = bloodEmitter;
+		this.junkEmitter = junkEmitter;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		hurt(elapsed);
+		alpha = health / 3.0;
+	}
+
+	override function kill() {
+		super.kill();
+		bloodEmitter.kill();
+		junkEmitter.kill();
 	}
 }
 
@@ -199,10 +225,10 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		this.x = x;
 		this.y = y;
 		this.carPath = carPath;
-		// TODO: MW remove this debug sprite
-		var debugSprite = new FlxSprite(x, y);
-		debugSprite.makeGraphic(20, 20);
-		add(debugSprite);
+		// remove this debug sprite
+		// var debugSprite = new FlxSprite(x, y);
+		// debugSprite.makeGraphic(20, 20);
+		// add(debugSprite);
 	}
 
 	override function update(elapsed:Float) {
@@ -215,6 +241,7 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		car.setDestinations(carPathCopy);
 		car.snapAngleTowardsDestination();
 		add(car);
+
 		return car;
 	}
 }

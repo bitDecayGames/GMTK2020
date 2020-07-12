@@ -34,7 +34,7 @@ class LoadFmodState extends FlxState {
 			#elseif mike
 			FlxG.switchState(new MikeState());
 			#elseif jakef
-			FlxG.switchState(new JakeFState());
+			FlxG.switchState(new PlayState());
 			#elseif jakect
 			FlxG.switchState(new JakeState());
 			#else

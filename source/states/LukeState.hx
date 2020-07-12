@@ -1,5 +1,6 @@
 package states;
 
+import levels.Level;
 import entities.Car;
 import hud.HUD;
 import objectives.ObjectiveManager;
@@ -29,6 +30,7 @@ class LukeState extends FlxState
 	var shader = new LightShader(); 
 	var filters:Array<BitmapFilter> = [];
 	var hud:HUD;
+	var level:Level;
 
 	
 	override public function create()
@@ -36,7 +38,7 @@ class LukeState extends FlxState
 		super.create();
 
 		FlxG.debugger.drawDebug = true;
-		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
+		level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
 		add(level.walls);
 		add(level.background);
 		
@@ -56,21 +58,13 @@ class LukeState extends FlxState
 
 		for(hydrant in level.hydrants)
 			add(hydrant);
-
+		
+		for (spawner in level.carSpawners) {
+			add(spawner);
+		}
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
-		
-		var x = 500.0;
-		var y = 200.0;
-		var carA = new Car(x, y, new FlxPoint(0, 0), 1500, 5, 1000);
-		carA.setTarget(player);
-		var carB = new Car(0, 0, new FlxPoint(1000, 1000), 1500, 5, 1000);
-		carB.setTarget(player);
 
-		add(carA);
-		add(carB);
-		level.cars.push(carA);
-		level.cars.push(carB);
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		FlxG.camera.zoom = 0.5;
@@ -78,4 +72,10 @@ class LukeState extends FlxState
 		FlxG.worldBounds.set(0,0,2000,2000);
 	}
 	
+	override public function update(elapsed:Float) {
+		super.update(elapsed);
+		if (FlxG.keys.justPressed.SPACE) {
+			level.spawnCar();
+		}
+	}
 }
