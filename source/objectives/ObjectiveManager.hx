@@ -1,11 +1,15 @@
 package objectives;
 
+import haxefmod.flixel.FmodFlxUtilities;
+import states.VictoryState;
 import dialogbox.DialogManager;
 import flixel.FlxSprite;
 import trigger.Trigger;
 import flixel.math.FlxPoint;
 
 class ObjectiveManager{
+    public static var hackObjectivesComplete:Int = 0;
+
     var objectives:Array<Objective>;
     var dialogManager:DialogManager;
 
@@ -38,12 +42,17 @@ class ObjectiveManager{
     }
 
     public function moveOn(){
+        ObjectiveManager.hackObjectivesComplete = 0;
         for(o in objectives){
+            ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
+
             if(!o.completed){
                 o.revive();
                 dialogManager.loadDialog(o.index-1);
                 return;
             }
         }
+
+        FmodFlxUtilities.TransitionToState(new VictoryState());
     }
 }

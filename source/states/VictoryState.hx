@@ -1,5 +1,9 @@
 package states;
 
+import analytics.Measurements;
+import objectives.ObjectiveManager;
+import com.bitdecay.analytics.Common;
+import com.bitdecay.analytics.Bitlytics;
 import haxefmod.flixel.FmodFlxUtilities;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -69,6 +73,9 @@ class VictoryState extends FlxUIState {
         _btnDone.setPosition(FlxG.width/2 - _btnDone.width/2, FlxG.height - _btnDone.height - 40);
         _btnDone.updateHitbox();
         add(_btnDone);
+
+        Bitlytics.Instance().Queue(Common.GameCompleted, ObjectiveManager.hackObjectivesComplete);
+        Bitlytics.Instance().ForceFlush();
     }
 
     override public function update(elapsed:Float):Void {
@@ -87,14 +94,19 @@ class VictoryState extends FlxUIState {
 
     function clickSpanish():Void {
         inSpanish = !inSpanish;
+        var measurement:String = "missing";
         if (inSpanish) {
             _btnSpanish.text = "English";
             _txtQuote1.text = spanishQuote1;
             _txtQuote2.text = spanishQuote2;
+            measurement = Measurements.GameCompletedSpanishClick;
         } else {
             _btnSpanish.text = "Español";
             _txtQuote1.text = englishQuote1;
             _txtQuote2.text = englishQuote2;
+            measurement = Measurements.GameCompletedEnglishClick;
         }
+        Bitlytics.Instance().Queue(measurement, 1);
+        Bitlytics.Instance().ForceFlush();
     }
 }
