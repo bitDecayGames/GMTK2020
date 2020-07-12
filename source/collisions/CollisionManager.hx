@@ -26,6 +26,9 @@ class CollisionManager extends FlxBasic {
 		super.update(elapsed);
 
 		FlxG.collide(level.player, level.walls);
+		for(car in level.cars){
+			FlxG.collide(car, level.walls);
+		}
 
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);

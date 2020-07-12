@@ -1,5 +1,6 @@
 package levels;
 
+import entities.Car;
 import flixel.math.FlxPoint;
 import objectives.ObjectiveManager;
 import checkpoint.CheckpointManager;
@@ -15,6 +16,7 @@ class Level {
 	public var background:flixel.tile.FlxTilemap;
 	public var groundType:flixel.tile.FlxTilemap;
 	public var player:Player;
+	public var cars:Array<Car>;
 
 	public var triggers:FlxTypedGroup<Trigger>;
 	var checkpointManager:CheckpointManager;
@@ -31,6 +33,7 @@ class Level {
 		checkpointManager = new CheckpointManager();
 		objectiveManager = new ObjectiveManager();
 		triggers = new FlxTypedGroup<Trigger>();
+		cars = new Array<Car>();
 		
 		map.loadEntities(function loadEntity(entity:EntityData)
 			{
@@ -52,6 +55,8 @@ class Level {
 						triggers.add(objective);
 						return;
 					default:
+					case "Hydrant":
+						return;
 						throw 'Unrecognized actor type ${entity.name}';
 				}
 			}, "Entities");
