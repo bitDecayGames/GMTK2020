@@ -1,5 +1,6 @@
 package states;
 
+import entities.RainMaker;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import collisions.CollisionManager;
@@ -49,6 +50,9 @@ class TannerState extends FlxState
 
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
+
+		var rain = new RainMaker(camera, 250);
+		add(rain);
 
 		// var x = 500.0;
 		// var y = 200.0;

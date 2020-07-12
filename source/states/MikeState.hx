@@ -4,35 +4,76 @@ import flixel.FlxG;
 import flixel.math.FlxPoint;
 import entities.Car;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
+import shaders.LightShader;
+import entities.Car;
+import hud.HUD;
+import objectives.ObjectiveManager;
+import entities.Player;
+import collisions.CollisionManager;
+import flixel.FlxSprite;
+import trigger.Trigger;
+import com.bitdecay.textpop.TextPop;
+import trigger.Boi;
+import checkpoint.CheckpointManager;
+import flixel.group.FlxGroup;
+import flixel.FlxG;
+import openfl.filters.ShaderFilter;
+import openfl.filters.BitmapFilter;
+import shaders.LightShader;
+import flixel.FlxState;
+import levels.Loader;
+import levels.Level;
+import flixel.math.FlxPoint;
 
 class MikeState extends FlxState {
-	private var carA:Car;
-	private var carB:Car;
-	private var carSpawner:CarSpawner;
+	var boiGroup:FlxGroup;
+	var triggerGroup:FlxGroup;
+
+	var checkpointManager:CheckpointManager;
+	var objectiveManager:ObjectiveManager;
+	var shader = new LightShader();
+	var filters:Array<BitmapFilter> = [];
+	var hud:HUD;
+	var level:Level;
 
 	override public function create() {
 		super.create();
-		FlxG.debugger.visible = true;
 
-		var x = 100.0;
-		var y = 100.0;
-		carA = new Car(x, y);
-		add(carA);
+		FlxG.debugger.drawDebug = true;
+		level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
+		add(level.walls);
+		add(level.background);
+		for (spawner in level.carSpawners) {
+			add(spawner);
+		}
 
-		carSpawner = new CarSpawner(300, 300, [
-			FlxPoint.get(100, 100),
-			FlxPoint.get(500, 0),
-			FlxPoint.get(0, 400),
-			FlxPoint.get(500, 400)
-		]);
-		add(carSpawner);
+		var player:Player;
+		player = level.player;
+		add(player);
+		player.screenCenter();
+
+		objectiveManager = level.objectiveManager;
+
+		hud = new HUD(player);
+		add(hud);
+
+		for (o in objectiveManager.getObjectives()) {
+			add(o);
+		}
+		// The camera. It's real easy. Flixel is nice.
+		FlxG.camera.follow(player, TOPDOWN, 1);
+		FlxG.camera.zoom = 0.5;
+		// needed to correctly create collision data for things off camera
+		FlxG.worldBounds.set(0, 0, 2000, 2000);
+		var collisions = new CollisionManager(this);
+		collisions.setLevel(level);
 	}
 
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
-		carA.setDestination(FlxG.mouse.getWorldPosition());
 		if (FlxG.keys.justPressed.SPACE) {
-			carSpawner.spawn().setTarget(carA);
+			level.spawnCar();
 		}
 	}
 }
