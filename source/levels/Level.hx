@@ -79,6 +79,7 @@ class Level {
 	public function spawnCar() {
 		if (carSpawners != null && carSpawners.length > 0) {
 			var car = carSpawners[rnd.int(0, carSpawners.length - 1)].spawn();
+			cars.push(car);
 			if (player != null) {
 				car.setTarget(player);
 			}
