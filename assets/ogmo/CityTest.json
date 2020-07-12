@@ -72,8 +72,8 @@
           "name": "Objective",
           "id": 6,
           "_eid": "49689277",
-          "x": 3305,
-          "y": 1604,
+          "x": 3256,
+          "y": 1612,
           "originX": 0,
           "originY": 0,
           "values": {"description": "Visit ya' boi!", "index": 5}
@@ -82,51 +82,41 @@
           "name": "Objective",
           "id": 7,
           "_eid": "49689277",
-          "x": 1406,
-          "y": 1198,
+          "x": 115,
+          "y": 463,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "Hide from the cars.", "index": 6}
+          "values": {"description": "Go to the park", "index": 6}
         },
         {
           "name": "Objective",
           "id": 8,
           "_eid": "49689277",
-          "x": 105,
-          "y": 449,
+          "x": 2531,
+          "y": 2161,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "7", "index": 7}
+          "values": {"description": "Visit ya girl", "index": 7}
         },
         {
           "name": "Objective",
           "id": 9,
           "_eid": "49689277",
-          "x": 2498,
-          "y": 2140,
+          "x": 170,
+          "y": 3536,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "Retrieve your toothbrush", "index": 8}
+          "values": {"description": "Buy a new one", "index": 8}
         },
         {
           "name": "Objective",
           "id": 10,
           "_eid": "49689277",
-          "x": 161,
-          "y": 3535,
+          "x": 3415,
+          "y": 1096,
           "originX": 0,
           "originY": 0,
           "values": {"description": "Buy a new one!", "index": 9}
-        },
-        {
-          "name": "Objective",
-          "id": 11,
-          "_eid": "49689277",
-          "x": 3409,
-          "y": 1094,
-          "originX": 0,
-          "originY": 0,
-          "values": {"description": "10", "index": 10}
         }
       ]
     },
