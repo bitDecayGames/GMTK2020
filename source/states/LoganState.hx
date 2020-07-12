@@ -30,15 +30,15 @@ class LoganState extends FlxState
 		add(player);
 		player.screenCenter();
 
-		var rain = new RainMaker(camera, 250);
+		var collisions = new CollisionManager(this);
+		collisions.setLevel(level);
+		
+		var rain = new RainMaker(camera, collisions, 250);
 		add(rain);
 
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		FlxG.camera.pixelPerfectRender = true;
 		
-		var collisions = new CollisionManager(this);
-		collisions.setLevel(level);
-
 		notebookHUD = new NotebookHUD();
 		add(notebookHUD);
 	}
