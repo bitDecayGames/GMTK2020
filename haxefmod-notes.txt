@@ -8,3 +8,5 @@ Notes:
 - Check if a given reference is currently playing
 - Assign a reference to a given sound (and return error if the reference name is taken)
 - Error strings don't give any context around what call failed
+- The FMOD Studio project sometimes has artifact events that show up in the constant file generation
+- Ability to either play a sound with a set volume or to set the volume via a function

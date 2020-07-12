@@ -2,7 +2,6 @@ package states;
 
 import entities.Car;
 import flixel.ui.FlxButton;
-import js.html.AbortController;
 import flixel.system.debug.console.Console;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
