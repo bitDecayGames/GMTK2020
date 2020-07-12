@@ -51,9 +51,9 @@ class LoganState extends FlxState
 		FlxG.camera.pixelPerfectRender = true;
 		
 		notebookHUD = new NotebookHUD();
-		notebookHUD.addObjective(new ObjectiveHUDElement("test", "- Start Blasting"));
-		notebookHUD.addObjective(new ObjectiveHUDElement("test2", "- Refractory Period"));
-		notebookHUD.addObjective(new ObjectiveHUDElement("test3", "- Start Blasting"));
+		for (o in level.objectiveManager.getObjectives()) {
+			notebookHUD.addObjective(o);
+		}
 		add(notebookHUD);
 	}
 
