@@ -1,5 +1,6 @@
 package objectives;
 
+import com.bitdecay.textpop.TextPop;
 import haxefmod.flixel.FmodFlxUtilities;
 import states.VictoryState;
 import analytics.Measurements;
@@ -47,9 +48,13 @@ class ObjectiveManager{
 
     public function moveOn(){
         ObjectiveManager.hackObjectivesComplete = 0;
+        var lastObjective:Objective = null;
         for(o in objectives){
             if(!o.completed){
                 FmodManager.PlaySoundOneShot(FmodSFX.NewMission);
+                if (lastObjective != null){
+                    TextPop.pop(cast(lastObjective.x, Int), cast(lastObjective.y, Int), "Mission Complete", null, 25);
+                }
                 var lastCompleted = o.index-1;
                 if (lastCompleted > lastReportedMissionComplete) {
                     Bitlytics.Instance().Queue(Measurements.MissionComplete, lastCompleted);
@@ -59,6 +64,8 @@ class ObjectiveManager{
                 dialogManager.loadDialog(o.index-1);
                 return;
             }
+
+            lastObjective = o;
 
             ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
         }
