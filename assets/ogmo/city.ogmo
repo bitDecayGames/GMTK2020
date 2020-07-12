@@ -18,15 +18,6 @@
   "entityTags": ["car"],
   "layers": [
     {
-      "definition": "tile",
-      "name": "Ground",
-      "gridSize": {"x": 50, "y": 50},
-      "exportID": "42242616",
-      "exportMode": 0,
-      "arrayMode": 0,
-      "defaultTileset": "Test Tiles"
-    },
-    {
       "definition": "decal",
       "name": "Foreground",
       "gridSize": {"x": 8, "y": 8},
@@ -72,6 +63,15 @@
       "excludedTags": []
     },
     {
+      "definition": "tile",
+      "name": "Ground",
+      "gridSize": {"x": 50, "y": 50},
+      "exportID": "42242616",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "Test Tiles"
+      },
+      {
       "definition": "entity",
       "name": "CarPaths",
       "gridSize": {"x": 100, "y": 100},

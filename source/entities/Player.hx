@@ -308,22 +308,23 @@ class Player extends FlxSprite {
 		}
 	}
 
-	public function bonk() {
-		bonked = true;
+	public function attemptBonk() {
+		if (divingState != NotDiving) {
+			divingState = NotDiving;
+			bonked = true;
+		}
 	}
 
 	private function bonking(delta:Float){
 		if (bonkTime == 0.0) {
 			// play bonk animation
+			bonkTime += delta;
+
 			velocity.set(BONK_MAX_SPEED, 0);
 
 			var bonkAngle = (facingAngle + 180) % 360;
 
 			velocity.rotate(FlxPoint.weak(0, 0), bonkAngle);
-		}
-		else if (bonkTime > BONK_MAX_TIME) {
-			bonkTime = 0.0;
-			bonked = false;
 		}
 		else {
 			bonkTime += delta;
@@ -332,6 +333,13 @@ class Player extends FlxSprite {
 			if (currentSpeed < 0) {
 				currentSpeed = 0;
 			}
+		}
+
+		if (bonkTime > BONK_MAX_TIME) {
+			animation.play("idle");
+			currentSpeed = 0;
+			bonkTime = 0.0;
+			bonked = false;
 		}
 	}
 
