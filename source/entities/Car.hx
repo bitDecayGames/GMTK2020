@@ -155,6 +155,7 @@ class Car extends FlxSprite {
 			&& Math.abs(FlxPoint.get(0, 1).angleBetween(FlxPoint.get(targetPos.x - position.x, targetPos.y - position.y)) - angle) < 45) {
 			// TODO: FX the car JUST saw the player, so maybe some tire squeels here?
 			// TODO: FX you could also maybe play a revving sound since car speeds up
+			FmodManager.PlaySoundOneShot(FmodSFX.EngineRev);
 			foundTarget = true;
 		}
 	}
