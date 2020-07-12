@@ -1,11 +1,13 @@
 package entities;
 
+import haxe.macro.Expr.Case;
 import openfl.Assets;
 import flixel.FlxObject;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxSprite;
 import actions.Actions;
 import flixel.math.FlxPoint;
+import flixel.FlxG;
 import flixel.group.FlxGroup;
 
 using extensions.FlxObjectExt;
@@ -67,9 +69,34 @@ class Player extends FlxSprite {
 
 		animation.add("idle", [0], 5);
 		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
-		animation.add("run", [8, 9, 10, 11, 12], 10);
+		animation.add("run", [8, 9, 10, 11], 10);
 		animation.add("divingAccel", [16, 17], 20, false);
 		animation.add("divingDecel", [18, 19, 20, 21, 22], 10, false);
+
+		animation.callback = (name, frameNumber, frameIndex) -> {
+			switch name {
+				case "idle":
+				case "walk":
+					if (frameNumber == 2 || frameNumber == 6) {
+						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+					}
+				case "run":
+					if (frameNumber == 0 || frameNumber == 2) {
+						FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+					}
+				case "divingAccel":
+					if (frameNumber == 0) {
+						FmodManager.PlaySoundOneShot(FmodSFX.Dive);
+					}
+				case "divingDecel":
+					if (frameNumber == 0) {
+						FmodManager.PlaySoundOneShot(FmodSFX.DiveLand);
+						FlxG.camera.shake(0.01, 0.1);
+					}
+				default:
+					throw "No animation case found. SOMETHING HAS GONE WRONG!! : " + name;
+			}
+		};
 
 		// TODO(JF): This may need to be added to the two load methods above.
         // TODO(JF): Add hitbox stuff here

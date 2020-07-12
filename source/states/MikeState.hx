@@ -32,7 +32,7 @@ class MikeState extends FlxState {
 		super.update(elapsed);
 		carA.setDestination(FlxG.mouse.getWorldPosition());
 		if (FlxG.keys.justPressed.SPACE) {
-			carSpawner.spawn();
+			carSpawner.spawn().setTarget(carA);
 		}
 	}
 }
