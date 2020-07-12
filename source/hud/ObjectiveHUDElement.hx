@@ -10,12 +10,14 @@ class ObjectiveHUDElement extends FlxTypedSpriteGroup<FlxSprite> {
 	public var obj:Objective;
 	private var text:FlxText;
 	private var strikethrough:FlxSprite;
+	public var displayed:Bool = false;
 
 	public function new(obj:Objective) {
 		super();
 		this.obj = obj;
 		text = new FlxText(obj.getDescription());
 		text.color = FlxColor.BLACK;
+		text.visible = false;
 		add(text);
 
 		strikethrough = new FlxText("-----------");
@@ -30,6 +32,10 @@ class ObjectiveHUDElement extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	override public function update(delta:Float) {
+		if (displayed) {
+			text.visible = true;
+		}
+
 		if (obj.completed) {
 			text.color = FlxColor.GRAY;
 			strikethrough.visible = true;

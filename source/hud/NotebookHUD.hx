@@ -78,13 +78,20 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 
 		for (i in 0...objectives.length) {
 			var obj = objectives[i];
-			obj.obj.completed = true;
+
+			obj.displayed = true;
+
 			obj.update(delta);
 			// 13 is a magic number to space the first line from the top of the notebook
 			obj.setElementPosition(
 				xPad + 30,
 				notebook.y + 13 + lineSpacing*i
 			);
+
+			if (!obj.obj.completed) {
+				// don't render past our first incomplete objective
+				break;
+			}
 		}
 	}
 
