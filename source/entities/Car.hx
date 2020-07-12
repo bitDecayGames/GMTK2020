@@ -1,6 +1,7 @@
 package entities;
 
 import fx.Blood;
+import fx.CarJunk;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
@@ -20,7 +21,6 @@ class Car extends FlxSprite {
 	private var slowingDistance:Float;
 	private var foundTarget:Bool;
 	private var naturalDeath:Bool = false;
-	private var bloodEmitter:Blood;
 
 	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {
@@ -176,7 +176,12 @@ class Car extends FlxSprite {
 			FlxG.state.add(bloodEmitter);
 			bloodEmitter.blast(angle - 90);
 
-			var deadCar = new DeadCar(x, y, angle, bloodEmitter);
+			var junkEmitter = new CarJunk();
+			junkEmitter.setPosition(middle.x, middle.y);
+			FlxG.state.add(junkEmitter);
+			junkEmitter.blast(angle - 90);
+
+			var deadCar = new DeadCar(x, y, angle, bloodEmitter, junkEmitter);
 			deadCar.width = width;
 			deadCar.height = height;
 			deadCar.origin.set(origin.x, origin.y);
@@ -187,12 +192,14 @@ class Car extends FlxSprite {
 
 class DeadCar extends FlxSprite {
 	private var bloodEmitter:Blood;
+	private var junkEmitter:CarJunk;
 
-	public function new(x:Float, y:Float, angle:Float, bloodEmitter:Blood) {
+	public function new(x:Float, y:Float, angle:Float, bloodEmitter:Blood, junkEmitter:CarJunk) {
 		super(x, y, AssetPaths.car1__png);
 		this.angle = angle;
 		health = 3; // 3 seconds to live
 		this.bloodEmitter = bloodEmitter;
+		this.junkEmitter = junkEmitter;
 	}
 
 	override function update(elapsed:Float) {
@@ -204,6 +211,7 @@ class DeadCar extends FlxSprite {
 	override function kill() {
 		super.kill();
 		bloodEmitter.kill();
+		junkEmitter.kill();
 	}
 }
 
