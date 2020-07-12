@@ -64,7 +64,7 @@ class CollisionManager extends FlxBasic {
 	}
 	
 	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant){
-		trace("car hit hydrant");
+		_hydrant.destroy();
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
