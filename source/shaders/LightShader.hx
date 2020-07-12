@@ -47,26 +47,35 @@ class LightShader extends FlxShader {
 			if(acos(dotOfNormalVecs) < spreadAngle)
 				insideAngle = true;
 
-			if(lessThenMax && greaterThenMin && inCorrectDirection && insideAngle){
-				float lightInfluence = (distanceFromLightToPoint - minDistance) / (maxDistance - minDistance);
-				vec3 light = vec3(1.0 , 1.0 , 0.0);
-				vec3 averageLight = (light + gl_FragColor.rgb) / (1.0 + lightInfluence);
-				averageLight = mix(light, gl_FragColor.rgb, lightInfluence);
-				gl_FragColor.rgb = averageLight;
+			if(lessThenMax && greaterThenMin){
+				// float lightInfluence = (distanceFromLightToPoint - minDistance) / (maxDistance - minDistance);
+				// vec3 light = vec3(1.0 , 1.0 , 0.0);
+				// vec3 averageLight = (light + gl_FragColor.rgb) / (1.0 + lightInfluence);
+				// averageLight = mix(light, gl_FragColor.rgb, lightInfluence);
+				gl_FragColor.rgb = vec3(1.0 , 1.0 , 1.0);
 			}
 			
 
 			if (debugLoc) {
 			}
 		}')
-
 	public function new() {
 		super();
 		this.lightOrigin.value = [0.21, 0.81];
-		this.lightDirection.value = [1.0, 0.0];
+		this.lightDirection.value = [1.0, 1.0];
 		this.minDistance.value = [0.05];
-		this.maxDistance.value = [0.25];
-		this.spreadAngle.value = [0.785398];
+		this.maxDistance.value = [0.20];
+		this.spreadAngle.value = [0.610865];
 		this.debugLoc.value = [false];
+	}
+
+	public function setLightOrigin(x:Float, y:Float):LightShader {
+		this.lightOrigin.value = [x, y];
+		return this;
+	}
+
+	public function setLightDirection(x:Float, y:Float):LightShader {
+		this.lightDirection.value = [x, y];
+		return this;
 	}
 }
