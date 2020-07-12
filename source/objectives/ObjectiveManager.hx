@@ -1,5 +1,7 @@
 package objectives;
 
+import haxefmod.flixel.FmodFlxUtilities;
+import states.VictoryState;
 import analytics.Measurements;
 import com.bitdecay.analytics.Bitlytics;
 import dialogbox.DialogManager;
@@ -8,6 +10,8 @@ import trigger.Trigger;
 import flixel.math.FlxPoint;
 
 class ObjectiveManager{
+    public static var hackObjectivesComplete:Int = 0;
+
     var objectives:Array<Objective>;
     var dialogManager:DialogManager;
 
@@ -42,7 +46,10 @@ class ObjectiveManager{
     }
 
     public function moveOn(){
+        ObjectiveManager.hackObjectivesComplete = 0;
         for(o in objectives){
+            ObjectiveManager.hackObjectivesComplete = ObjectiveManager.hackObjectivesComplete + 1;
+
             if(!o.completed){
                 var lastCompleted = o.index-1;
                 if (lastCompleted > lastReportedMissionComplete) {
@@ -54,5 +61,7 @@ class ObjectiveManager{
                 return;
             }
         }
+
+        FmodFlxUtilities.TransitionToState(new VictoryState());
     }
 }

@@ -1,5 +1,6 @@
 package entities;
 
+import states.FailState;
 import flixel.FlxState;
 import flixel.FlxBasic;
 import haxe.macro.Expr.Case;
@@ -12,6 +13,7 @@ import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import fx.Blood;
+import haxefmod.flixel.FmodFlxUtilities;
 
 using extensions.FlxObjectExt;
 
@@ -397,7 +399,7 @@ class Player extends FlxSprite {
 
 	private function attemptDeath() {
 		if (health <= 0) {
-
+			FmodFlxUtilities.TransitionToState(new FailState());
 		}
 	}
 
