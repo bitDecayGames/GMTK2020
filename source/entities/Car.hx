@@ -150,12 +150,14 @@ class Car extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
+		trace("Moving that car");
 		super.update(elapsed);
 		if (foundTarget && target != null) {
 			moveTowardsDestinationByTurning(target.getPosition().add(target.width / 2.0, target.height / 2.0));
 		} else if (destinations != null && destinations.length > 0) {
 			if (moveTowardsDestinationByTurning(destinations[0])) {
 				destinations.shift();
+				trace('Move to next destination ${destinations.length}');
 				if (destinations.length == 0) {
 					naturalDeath = true;
 					kill();
@@ -166,6 +168,7 @@ class Car extends FlxSprite {
 	}
 
 	override function kill() {
+		trace('Dead: ${naturalDeath}');
 		super.kill();
 		if (!naturalDeath) {
 			// TODO: FX car explosion
@@ -241,6 +244,9 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 		car.setDestinations(carPathCopy);
 		car.snapAngleTowardsDestination();
 		add(car);
+
+		trace('Car spawn: ${carPath}');
+
 		return car;
 	}
 }
