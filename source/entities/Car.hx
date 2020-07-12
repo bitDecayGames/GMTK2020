@@ -21,7 +21,7 @@ class Car extends FlxSprite {
 	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
-		origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
+		// origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
 		this.maxSpeed = maxSpeed;
 		this.maxTurnRadius = maxTurnRadius;
 		if (destination != null) {
@@ -129,6 +129,12 @@ class Car extends FlxSprite {
 			}
 		}
 		checkForTargetVisibility();
+	}
+
+	override function kill() {
+		super.kill();
+		// TODO: FX car explosion
+		// TODO: spawn car explosion
 	}
 }
 
