@@ -13,7 +13,7 @@ import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 class Level {
 	public var walls:flixel.tile.FlxTilemap;
 	public var background:flixel.tile.FlxTilemap;
-	public var groundType:Map<String, Array<FlxPoint>>;
+	public var groundType:flixel.tile.FlxTilemap;
 	public var player:Player;
 
 	public var triggers:FlxTypedGroup<Trigger>;
@@ -23,7 +23,10 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		//background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
-		//walls.setTileProperties(1, FlxObject.ANY, (a,b)->{ trace('been touched');});
+		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
+		groundType.setTileProperties(1, FlxObject.ANY, (a,b)->{ player.groundType = "concrete";});
+		groundType.setTileProperties(2, FlxObject.ANY, (a,b)->{ player.groundType = "grass";});
+		groundType.setTileProperties(3, FlxObject.ANY, (a,b)->{ player.groundType = "metal";});
 
 		checkpointManager = new CheckpointManager();
 		objectiveManager = new ObjectiveManager();

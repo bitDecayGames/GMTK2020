@@ -50,6 +50,8 @@ class Player extends FlxSprite {
 	var hurtboxSize = new FlxPoint(20, 4);
 	// var hitboxes:AttackHitboxes;
 
+	public var groundType = "Grass";
+
 	// ########## FROM BRAWNFIRE ##########
 
     // TODO(JF): Potentially add based on brawnfire

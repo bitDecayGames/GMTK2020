@@ -28,6 +28,7 @@ class CollisionManager extends FlxBasic {
 		FlxG.collide(level.player, level.walls);
 
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
+		FlxG.overlap(level.player, level.background);
 	}
 
 	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {
