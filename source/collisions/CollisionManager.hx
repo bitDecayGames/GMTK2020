@@ -1,5 +1,6 @@
 package collisions;
 
+import flixel.tile.FlxTilemap;
 import entities.Hydrant;
 import entities.Car;
 import flixel.math.FlxPoint;
@@ -28,7 +29,7 @@ class CollisionManager extends FlxBasic {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		FlxG.collide(level.player, level.walls);
+		FlxG.collide(level.player, level.walls, handlerPlayerBonk);
 
 		for(hydrant in level.hydrants){
 			FlxG.collide(hydrant, level.player);
@@ -58,6 +59,10 @@ class CollisionManager extends FlxBasic {
 		trigger.activate();
 	}
 
+	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap){
+		_player.attemptBonk();
+	}
+	
 	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant){
 		trace("car hit hydrant");
 	}

@@ -28,7 +28,7 @@ class Actions {
 		right.addKey(FlxKey.RIGHT, PRESSED);
 
 		dive.addKey(FlxKey.SPACE, JUST_PRESSED);
-		dive.addMouse(FlxMouseButtonID.LEFT, JUST_PRESSED);
+		dive.addKey(FlxKey.Z, JUST_PRESSED);
 
 		run.addKey(FlxKey.SHIFT, PRESSED);
 	}
