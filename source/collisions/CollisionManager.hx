@@ -1,5 +1,6 @@
 package collisions;
 
+import flixel.tile.FlxTilemap;
 import flixel.math.FlxPoint;
 import entities.Player;
 import trigger.Trigger;
@@ -31,6 +32,8 @@ class CollisionManager extends FlxBasic {
 			FlxG.collide(car, level.walls);
 		}
 
+		FlxG.collide(level.player, level.walls, handlerPlayerBonk);
+
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);
 	}
@@ -41,5 +44,9 @@ class CollisionManager extends FlxBasic {
 
 	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {
 		trigger.activate();
+	}
+
+	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap){
+		_player.bonk();
 	}
 }
