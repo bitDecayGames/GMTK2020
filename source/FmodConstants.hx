@@ -21,9 +21,15 @@ class FmodSFX {
     public static inline var FootstepGrassRun:String = "event:/SFX/Footsteps/FootstepGrassRun";
     public static inline var FootstepMetal:String = "event:/SFX/Footsteps/FootstepMetal";
     public static inline var FootstepMetalRun:String = "event:/SFX/Footsteps/FootstepMetalRun";
+    public static inline var GrabNotebook:String = "event:/SFX/GrabNotebook/GrabNotebook";
+    public static inline var HitPlayer:String = "event:/SFX/HitPlayer/HitPlayer";
     public static inline var Lightning:String = "event:/SFX/Lightning/Lightning";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
+    public static inline var none:String = "event:/SFX/none";
+    public static inline var PutDownNotebook:String = "event:/SFX/PutDownNotebook/PutDownNotebook";
     public static inline var Rain:String = "event:/SFX/Rain/Rain";
     public static inline var Mystery:String = "event:/SFX/SplashScreens/Mystery";
+    public static inline var Typewriter:String = "event:/SFX/Typewriter/Typewriter";
+    public static inline var TypewriterAsync:String = "event:/SFX/Typewriter/TypewriterAsync";
 }

@@ -23,6 +23,8 @@ class Level {
 	public var cars:Array<Car>;
 	public var hydrants:Array<Hydrant>;
 	public var carSpawners:Array<CarSpawner>;
+	public var carSpawnTime:Float = 5.0;
+	public var carSpawnTimer:Float;
 
 	private var rnd:FlxRandom = new FlxRandom();
 
@@ -111,5 +113,13 @@ class Level {
 		return (a, b) -> {
 			player.groundType = type;
 		};
+	}
+
+	public function update(elapsed:Float) {
+		carSpawnTimer -= elapsed;
+		if(carSpawnTimer <= 0.0){
+			spawnCar();
+			carSpawnTimer = carSpawnTime;
+		}
 	}
 }

@@ -26,9 +26,9 @@ class MainMenuState extends FlxUIState {
         if (!FmodManager.IsSongPlaying()) {
             // I know the reference string, so I don't grab it here.
             // Remove the rain from the title screen before releasing the game. It is buggy
-            FmodManager.PlaySoundWithReference(FmodSFX.Rain);
+            // FmodManager.PlaySoundWithReference(FmodSFX.Rain);
         }
-        FmodManager.RegisterLightning(rainReference);
+        // FmodManager.RegisterLightning(rainReference);
         FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
 
         FlxG.log.notice("loaded scene");
@@ -75,9 +75,9 @@ class MainMenuState extends FlxUIState {
         super.update(elapsed);
         FmodManager.Update();
 
-        if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
-            FlxG.camera.flash(FlxColor.WHITE, 0.5);
-        }
+        // if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
+        //     FlxG.camera.flash(FlxColor.WHITE, 0.5);
+        // }
 
         _txtTitle.x = FlxG.width/2 - _txtTitle.width/2;
     }

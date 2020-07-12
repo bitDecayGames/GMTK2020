@@ -1,5 +1,6 @@
 package states;
 
+import lime.tools.SplashScreen;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -26,9 +27,9 @@ class LoadFmodState extends FlxState {
             #elseif tristan
             FlxG.switchState(new SplashScreenState());
             #elseif luke
-            FlxG.switchState(new LukeState());
+            FlxG.switchState(new PlayState());
 			#elseif tanner
-			FlxG.switchState(new TannerState());
+			FlxG.switchState(new SplashScreenState());
 			#elseif erik
 			FlxG.switchState(new SplashScreenState());
 			#elseif mike

@@ -22,7 +22,6 @@ class Blood extends FlxEmitter {
 		angle += 90;
 
 		this.angle.set(angle - 15, angle - 15, angle + 15, angle + 15);
-		this.start(true, 0, 5);
-		trace("emitting now");
+		this.start(true, 0, 10);
 	}
 }

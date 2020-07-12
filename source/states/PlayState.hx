@@ -1,5 +1,6 @@
 package states;
 
+import dialogbox.DialogManager;
 import com.bitdecay.analytics.Common;
 import com.bitdecay.analytics.Bitlytics;
 import hud.NotebookHUD;
@@ -39,6 +40,8 @@ class PlayState extends FlxState
 	var filters:Array<BitmapFilter> = [];
 	var level:Level;
 
+	var dialogManager:dialogbox.DialogManager;
+
 	override public function create()
 	{
 		Bitlytics.Instance().Queue(Common.GameStarted, 1);
@@ -53,10 +56,8 @@ class PlayState extends FlxState
 				
 		var player:Player;
 		player = level.player;
+		player.setState(this);
 		add(player);
-		for (e in player.extras()) {
-			add(e);
-		}
 		player.screenCenter();
 
 		hud = new HUD(player);
@@ -84,8 +85,12 @@ class PlayState extends FlxState
 		var rain = new RainMaker(camera, collisions, 250);
 		add(rain);
 
+		dialogManager = new DialogManager(this);
+		objectiveManager.setDialogManager(dialogManager);
+
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
+		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
 
@@ -98,6 +103,12 @@ class PlayState extends FlxState
             FlxG.camera.flash(FlxColor.WHITE, 0.5);
 		}
 
+		if (FlxG.keys.justPressed.N) {
+			level.spawnCar();
+		}
+		dialogManager.update();
+
 		super.update(elapsed);
+		level.update(elapsed);
 	}
 }

@@ -37,6 +37,10 @@ class CollisionManager extends FlxBasic {
 
 		for (car in level.cars) {
 			FlxG.collide(car, level.walls, handleCarCollideWithWall);
+			if (!level.player.isBonked() && !level.player.isDiving())
+			{
+				FlxG.collide(car, level.player, handlePlayerCarOverlap);
+			}
 		}
 
 		for (hydrant in level.hydrants) {
@@ -52,6 +56,10 @@ class CollisionManager extends FlxBasic {
 
 	public function isRoof(p:FlxPoint):Bool {
 		return level.walls.overlapsPoint(p);
+	}
+
+	private function handlePlayerCarOverlap(_car:Car, _player:Player) {
+		_player.hitByCar();
 	}
 
 	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {
