@@ -31,24 +31,23 @@ class CollisionManager extends FlxBasic {
 
 		FlxG.collide(level.player, level.walls, handlerPlayerBonk);
 
-		for(hydrant in level.hydrants){
-			FlxG.collide(level.player, hydrant);
+		for (hydrant in level.hydrants) {
+			FlxG.collide(hydrant, level.player);
 		}
 
 		for (car in level.cars) {
 			FlxG.collide(car, level.walls, handleCarCollideWithWall);
 		}
 
-		for(hydrant in level.hydrants){
+		for (hydrant in level.hydrants) {
 			FlxG.collide(hydrant, level.player);
-			for(car in level.cars)
-				FlxG.overlap(hydrant, car, handleCarHydrantOverlap);
+			for (car in level.cars)
+				FlxG.overlap(car, hydrant, handleCarHydrantOverlap);
 		}
-		
+
 		level.groundType.overlaps(level.player);
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);
-
 	}
 
 	public function isRoof(p:FlxPoint):Bool {
@@ -59,7 +58,7 @@ class CollisionManager extends FlxBasic {
 		trigger.activate();
 	}
 
-	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap){
+	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap) {
 		_player.attemptBonk();
 	}
 	
@@ -68,7 +67,6 @@ class CollisionManager extends FlxBasic {
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
-		trace("Car collided with wall");
 		_car.kill();
 	}
 }

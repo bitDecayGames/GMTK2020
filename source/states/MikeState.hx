@@ -61,10 +61,10 @@ class MikeState extends FlxState {
 		for (o in objectiveManager.getObjectives()) {
 			add(o);
 		}
-		// The camera. It's real easy. Flixel is nice.
+
 		FlxG.camera.follow(player, TOPDOWN, 1);
-		FlxG.camera.zoom = 0.5;
-		// needed to correctly create collision data for things off camera
+		FlxG.camera.zoom = 0.15;
+
 		FlxG.worldBounds.set(0, 0, 2000, 2000);
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
