@@ -9,10 +9,8 @@ class Dialogs {
         ["Ah! Finally some peace. Maybe Tillies has a good show tonight."],
         ["Closed already? I suppose it is pretty late.", "Leroy might still be up - I could bug him for a bit."],
         ["No answer... The guy sleeps like a log", "I wonder if there's any wildlife at the park"],
-        ["Not even a rat to keep me some company."],
-        ["8"],
-        ["9"],
-        ["10"],
-        ["11"],
+        ["Not even a rat to keep me some company.", "It's time to call it a night.", "I left my toothbrush at my girl's house."],
+        ["Nobody's home. I'll just buy another one."],
+        ["Time to turn in. This city has nothing more for me."]
     ];
 }

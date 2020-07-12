@@ -19,12 +19,14 @@ class Car extends FlxSprite {
 	private var maxTurnRadius:Float;
 	private var visionRadius:Float;
 	private var slowingDistance:Float;
-	private var foundTarget:Bool;
 	private var naturalDeath:Bool = false;
 	private var player:Player;
+	private var engineReference:String;
 
-	public function new( _player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
-			slowingDistance:Float = 100) {
+	public var foundTarget:Bool;
+
+	public function new(_player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1,
+			visionRadius:Float = 500, slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		width *= .8;
 		height = width;
@@ -38,6 +40,8 @@ class Car extends FlxSprite {
 		this.visionRadius = visionRadius;
 		this.slowingDistance = slowingDistance;
 		player = _player;
+
+		engineReference = FmodManager.PlaySoundWithReference(FmodSFX.EngineIdle);
 	}
 
 	public function setTarget(target:FlxSprite):Car {
@@ -101,7 +105,11 @@ class Car extends FlxSprite {
 		}
 		velocityToAngle();
 		if (Math.abs(angleDif) < 45) {
-			speedUp(1);
+			if (foundTarget) {
+				speedUp(2);
+			} else {
+				speedUp(1);
+			}
 		} else {
 			// TODO: FX car is hitting the breaks hard here (every frame though...)
 			// TODO: FX if the car.foundTarget, then it is actively chasing the player
@@ -147,6 +155,7 @@ class Car extends FlxSprite {
 			&& Math.abs(FlxPoint.get(0, 1).angleBetween(FlxPoint.get(targetPos.x - position.x, targetPos.y - position.y)) - angle) < 45) {
 			// TODO: FX the car JUST saw the player, so maybe some tire squeels here?
 			// TODO: FX you could also maybe play a revving sound since car speeds up
+			FmodManager.PlaySoundOneShot(FmodSFX.EngineRev);
 			foundTarget = true;
 		}
 	}
@@ -164,6 +173,16 @@ class Car extends FlxSprite {
 				}
 			}
 		}
+
+		var myLocation = new FlxPoint(x, y);
+		var playerLocation = new FlxPoint(player.x, player.y);
+
+		var distanceFromPlayer:Float = myLocation.distanceTo(playerLocation);
+		var carEngineRange = 500;
+		if (distanceFromPlayer < carEngineRange) {
+			FmodManager.SetEventParameterOnSound(engineReference, "CloseToPlayer", 1 - distanceFromPlayer / carEngineRange);
+		}
+
 		checkForTargetVisibility();
 	}
 
@@ -175,9 +194,11 @@ class Car extends FlxSprite {
 			var myLocation = new FlxPoint(x, y);
 			var playerLocation = new FlxPoint(player.x, player.y);
 
-			if (myLocation.distanceTo(playerLocation) < 300){
+			if (myLocation.distanceTo(playerLocation) < 300) {
 				FmodManager.PlaySoundOneShot(FmodSFX.CarImpact);
 			}
+
+			FmodManager.StopSoundImmediately(engineReference);
 
 			var middle = getMidpoint();
 			var bloodEmitter = new Blood();

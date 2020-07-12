@@ -1,5 +1,6 @@
 package states;
 
+import com.bitdecay.analytics.Common;
 import objectives.ObjectiveManager;
 import analytics.Measurements;
 import com.bitdecay.analytics.Bitlytics;
@@ -64,7 +65,7 @@ class FailState extends FlxUIState {
         _btnDone.updateHitbox();
         add(_btnDone);
 
-        Bitlytics.Instance().Queue(Measurements.GameFailed, ObjectiveManager.hackObjectivesComplete);
+        Bitlytics.Instance().Queue(Common.GameCompleted, ObjectiveManager.hackObjectivesComplete);
         Bitlytics.Instance().ForceFlush();
     }
 

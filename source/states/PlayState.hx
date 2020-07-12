@@ -58,7 +58,6 @@ class PlayState extends FlxState
 		player = level.player;
 		player.setState(this);
 		add(player);
-		player.screenCenter();
 
 		hud = new HUD(player);
 		add(hud);
@@ -92,7 +91,8 @@ class PlayState extends FlxState
 		objectiveManager.setDialogManager(dialogManager);
 
 		// The camera. It's real easy. Flixel is nice.
-		FlxG.camera.follow(player, TOPDOWN, 1);
+		FlxG.camera.follow(player, TOPDOWN, 0.1);
+		FlxG.camera.pixelPerfectRender = true;
 		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
