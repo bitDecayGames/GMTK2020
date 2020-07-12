@@ -1,5 +1,6 @@
-package entities;
+package hud;
 
+import objectives.Objective;
 import flixel.ui.FlxSpriteButton;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
@@ -15,6 +16,12 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	public var showTime = 0.2;
 	public var hideTime = 0.2;
 
+	private var objectives:Array<ObjectiveHUDElement> = [];
+
+	private var xPad:Float;
+	private var yPad:Float;
+	private var lineSpacing = 25;
+
 	public function new() {
 		super();
 		scrollFactor.set(0, 0);
@@ -26,8 +33,14 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 
 		notebook = new FlxSprite(AssetPaths.notebookHUD__png);
 		notebook.scrollFactor.set(0, 0);
-		notebook.setPosition(100, FlxG.height);
+
+		xPad = (FlxG.width - notebook.width) / 2;
+		yPad = (FlxG.height - notebook.height) / 2;
+
+		notebook.setPosition(xPad, FlxG.height);
 		add(notebook);
+
+		
 	}
 
 	private function onClick() {
@@ -39,7 +52,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 
 	private function showBook() {
 		var hideSmallBook = FlxTween.linearMotion(button, button.x, button.y, FlxG.width - button.width, FlxG.height, showTime);
-		var showBigBook = FlxTween.linearMotion(notebook, 100, FlxG.height, 100, 50, showTime);
+		var showBigBook = FlxTween.linearMotion(notebook, xPad, FlxG.height, xPad, yPad, showTime);
 		
 		showBigBook.onComplete = (t) -> hudVisible = true;
 
@@ -47,7 +60,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	private function hideBook(time:Float) {
-		var hideBigBook = FlxTween.linearMotion(notebook, notebook.x, notebook.y, 100, FlxG.height, time);
+		var hideBigBook = FlxTween.linearMotion(notebook, notebook.x, notebook.y, xPad, FlxG.height, time);
 		var showSmallBook = FlxTween.linearMotion(button, FlxG.width - button.width, FlxG.height, FlxG.width - button.width,  FlxG.height - button.height, time);
 		
 		showSmallBook.onComplete = (t) -> hudVisible = false;
@@ -62,5 +75,29 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 		if (FlxG.mouse.justPressed && hudVisible) {
 			hideBook(hideTime);
 		}
+
+		for (i in 0...objectives.length) {
+			var obj = objectives[i];
+
+			obj.displayed = true;
+
+			obj.update(delta);
+			// 13 is a magic number to space the first line from the top of the notebook
+			obj.setElementPosition(
+				xPad + 30,
+				notebook.y + 13 + lineSpacing*i
+			);
+
+			if (!obj.obj.completed) {
+				// don't render past our first incomplete objective
+				break;
+			}
+		}
+	}
+
+	public function addObjective(obj:Objective) {
+		var hudElement = new ObjectiveHUDElement(obj);
+		objectives.push(hudElement);
+		add(hudElement);
 	}
 }

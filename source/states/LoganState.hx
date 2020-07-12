@@ -1,5 +1,6 @@
 package states;
 
+import hud.ObjectiveHUDElement;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
@@ -8,7 +9,7 @@ import flixel.ui.FlxButton;
 import flixel.FlxG;
 import collisions.CollisionManager;
 import entities.Player;
-import entities.NotebookHUD;
+import hud.NotebookHUD;
 import flixel.FlxState;
 import levels.Loader;
 import entities.RainMaker;
@@ -50,6 +51,9 @@ class LoganState extends FlxState
 		FlxG.camera.pixelPerfectRender = true;
 		
 		notebookHUD = new NotebookHUD();
+		for (o in level.objectiveManager.getObjectives()) {
+			notebookHUD.addObjective(o);
+		}
 		add(notebookHUD);
 	}
 
