@@ -37,7 +37,7 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
-		FlxG.worldBounds.set(0,0,walls.width,walls.height);
+		FlxG.worldBounds.set(0, 0, walls.width, walls.height);
 		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
 		groundType.setTileProperties(1, FlxObject.ANY, setPlayerGroundType("concrete"));
 		groundType.setTileProperties(2, FlxObject.ANY, setPlayerGroundType("grass"));
@@ -99,14 +99,16 @@ class Level {
 		}, "CarPaths");
 	}
 
-	public function spawnCar() {
+	public function spawnCar():Car {
 		if (carSpawners != null && carSpawners.length > 0) {
 			var car = carSpawners[rnd.int(0, carSpawners.length - 1)].spawn();
 			cars.push(car);
 			if (player != null) {
 				car.setTarget(player);
 			}
+			return car;
 		}
+		return null;
 	}
 
 	private function setPlayerGroundType(type:String):(FlxObject, FlxObject) -> Void {
@@ -117,7 +119,7 @@ class Level {
 
 	public function update(elapsed:Float) {
 		carSpawnTimer -= elapsed;
-		if(carSpawnTimer <= 0.0){
+		if (carSpawnTimer <= 0.0) {
 			spawnCar();
 			carSpawnTimer = carSpawnTime;
 		}

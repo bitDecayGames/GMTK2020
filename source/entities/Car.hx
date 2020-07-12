@@ -19,8 +19,9 @@ class Car extends FlxSprite {
 	private var maxTurnRadius:Float;
 	private var visionRadius:Float;
 	private var slowingDistance:Float;
-	private var foundTarget:Bool;
 	private var naturalDeath:Bool = false;
+
+	public var foundTarget:Bool;
 
 	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {

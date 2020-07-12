@@ -63,7 +63,8 @@ class MikeState extends FlxState {
 		}
 
 		FlxG.camera.follow(player, TOPDOWN, 1);
-		FlxG.camera.zoom = 0.15;
+		filters.push(new ShaderFilter(shader));
+		FlxG.camera.setFilters(filters);
 
 		FlxG.worldBounds.set(0, 0, 2000, 2000);
 		var collisions = new CollisionManager(this);
@@ -75,5 +76,11 @@ class MikeState extends FlxState {
 		if (FlxG.keys.justPressed.SPACE) {
 			level.spawnCar();
 		}
+		for (car in level.cars) {
+			if (car.alive) {
+				shader.addLight(new LightInfo(car, FlxG.camera));
+			}
+		}
+		shader.setLightData();
 	}
 }
