@@ -7,5 +7,12 @@ class Dialogs {
         ["Wait, I need a mask to shop here? Ok... I think Tony has one on the south side of town."],
         ["Great, a rainy mask.", "Feels like a wet diaper is on my face...", "Anything for a smoke I guess."],
         ["Ah! Finally some peace. Now for the real job ahead. Let's get some milk!"],
+        ["5"],
+        ["6"],
+        ["7"],
+        ["8"],
+        ["9"],
+        ["10"],
+        ["11"],
     ];
 }

@@ -104,6 +104,8 @@ class PlayState extends FlxState
             FlxG.camera.flash(FlxColor.WHITE, 0.5);
 		}
 
+		dialogManager.update();
+
 		super.update(elapsed);
 	}
 }
