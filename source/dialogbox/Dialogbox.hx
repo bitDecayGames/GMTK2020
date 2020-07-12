@@ -66,7 +66,7 @@ class Dialogbox extends FlxBasic {
             allowNextPage();
             isTyping = false;
         }
-        flxTypeText.start(.05, false, false, [progressionKey], callback);
+        flxTypeText.start(.05, false, false, [], callback);
     }
 
     public function continueToNextPage():Void {
