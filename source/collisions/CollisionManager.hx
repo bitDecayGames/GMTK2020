@@ -58,15 +58,12 @@ class CollisionManager extends FlxBasic {
 		trigger.activate();
 	}
 
-<<<<<<< HEAD
 	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant){
 		trace("car hit hydrant");
 	}
-}
-=======
+
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
 		trace("Car collided with wall");
 		_car.kill();
 	}
 }
->>>>>>> c11b402ca24330da303b03b29a0495a96da35079
