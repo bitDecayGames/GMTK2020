@@ -27,7 +27,7 @@ class Player extends FlxSprite {
 	var DIVE_RECOVERY_TIME:Float = 0.5;
 	// BONK
 	var BONK_MAX_SPEED = 75.0;
-	var BONK_DECELERATION = 100.0;
+	var BONK_DECELERATION = 150.0;
 	var BONK_MAX_TIME:Float = 1;
 
 	var control = new Actions();
@@ -78,9 +78,10 @@ class Player extends FlxSprite {
 
 		animation.add("idle", [0], 5);
 		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
-		animation.add("run", [8, 9, 10, 11], 10);
+		animation.add("run", [8, 9, 10, 11, 12], 10);
 		animation.add("divingAccel", [16, 17], 20, false);
 		animation.add("divingDecel", [18, 19, 20, 21, 22], 10, false);
+		animation.add("bonked", [24, 25, 26], 6, false);
 
 		animation.callback = (name, frameNumber, frameIndex) -> {
 			switch name {
@@ -120,6 +121,7 @@ class Player extends FlxSprite {
 						FmodManager.PlaySoundOneShot(FmodSFX.DiveLand);
 						FlxG.camera.shake(0.01, 0.1);
 					}
+				case "bonked":
 				default:
 					throw "No animation case found. SOMETHING HAS GONE WRONG!! : " + name;
 			}
@@ -317,14 +319,11 @@ class Player extends FlxSprite {
 
 	private function bonking(delta:Float){
 		if (bonkTime == 0.0) {
-			// play bonk animation
 			bonkTime += delta;
 
-			velocity.set(BONK_MAX_SPEED, 0);
+			currentSpeed = BONK_MAX_SPEED;
 
-			var bonkAngle = (facingAngle + 180) % 360;
-
-			velocity.rotate(FlxPoint.weak(0, 0), bonkAngle);
+			animation.play("bonked");
 		}
 		else {
 			bonkTime += delta;
@@ -334,6 +333,10 @@ class Player extends FlxSprite {
 				currentSpeed = 0;
 			}
 		}
+
+		velocity.set(currentSpeed, 0);
+		var bonkAngle = (facingAngle + 180) % 360;
+		velocity.rotate(FlxPoint.weak(0, 0), bonkAngle);
 
 		if (bonkTime > BONK_MAX_TIME) {
 			animation.play("idle");
