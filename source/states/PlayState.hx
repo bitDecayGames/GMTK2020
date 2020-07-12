@@ -41,7 +41,7 @@ class PlayState extends FlxState
 	var level:Level;
 
 	var dialogManager:dialogbox.DialogManager;
-
+	
 	override public function create()
 	{
 		Bitlytics.Instance().Queue(Common.GameStarted, 1);

@@ -55,10 +55,6 @@ class Dialogbox extends FlxBasic {
 
 	override public function update(elapsed:Float) {
         super.update(elapsed);
-
-        if (canContinueToNextPage && FlxG.keys.justPressed.SPACE) {
-            continueToNextPage();
-        }
     }
 
     public function startTyping():Void {

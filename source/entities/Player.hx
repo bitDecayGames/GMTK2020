@@ -134,7 +134,11 @@ class Player extends FlxSprite {
 					}
 				case "bonked":
 					if (frameNumber == 0) {
-						FmodManager.PlaySoundOneShot(FmodSFX.DiveBonk);
+						if(!bonkedByCar){
+							FmodManager.PlaySoundOneShot(FmodSFX.DiveBonk);
+						} else {
+							FmodManager.PlaySoundOneShot(FmodSFX.HitPlayer);
+						}
 						FlxG.camera.shake(0.0075, 0.25);
 					}
 				default:

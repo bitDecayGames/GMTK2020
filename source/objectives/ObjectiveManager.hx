@@ -40,6 +40,7 @@ class ObjectiveManager{
     public function moveOn(){
         for(o in objectives){
             if(!o.completed){
+                FmodManager.PlaySoundOneShot(FmodSFX.NewMission);
                 o.revive();
                 dialogManager.loadDialog(o.index-1);
                 return;

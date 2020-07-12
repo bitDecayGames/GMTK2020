@@ -12,6 +12,7 @@ class FmodSongs {
 }
 
 class FmodSFX {
+    public static inline var CarImpact:String = "event:/SFX/CarImpact/CarImpact";
     public static inline var Dive:String = "event:/SFX/Dive/Dive";
     public static inline var DiveBonk:String = "event:/SFX/Dive/DiveBonk";
     public static inline var DiveLand:String = "event:/SFX/Dive/DiveLand";
@@ -26,10 +27,9 @@ class FmodSFX {
     public static inline var Lightning:String = "event:/SFX/Lightning/Lightning";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
-    public static inline var none:String = "event:/SFX/none";
+    public static inline var NewMission:String = "event:/SFX/NewMission/NewMission";
     public static inline var PutDownNotebook:String = "event:/SFX/PutDownNotebook/PutDownNotebook";
     public static inline var Rain:String = "event:/SFX/Rain/Rain";
     public static inline var Mystery:String = "event:/SFX/SplashScreens/Mystery";
     public static inline var Typewriter:String = "event:/SFX/Typewriter/Typewriter";
-    public static inline var TypewriterAsync:String = "event:/SFX/Typewriter/TypewriterAsync";
 }
