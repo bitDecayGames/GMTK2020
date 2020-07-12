@@ -66,7 +66,7 @@
           "y": 2892,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "Travel south", "index": 4}
+          "values": {"description": "Check out Tillies", "index": 4}
         },
         {
           "name": "Objective",
@@ -212,13 +212,13 @@
         {"name": "Trashcan", "id": 51, "_eid": "57575842", "x": 2275, "y": 2164, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 52, "_eid": "57575842", "x": 1420, "y": 2216, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 53, "_eid": "57575842", "x": 1199, "y": 1828, "originX": 0, "originY": 0, "rotation": 0},
-        {"name": "Trashcan", "id": 54, "_eid": "57575842", "x": 1572, "y": 1408, "originX": 0, "originY": 0, "rotation": 0},
+        {"name": "Trashcan", "id": 54, "_eid": "57575842", "x": 1566, "y": 1523, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 55, "_eid": "57575842", "x": 1775, "y": 1073, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 56, "_eid": "57575842", "x": 1776, "y": 1048, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 57, "_eid": "57575842", "x": 1425, "y": 1026, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 58, "_eid": "57575842", "x": 1425, "y": 1277, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 59, "_eid": "57575842", "x": 963, "y": 1277, "originX": 0, "originY": 0, "rotation": 0},
-        {"name": "Trashcan", "id": 60, "_eid": "57575842", "x": 998, "y": 1276, "originX": 0, "originY": 0, "rotation": 0},
+        {"name": "Trashcan", "id": 60, "_eid": "57575842", "x": 960, "y": 1247, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 61, "_eid": "57575842", "x": 998, "y": 356, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 62, "_eid": "57575842", "x": 1958, "y": 635, "originX": 0, "originY": 0, "rotation": 0},
         {"name": "Trashcan", "id": 63, "_eid": "57575842", "x": 2602, "y": 856, "originX": 0, "originY": 0, "rotation": 0},

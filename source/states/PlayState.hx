@@ -58,7 +58,6 @@ class PlayState extends FlxState
 		player = level.player;
 		player.setState(this);
 		add(player);
-		player.screenCenter();
 
 		hud = new HUD(player);
 		add(hud);
