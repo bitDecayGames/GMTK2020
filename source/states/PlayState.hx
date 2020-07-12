@@ -1,5 +1,7 @@
 package states;
 
+import com.bitdecay.analytics.Common;
+import com.bitdecay.analytics.Bitlytics;
 import hud.NotebookHUD;
 import levels.Level;
 import collisions.CollisionManager;
@@ -39,6 +41,7 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		Bitlytics.Instance().Queue(Common.GameStarted, 1);
 		FmodManager.PlaySong(FmodSongs.MainGame);
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
 		FmodManager.RegisterLightning(rainReference);
@@ -85,8 +88,6 @@ class PlayState extends FlxState
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
-		//needed to correctly create collision data for things off camera
-		FlxG.worldBounds.set(0,0,2000,2000);
 
 		super.create();
 	}

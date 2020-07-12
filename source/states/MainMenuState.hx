@@ -76,7 +76,7 @@ class MainMenuState extends FlxUIState {
     }
 
     function clickPlay():Void {
-        FmodFlxUtilities.TransitionToStateAndStopMusic(new VictoryState());
+        FmodFlxUtilities.TransitionToStateAndStopMusic(new PlayState());
     }
 
     function clickCredits():Void {
