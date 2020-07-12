@@ -48,11 +48,11 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 		notebook.setPosition(xPad, FlxG.height);
 		add(notebook);
 
-		compass = new FlxSprite(AssetPaths.raindrop__png);
+		compass = new FlxSprite(AssetPaths.compass__png);
 		compass.setPosition(compass.width / 2, FlxG.height - compass.height);
 		add(compass);
 
-		compassNeedle = new FlxSprite(AssetPaths.raindrop__png);
+		compassNeedle = new FlxSprite(AssetPaths.needle__png);
 		compassNeedle.setPosition(compassNeedle.height / 2, FlxG.height - compassNeedle.height);
 		add(compassNeedle);
 	}
