@@ -14,6 +14,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	private var notebook:FlxSprite;
 	private var button:FlxSpriteButton;
 	private var compass:FlxSprite;
+	private var compassNeedle:FlxSprite;
 
 	public var hudVisible:Bool = false;
 
@@ -47,9 +48,13 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 		notebook.setPosition(xPad, FlxG.height);
 		add(notebook);
 
-		compass = new FlxSprite(AssetPaths.raindrop__png);
-		compass.setPosition(compass.height / 2, FlxG.height - compass.height);
+		compass = new FlxSprite(AssetPaths.compass__png);
+		compass.setPosition(compass.width / 2, FlxG.height - compass.height);
 		add(compass);
+
+		compassNeedle = new FlxSprite(AssetPaths.needle__png);
+		compassNeedle.setPosition(compassNeedle.height / 2, FlxG.height - compassNeedle.height);
+		add(compassNeedle);
 	}
 
 	private function onClick() {
@@ -60,6 +65,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	private function showBook() {
+		FmodManager.PlaySoundOneShot(FmodSFX.GrabNotebook);
 		var hideSmallBook = FlxTween.linearMotion(button, button.x, button.y, FlxG.width - button.width, FlxG.height, showTime);
 		var showBigBook = FlxTween.linearMotion(notebook, xPad, FlxG.height, xPad, yPad, showTime);
 		
@@ -69,6 +75,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	private function hideBook(time:Float) {
+		FmodManager.PlaySoundOneShot(FmodSFX.PutDownNotebook);
 		var hideBigBook = FlxTween.linearMotion(notebook, notebook.x, notebook.y, xPad, FlxG.height, time);
 		var showSmallBook = FlxTween.linearMotion(button, FlxG.width - button.width, FlxG.height, FlxG.width - button.width,  FlxG.height - button.height, time);
 		
@@ -99,7 +106,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 
 			if (!obj.obj.completed) {
 				var vec:FlxVector = player.getPosition().subtractPoint(obj.obj.getPosition());
-				compass.angle = vec.degrees - 90;
+				compassNeedle.angle = vec.degrees - 90;
 				// don't render past our first incomplete objective
 				break;
 			}

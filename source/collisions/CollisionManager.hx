@@ -1,5 +1,6 @@
 package collisions;
 
+import entities.TrashCan;
 import flixel.tile.FlxTilemap;
 import entities.Hydrant;
 import entities.Car;
@@ -35,14 +36,26 @@ class CollisionManager extends FlxBasic {
 			FlxG.collide(hydrant, level.player);
 		}
 
+		for (trashcan in level.trashcans) {
+			FlxG.collide(trashcan, level.player);
+			for (car in level.cars) {
+				FlxG.overlap(car, trashcan, handleCarTrashCanOverlap);
+			}
+		}
+
 		for (car in level.cars) {
 			FlxG.collide(car, level.walls, handleCarCollideWithWall);
+			if (!level.player.isBonked() && !level.player.isDiving())
+			{
+				FlxG.collide(car, level.player, handlePlayerCarOverlap);
+			}
 		}
 
 		for (hydrant in level.hydrants) {
 			FlxG.collide(hydrant, level.player);
-			for (car in level.cars)
+			for (car in level.cars) {
 				FlxG.overlap(car, hydrant, handleCarHydrantOverlap);
+			}
 		}
 
 		level.groundType.overlaps(level.player);
@@ -52,6 +65,14 @@ class CollisionManager extends FlxBasic {
 
 	public function isRoof(p:FlxPoint):Bool {
 		return level.walls.overlapsPoint(p);
+	}
+
+	private function handleCarTrashCanOverlap(_car:Car, _trashcan:TrashCan) {
+		_trashcan.asplode();
+	}
+
+	private function handlePlayerCarOverlap(_car:Car, _player:Player) {
+		_player.hitByCar();
 	}
 
 	private function handlePlayerTriggerOverlap(_player:Player, trigger:Trigger) {

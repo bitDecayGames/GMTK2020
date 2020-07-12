@@ -35,9 +35,9 @@ class HUD extends FlxTypedGroup<FlxSprite>
         forEach(function(sprite) sprite.scrollFactor.set(0, 0));
     }
 
-    public function updateHUD(health:Int, money:Int)
+    override function update(delta:Float)
     {
         this.health = player.health;
-        healthCounter.text = health + " / 3";
+        healthCounter.text = this.health + " / 3";
     }
 }

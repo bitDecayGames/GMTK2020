@@ -1,5 +1,6 @@
 package states;
 
+import com.bitdecay.analytics.Bitlytics;
 import flixel.FlxSprite;
 import flixel.input.keyboard.FlxKey;
 import haxefmod.flixel.FmodFlxUtilities;
@@ -99,4 +100,14 @@ class MainMenuState extends FlxUIState {
         System.exit(0);
     }
     #end
+
+    override public function onFocusLost() {
+		super.onFocusLost();
+		Bitlytics.Instance().Pause();
+	}
+
+	override public function onFocus() {
+		super.onFocus();
+		Bitlytics.Instance().Resume();
+	}
 }

@@ -20,17 +20,26 @@ class DialogManager {
 		if (typeText.getIsTyping() && soundId == ""){
 			soundId = FmodManager.PlaySoundWithReference(FmodSFX.Typewriter);
 		} 
-		if (!typeText.getIsTyping() && soundId != ""){
-			FmodManager.StopSound(soundId);
+		if (typeText == null || !typeText.getIsTyping()){
+            if (soundId != ""){
+                FmodManager.StopSound(soundId);
+            }
 			soundId = "";
-		}
+        }
     }
 
     public function loadDialog(index:Int){
         if (typeText != null) {
-            typeText.flxTypeText.destroy();
-            typeText.destroy();
+            typeText.flxTypeText.kill();
+            typeText.kill();
         }
+        FmodManager.StopSound(soundId);
+        soundId = "";
+        
+        if (index >= Dialogs.DialogArray.length) {
+        trace("index out of bounds for dialogs");
+        return;
+    }
 		typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
 		parentState.add(typeText);
     }

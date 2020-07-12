@@ -20,11 +20,13 @@ class Car extends FlxSprite {
 	private var visionRadius:Float;
 	private var slowingDistance:Float;
 	private var naturalDeath:Bool = false;
+	private var player:Player;
+	private var engineReference:String;
 
 	public var foundTarget:Bool;
 
-	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
-			slowingDistance:Float = 100) {
+	public function new(_player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1,
+			visionRadius:Float = 500, slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		width *= .8;
 		height = width;
@@ -37,6 +39,9 @@ class Car extends FlxSprite {
 		}
 		this.visionRadius = visionRadius;
 		this.slowingDistance = slowingDistance;
+		player = _player;
+
+		engineReference = FmodManager.PlaySoundWithReference(FmodSFX.EngineIdle);
 	}
 
 	public function setTarget(target:FlxSprite):Car {
@@ -100,7 +105,11 @@ class Car extends FlxSprite {
 		}
 		velocityToAngle();
 		if (Math.abs(angleDif) < 45) {
-			speedUp(1);
+			if (foundTarget) {
+				speedUp(2);
+			} else {
+				speedUp(1);
+			}
 		} else {
 			// TODO: FX car is hitting the breaks hard here (every frame though...)
 			// TODO: FX if the car.foundTarget, then it is actively chasing the player
@@ -163,6 +172,16 @@ class Car extends FlxSprite {
 				}
 			}
 		}
+
+		var myLocation = new FlxPoint(x, y);
+		var playerLocation = new FlxPoint(player.x, player.y);
+
+		var distanceFromPlayer:Float = myLocation.distanceTo(playerLocation);
+		var carEngineRange = 500;
+		if (distanceFromPlayer < carEngineRange) {
+			FmodManager.SetEventParameterOnSound(engineReference, "CloseToPlayer", 1 - distanceFromPlayer / carEngineRange);
+		}
+
 		checkForTargetVisibility();
 	}
 
@@ -170,6 +189,15 @@ class Car extends FlxSprite {
 		super.kill();
 		if (!naturalDeath) {
 			// TODO: FX car explosion
+
+			var myLocation = new FlxPoint(x, y);
+			var playerLocation = new FlxPoint(player.x, player.y);
+
+			if (myLocation.distanceTo(playerLocation) < 300) {
+				FmodManager.PlaySoundOneShot(FmodSFX.CarImpact);
+			}
+
+			FmodManager.StopSoundImmediately(engineReference);
 
 			var middle = getMidpoint();
 			var bloodEmitter = new Blood();
@@ -220,12 +248,14 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 	public var x:Float;
 	public var y:Float;
 	public var carPath:Array<FlxPoint>;
+	public var player:Player;
 
-	public function new(x:Float, y:Float, carPath:Array<FlxPoint>) {
+	public function new(x:Float, y:Float, carPath:Array<FlxPoint>, _player:Player) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.carPath = carPath;
+		player = _player;
 		// remove this debug sprite
 		// var debugSprite = new FlxSprite(x, y);
 		// debugSprite.makeGraphic(20, 20);
@@ -237,7 +267,7 @@ class CarSpawner extends FlxTypedGroup<FlxSprite> {
 	}
 
 	public function spawn():Car {
-		var car = new Car(x, y);
+		var car = new Car(player, x, y);
 		var carPathCopy = carPath.map((p) -> p);
 		car.setDestinations(carPathCopy);
 		car.snapAngleTowardsDestination();

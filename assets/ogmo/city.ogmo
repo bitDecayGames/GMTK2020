@@ -74,7 +74,7 @@
     {
       "definition": "entity",
       "name": "CarPaths",
-      "gridSize": {"x": 100, "y": 100},
+      "gridSize": {"x": 25, "y": 25},
       "exportID": "52064963",
       "requiredTags": ["car"],
       "excludedTags": []
@@ -115,7 +115,9 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [],
+      "texture": "../images/objects/Trashcan.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAb0lEQVR42u3UwQlAIQgG4CZyDLdwIofu0UHwiWZKx4T/EvghGY3xShczTy9tjIjclFHBoglLaIZpFADmFUxfxxbdNUZJQT2hN20b1BtdTRI5R8QeaLMgyTEYATalTV/BpOSurmAWLT+VDPXyvs1ffe0KUIutmchYAAAAAElFTkSuQmCC"
     },
     {
       "exportID": "49215375",
@@ -236,7 +238,7 @@
       "exportID": "52070682",
       "name": "CarSpawn",
       "limit": -1,
-      "size": {"x": 100, "y": 100},
+      "size": {"x": 50, "y": 50},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -253,7 +255,7 @@
       "color": "#0038ffff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 100, "y": 100},
+      "tileSize": {"x": 50, "y": 50},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -266,6 +268,42 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": ["car"],
+      "values": []
+    },
+    {
+      "exportID": "57575842",
+      "name": "Trashcan",
+      "limit": -1,
+      "size": {"x": 20, "y": 20},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 20, "y": 20},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": true,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
       "values": []
     }
   ],
