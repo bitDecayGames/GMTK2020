@@ -21,12 +21,9 @@ class Level {
 	public var objectiveManager:ObjectiveManager; 
 
 	public function new(map:FlxOgmo3Loader) {
-		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
-		walls = map.loadTilemap(AssetPaths.cityTiles__png, "Walls");
-		groundType = map.loadGridMap("GroundType");
-		// walls.setTileProperties(1, FlxObject.ANY);
- 		// walls.setTileProperties(2, FlxObject.ANY);
- 		// walls.setTileProperties(3, FlxObject.ANY);
+		//background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
+		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
+		//walls.setTileProperties(1, FlxObject.ANY, (a,b)->{ trace('been touched');});
 
 		checkpointManager = new CheckpointManager();
 		objectiveManager = new ObjectiveManager();
