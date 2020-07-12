@@ -7,10 +7,19 @@ package;
 
 class FmodSongs {
     public static inline var LetsGo:String = "event:/Music/LetsGo";
+    public static inline var MainGame:String = "event:/Music/MainGame";
     public static inline var SomethingIsAmiss:String = "event:/Music/SomethingIsAmiss";
 }
 
 class FmodSFX {
+    public static inline var Dive:String = "event:/SFX/Dive/Dive";
+    public static inline var DiveLand:String = "event:/SFX/Dive/DiveLand";
+    public static inline var FootstepConcrete:String = "event:/SFX/Footsteps/FootstepConcrete";
+    public static inline var FootstepConcreteRun:String = "event:/SFX/Footsteps/FootstepConcreteRun";
+    public static inline var FootstepGrass:String = "event:/SFX/Footsteps/FootstepGrass";
+    public static inline var FootstepGrassRun:String = "event:/SFX/Footsteps/FootstepGrassRun";
+    public static inline var FootstepMetal:String = "event:/SFX/Footsteps/FootstepMetal";
+    public static inline var FootstepMetalRun:String = "event:/SFX/Footsteps/FootstepMetalRun";
     public static inline var Lightning:String = "event:/SFX/Lightning/Lightning";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
