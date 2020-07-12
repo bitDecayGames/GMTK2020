@@ -25,7 +25,7 @@ class Level {
 	public var hydrants:Array<Hydrant>;
 	public var trashcans:Array<TrashCan>;
 	public var carSpawners:Array<CarSpawner>;
-	public var carSpawnTime:Float = 3.0;
+	public var carSpawnTime:Float = 5.0;
 	public var carSpawnTimer:Float;
 
 	private var rnd:FlxRandom = new FlxRandom();
