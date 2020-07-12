@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.FlxG;
 import entities.Hydrant;
 import entities.Car;
 import flixel.math.FlxPoint;
@@ -34,6 +35,7 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
+		FlxG.worldBounds.set(0,0,walls.width,walls.height);
 		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
 		groundType.setTileProperties(1, FlxObject.ANY, setPlayerGroundType("concrete"));
 		groundType.setTileProperties(2, FlxObject.ANY, setPlayerGroundType("grass"));
