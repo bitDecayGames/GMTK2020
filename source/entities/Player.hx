@@ -89,10 +89,11 @@ class Player extends FlxSprite {
 					if (frameNumber == 2 || frameNumber == 6) {
 						switch groundType {
 							case "grass":
-								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepGrass);
 							case "concrete":
 								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcrete);
 							case "metal":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepMetal);
 							default:
 								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
 						}
@@ -101,10 +102,11 @@ class Player extends FlxSprite {
 					if (frameNumber == 0 || frameNumber == 2) {
 						switch groundType {
 							case "grass":
-								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepGrass);
 							case "concrete":
 								FmodManager.PlaySoundOneShot(FmodSFX.FootstepConcreteRun);
 							case "metal":
+								FmodManager.PlaySoundOneShot(FmodSFX.FootstepMetalRun);
 							default:
 								throw "No ground type. SOMETHING HAS GONE WRONG!! : " + groundType;
 						}
