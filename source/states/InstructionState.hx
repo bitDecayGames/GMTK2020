@@ -1,5 +1,7 @@
 package states;
 
+import analytics.Measurements;
+import com.bitdecay.analytics.Bitlytics;
 import haxefmod.flixel.FmodFlxUtilities;
 import helpers.UiHelpers;
 import flixel.FlxG;
@@ -18,6 +20,8 @@ class InstructionState extends FlxUIState {
 
     override public function create():Void {
         super.create();
+        Bitlytics.Instance().Queue(Measurements.InstructionsViewed, 1);
+        
         bgColor = FlxColor.TRANSPARENT;
 
         _movementText = new FlxText();
