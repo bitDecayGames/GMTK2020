@@ -12,3 +12,5 @@ Notes:
 - Ability to either play a sound with a set volume or to set the volume via a function
 - Need to be able to check if a sound is playing
 - Add ability to pause and resume a sound
+- Typewriter text doesn't stop on windows, but does on html5
+- Proximity volume
