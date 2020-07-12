@@ -50,10 +50,8 @@ class PlayState extends FlxState
 				
 		var player:Player;
 		player = level.player;
+		player.setState(this);
 		add(player);
-		for (e in player.extras()) {
-			add(e);
-		}
 		player.screenCenter();
 
 		hud = new HUD(player);
@@ -83,6 +81,7 @@ class PlayState extends FlxState
 
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
+		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
 		//needed to correctly create collision data for things off camera
@@ -95,6 +94,10 @@ class PlayState extends FlxState
 	{
 		if (FmodManager.HasLightningStruck(rainReference)) {
             FlxG.camera.flash(FlxColor.WHITE, 0.5);
+		}
+
+		if (FlxG.keys.justPressed.N) {
+			level.spawnCar();
 		}
 
 		super.update(elapsed);
