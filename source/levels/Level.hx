@@ -1,5 +1,6 @@
 package levels;
 
+import entities.TrashCan;
 import flixel.FlxG;
 import entities.Hydrant;
 import entities.Car;
@@ -22,6 +23,7 @@ class Level {
 	public var player:Player;
 	public var cars:Array<Car>;
 	public var hydrants:Array<Hydrant>;
+	public var trashcans:Array<TrashCan>;
 	public var carSpawners:Array<CarSpawner>;
 	public var carSpawnTime:Float = 5.0;
 	public var carSpawnTimer:Float;
@@ -50,6 +52,7 @@ class Level {
 		carSpawners = [];
 
 		hydrants = new Array<Hydrant>();
+		trashcans = new Array<TrashCan>();
 
 		map.loadEntities(function loadEntity(entity:EntityData) {
 			switch (entity.name) {
@@ -84,6 +87,12 @@ class Level {
 					hydrant.x = entity.x;
 					hydrant.y = entity.y;
 					hydrants.push(hydrant);
+					return;
+				case "Trashcan":
+					var trashcan = new TrashCan();
+					trashcan.x = entity.x;
+					trashcan.y = entity.y;
+					trashcans.push(trashcan);
 					return;
 				default:
 					throw 'Unrecognized actor type ${entity.name}';

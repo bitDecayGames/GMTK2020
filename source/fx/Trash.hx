@@ -5,11 +5,11 @@ import flixel.math.FlxVector;
 import flixel.effects.particles.FlxEmitter;
 import flixel.effects.particles.FlxParticle;
 
-class Hydrant extends FlxEmitter {
+class Trash extends FlxEmitter {
 
 	public function new() {
 		super();
-		loadParticles(AssetPaths.Hydrant__png, true);
+		loadParticles(AssetPaths.trashPaticle__png, true);
 		
 		this.lifespan.set(0.2,0.5);
 		launchMode = CIRCLE;
@@ -17,11 +17,13 @@ class Hydrant extends FlxEmitter {
 	}
 
 	public function blast(angle:Float) {
-		this.launchAngle.set(angle - 15, angle + 15);
+		this.launchAngle.set(randomAngle(), randomAngle());
 
-		angle += 90;
+		this.angle.set(randomAngle(), randomAngle(), randomAngle(), randomAngle());
+		this.start(true, 0, 0);
+	}
 
-		this.angle.set(angle - 15, angle - 15, angle + 75, angle + 75);
-		this.start(true, 0, 1);
+	private function randomAngle() {
+		return Math.random() * 180;
 	}
 }
