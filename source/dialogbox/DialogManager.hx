@@ -35,6 +35,11 @@ class DialogManager {
         }
         FmodManager.StopSound(soundId);
         soundId = "";
+        
+        if (index >= Dialogs.DialogArray.length) {
+        trace("index out of bounds for dialogs");
+        return;
+    }
 		typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
 		parentState.add(typeText);
     }
