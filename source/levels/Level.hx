@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.FlxG;
 import entities.Hydrant;
 import entities.Car;
 import flixel.math.FlxPoint;
@@ -22,6 +23,8 @@ class Level {
 	public var cars:Array<Car>;
 	public var hydrants:Array<Hydrant>;
 	public var carSpawners:Array<CarSpawner>;
+	public var carSpawnTime:Float = 5.0;
+	public var carSpawnTimer:Float;
 
 	private var rnd:FlxRandom = new FlxRandom();
 
@@ -34,6 +37,7 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
+		FlxG.worldBounds.set(0,0,walls.width,walls.height);
 		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
 		groundType.setTileProperties(1, FlxObject.ANY, setPlayerGroundType("concrete"));
 		groundType.setTileProperties(2, FlxObject.ANY, setPlayerGroundType("grass"));
@@ -109,5 +113,13 @@ class Level {
 		return (a, b) -> {
 			player.groundType = type;
 		};
+	}
+
+	public function update(elapsed:Float) {
+		carSpawnTimer -= elapsed;
+		if(carSpawnTimer <= 0.0){
+			spawnCar();
+			carSpawnTimer = carSpawnTime;
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package states;
 
+import dialogbox.DialogManager;
+import com.bitdecay.analytics.Common;
+import com.bitdecay.analytics.Bitlytics;
 import hud.NotebookHUD;
 import levels.Level;
 import collisions.CollisionManager;
@@ -37,8 +40,11 @@ class PlayState extends FlxState
 	var filters:Array<BitmapFilter> = [];
 	var level:Level;
 
+	var dialogManager:dialogbox.DialogManager;
+
 	override public function create()
 	{
+		Bitlytics.Instance().Queue(Common.GameStarted, 1);
 		FmodManager.PlaySong(FmodSongs.MainGame);
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
 		FmodManager.RegisterLightning(rainReference);
@@ -79,13 +85,14 @@ class PlayState extends FlxState
 		var rain = new RainMaker(camera, collisions, 250);
 		add(rain);
 
+		dialogManager = new DialogManager(this);
+		objectiveManager.setDialogManager(dialogManager);
+
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
 		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
-		//needed to correctly create collision data for things off camera
-		FlxG.worldBounds.set(0,0,2000,2000);
 
 		super.create();
 	}
@@ -99,7 +106,9 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.N) {
 			level.spawnCar();
 		}
+		dialogManager.update();
 
 		super.update(elapsed);
+		level.update(elapsed);
 	}
 }

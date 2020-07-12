@@ -1,5 +1,8 @@
 package states;
 
+import analytics.Measurements;
+import com.bitdecay.analytics.Common;
+import com.bitdecay.analytics.Bitlytics;
 import config.Configure;
 import flixel.FlxSprite;
 import flixel.ui.FlxVirtualPad.FlxDPadMode;
@@ -22,8 +25,11 @@ class CreditsState extends FlxUIState {
     var _txtRole:Array<FlxText>;
     var _txtCreator:Array<FlxText>;
 
+    var creditsFinishedReported = false;
+
     override public function create():Void {
         super.create();
+        Bitlytics.Instance().Queue(Measurements.CreditsViewed, 1);
         bgColor = FlxColor.TRANSPARENT;
 
         // Button
@@ -129,6 +135,10 @@ class CreditsState extends FlxUIState {
 
         // Stop scrolling when "Thank You" text is in the center of the screen
         if (_txtThankYou.y + _txtThankYou.height/2 < FlxG.height/2){
+            if (!creditsFinishedReported) {
+                Bitlytics.Instance().Queue(Measurements.CreditsCompleted, 1);
+                creditsFinishedReported = true;
+            }
             return;
         }
 
