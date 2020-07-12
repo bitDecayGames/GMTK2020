@@ -23,8 +23,7 @@ class Level {
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.cityTiles__png, "Walls");
-		groundType = map.loadGridMap("GroundType");
-		// walls.setTileProperties(1, FlxObject.ANY);
+		walls.setTileProperties(1, FlxObject.ANY);
  		// walls.setTileProperties(2, FlxObject.ANY);
  		// walls.setTileProperties(3, FlxObject.ANY);
 
