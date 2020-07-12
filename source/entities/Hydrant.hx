@@ -8,5 +8,6 @@ class Hydrant extends FlxSprite{
     {
         super();
         super.loadGraphic(AssetPaths.Hydrant__png, true);
+        this.immovable = true;
     }
 }
