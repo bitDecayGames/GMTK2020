@@ -166,7 +166,7 @@ class Car extends FlxSprite {
 		super.kill();
 		if (!naturalDeath) {
 			// TODO: FX car explosion
-			// TODO: spawn car explosion
+			// TODO: spawn car explosion particles
 			var deadCar = new DeadCar(x, y, angle);
 			deadCar.width = width;
 			deadCar.height = height;
@@ -186,6 +186,7 @@ class DeadCar extends FlxSprite {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		hurt(elapsed);
+		alpha = health / 3.0;
 	}
 }
 
