@@ -18,7 +18,7 @@ class Car extends FlxSprite {
 	private var slowingDistance:Float;
 	private var foundTarget:Bool;
 
-	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 200,
+	public function new(x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		origin.y += 30; // per Erik's request to have the sprite rotate from farther back on the car
@@ -74,7 +74,7 @@ class Car extends FlxSprite {
 		} else {
 			speedUp(-3);
 		}
-		clampToSpeed(!foundTarget ? maxSpeed * .8 : maxSpeed);
+		clampToSpeed(!foundTarget ? maxSpeed * .3 : maxSpeed);
 		return targetOffset.length < slowingDistance * 0.1;
 	}
 
@@ -106,9 +106,12 @@ class Car extends FlxSprite {
 	}
 
 	private function checkForTargetVisibility() {
+		var position = getPosition();
+		var targetPos:FlxPoint = target != null ? target.getPosition().add(target.width / 2.0, target.height / 2.0) : null;
 		if (!foundTarget
 			&& target != null
-			&& getPosition().distanceTo(target.getPosition().add(target.width / 2.0, target.height / 2.0)) < visionRadius) {
+			&& position.distanceTo(targetPos) < visionRadius
+			&& Math.abs(FlxPoint.get(0, 1).angleBetween(FlxPoint.get(targetPos.x - position.x, targetPos.y - position.y)) - angle) < 45) {
 			// TODO: FX the car JUST saw the player, so maybe some tire squeels here?
 			// TODO: FX you could also maybe play a revving sound since car speeds up
 			foundTarget = true;
