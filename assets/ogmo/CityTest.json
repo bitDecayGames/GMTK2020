@@ -36,7 +36,7 @@
           "y": 343,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "Get some cigs!", "index": 3}
+          "values": {"description": "Get some cigs!", "index": 1}
         },
         {
           "name": "Objective",
@@ -56,7 +56,77 @@
           "y": 342,
           "originX": 0,
           "originY": 0,
-          "values": {"description": "Get some cigs, round2!", "index": 1}
+          "values": {"description": "Get some cigs, round2!", "index": 3}
+        },
+        {
+          "name": "Objective",
+          "id": 5,
+          "_eid": "49689277",
+          "x": 758,
+          "y": 1444,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "Travel south", "index": 4}
+        },
+        {
+          "name": "Objective",
+          "id": 6,
+          "_eid": "49689277",
+          "x": 1755,
+          "y": 1554,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "Visit ya' boi!", "index": 5}
+        },
+        {
+          "name": "Objective",
+          "id": 7,
+          "_eid": "49689277",
+          "x": 1587,
+          "y": 1060,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "Hide from the cars.", "index": 6}
+        },
+        {
+          "name": "Objective",
+          "id": 8,
+          "_eid": "49689277",
+          "x": 495,
+          "y": 199,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "7", "index": 7}
+        },
+        {
+          "name": "Objective",
+          "id": 9,
+          "_eid": "49689277",
+          "x": 1150,
+          "y": 1443,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "8", "index": 8}
+        },
+        {
+          "name": "Objective",
+          "id": 10,
+          "_eid": "49689277",
+          "x": 1072,
+          "y": 763,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "9", "index": 9}
+        },
+        {
+          "name": "Objective",
+          "id": 11,
+          "_eid": "49689277",
+          "x": 1599,
+          "y": 317,
+          "originX": 0,
+          "originY": 0,
+          "values": {"description": "10", "index": 10}
         }
       ]
     },
