@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.ui.FlxSpriteButton;
@@ -16,8 +17,14 @@ class LoganState extends FlxState
 {
 	private var notebookHUD:NotebookHUD;
 
+	var rainReference:String;
+
 	override public function create() {
 		super.create();
+
+		FmodManager.PlaySong(FmodSongs.MainGame);
+		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
+		FmodManager.RegisterLightning(rainReference);
 
 		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
 		trace(level.background.x);
@@ -45,5 +52,8 @@ class LoganState extends FlxState
 
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
+		if (FmodManager.HasLightningStruck(rainReference)) {
+			FlxG.camera.flash(FlxColor.WHITE, 0.5);
+		}
 	}
 }

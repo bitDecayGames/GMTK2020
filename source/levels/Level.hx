@@ -26,9 +26,9 @@ class Level {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
 		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
 		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
-		groundType.setTileProperties(1, FlxObject.ANY, (a,b)->{ player.groundType = "concrete";});
-		groundType.setTileProperties(2, FlxObject.ANY, (a,b)->{ player.groundType = "grass";});
-		groundType.setTileProperties(3, FlxObject.ANY, (a,b)->{ player.groundType = "metal";});
+		groundType.setTileProperties(1, FlxObject.ANY, setPlayerGroundType("concrete"));
+		groundType.setTileProperties(2, FlxObject.ANY, setPlayerGroundType("grass"));
+		groundType.setTileProperties(3, FlxObject.ANY, setPlayerGroundType("metal"));
 
 		checkpointManager = new CheckpointManager();
 		objectiveManager = new ObjectiveManager();
@@ -60,5 +60,11 @@ class Level {
 						throw 'Unrecognized actor type ${entity.name}';
 				}
 			}, "Entities");
+	}
+
+	private function setPlayerGroundType(type:String):(FlxObject, FlxObject) -> Void {
+		return (a, b) -> {
+			player.groundType = type;
+		};
 	}
 }

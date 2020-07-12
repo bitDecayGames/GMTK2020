@@ -31,6 +31,7 @@ class CollisionManager extends FlxBasic {
 			FlxG.collide(car, level.walls);
 		}
 
+		level.groundType.overlaps(level.player);
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);
 	}
