@@ -3,6 +3,7 @@ package collisions;
 import flixel.tile.FlxTilemap;
 import flixel.math.FlxPoint;
 import entities.Player;
+import entities.Car;
 import trigger.Trigger;
 import flixel.FlxG;
 import levels.Level;
@@ -10,7 +11,6 @@ import flixel.FlxState;
 import flixel.FlxBasic;
 
 class CollisionManager extends FlxBasic {
-
 	var game:FlxState;
 	var level:Level;
 
@@ -28,12 +28,13 @@ class CollisionManager extends FlxBasic {
 		super.update(elapsed);
 
 		FlxG.collide(level.player, level.walls);
-		for(car in level.cars){
-			FlxG.collide(car, level.walls);
+		for (car in level.cars) {
+			FlxG.collide(car, level.walls, handleCarCollideWithWall);
 		}
 
 		FlxG.collide(level.player, level.walls, handlerPlayerBonk);
 
+		level.groundType.overlaps(level.player);
 		FlxG.overlap(level.player, level.triggers, handlePlayerTriggerOverlap);
 		FlxG.overlap(level.player, level.background);
 	}
@@ -48,5 +49,10 @@ class CollisionManager extends FlxBasic {
 
 	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap){
 		_player.bonk();
+	}
+}
+	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
+		trace("Car collided with wall");
+		_car.kill();
 	}
 }
