@@ -60,6 +60,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	private function showBook() {
+		FmodManager.PlaySoundOneShot(FmodSFX.GrabNotebook);
 		var hideSmallBook = FlxTween.linearMotion(button, button.x, button.y, FlxG.width - button.width, FlxG.height, showTime);
 		var showBigBook = FlxTween.linearMotion(notebook, xPad, FlxG.height, xPad, yPad, showTime);
 		
@@ -69,6 +70,7 @@ class NotebookHUD extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	private function hideBook(time:Float) {
+		FmodManager.PlaySoundOneShot(FmodSFX.PutDownNotebook);
 		var hideBigBook = FlxTween.linearMotion(notebook, notebook.x, notebook.y, xPad, FlxG.height, time);
 		var showSmallBook = FlxTween.linearMotion(button, FlxG.width - button.width, FlxG.height, FlxG.width - button.width,  FlxG.height - button.height, time);
 		
