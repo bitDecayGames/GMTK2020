@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxBasic;
 import haxe.macro.Expr.Case;
 import openfl.Assets;
 import flixel.FlxObject;
@@ -9,6 +10,7 @@ import actions.Actions;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
+import fx.Blood;
 
 using extensions.FlxObjectExt;
 
@@ -51,6 +53,8 @@ class Player extends FlxSprite {
 	// var hitboxes:AttackHitboxes;
 
 	public var groundType = "grass";
+
+	public var blood = new Blood();
 
 	// ########## FROM BRAWNFIRE ##########
 
@@ -135,6 +139,10 @@ class Player extends FlxSprite {
 	// 	hitboxes.finishAnimation();
 	// }
 
+	public function extras():Array<FlxBasic> {
+		return [blood];
+	}
+
 	override public function update(delta:Float):Void {
         super.update(delta);
         // TODO(JF): Potentially add based on brawnfire
@@ -149,6 +157,14 @@ class Player extends FlxSprite {
 
 		updateMovement(delta);
 		// trace('Player (x,y): (${this.x},${this.y}');
+
+		blood.setPosition(this.x, this.y);
+
+		if (FlxG.keys.justPressed.T) {
+			var middle = getMidpoint();
+			blood.setPosition(middle.x, middle.y);
+			blood.blast(90);
+		}
 	}
 
 	private function updateMovement(delta:Float) {

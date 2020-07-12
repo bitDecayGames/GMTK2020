@@ -35,6 +35,9 @@ class LoganState extends FlxState
 		var player:Player;
 		player = level.player;
 		add(player);
+		for (e in player.extras()) {
+			add(e);
+		}
 		player.screenCenter();
 
 		var collisions = new CollisionManager(this);
