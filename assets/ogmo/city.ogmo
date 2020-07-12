@@ -74,7 +74,7 @@
     {
       "definition": "entity",
       "name": "CarPaths",
-      "gridSize": {"x": 100, "y": 100},
+      "gridSize": {"x": 25, "y": 25},
       "exportID": "52064963",
       "requiredTags": ["car"],
       "excludedTags": []
@@ -236,7 +236,7 @@
       "exportID": "52070682",
       "name": "CarSpawn",
       "limit": -1,
-      "size": {"x": 100, "y": 100},
+      "size": {"x": 50, "y": 50},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -253,7 +253,7 @@
       "color": "#0038ffff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 100, "y": 100},
+      "tileSize": {"x": 50, "y": 50},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,

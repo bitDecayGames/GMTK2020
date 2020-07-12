@@ -75,6 +75,7 @@ class CollisionManager extends FlxBasic {
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
+		FmodManager.PlaySoundOneShot(FmodSFX.CarImpact);
 		_car.kill();
 	}
 }

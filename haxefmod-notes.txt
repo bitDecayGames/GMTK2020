@@ -10,3 +10,5 @@ Notes:
 - Error strings don't give any context around what call failed
 - The FMOD Studio project sometimes has artifact events that show up in the constant file generation
 - Ability to either play a sound with a set volume or to set the volume via a function
+- Need to be able to check if a sound is playing
+- Add ability to pause and resume a sound

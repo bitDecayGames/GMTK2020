@@ -49,6 +49,7 @@ class ObjectiveManager{
         ObjectiveManager.hackObjectivesComplete = 0;
         for(o in objectives){
             if(!o.completed){
+                FmodManager.PlaySoundOneShot(FmodSFX.NewMission);
                 var lastCompleted = o.index-1;
                 if (lastCompleted > lastReportedMissionComplete) {
                     Bitlytics.Instance().Queue(Measurements.MissionComplete, lastCompleted);
