@@ -22,6 +22,7 @@ class Car extends FlxSprite {
 	private var foundTarget:Bool;
 	private var naturalDeath:Bool = false;
 	private var player:Player;
+	private var engineReference:String;
 
 	public function new( _player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
 			slowingDistance:Float = 100) {
@@ -38,6 +39,8 @@ class Car extends FlxSprite {
 		this.visionRadius = visionRadius;
 		this.slowingDistance = slowingDistance;
 		player = _player;
+
+		engineReference = FmodManager.PlaySoundWithReference(FmodSFX.EngineIdle);
 	}
 
 	public function setTarget(target:FlxSprite):Car {
@@ -164,6 +167,17 @@ class Car extends FlxSprite {
 				}
 			}
 		}
+
+		var myLocation = new FlxPoint(x, y);
+		var playerLocation = new FlxPoint(player.x, player.y);
+
+		var distanceFromPlayer:Float = myLocation.distanceTo(playerLocation);
+		var carEngineRange = 500;
+		if (distanceFromPlayer < carEngineRange){
+			FmodManager.SetEventParameterOnSound(engineReference, "CloseToPlayer", 1 - distanceFromPlayer/carEngineRange);
+		}
+
+
 		checkForTargetVisibility();
 	}
 
@@ -178,6 +192,8 @@ class Car extends FlxSprite {
 			if (myLocation.distanceTo(playerLocation) < 300){
 				FmodManager.PlaySoundOneShot(FmodSFX.CarImpact);
 			}
+
+			FmodManager.StopSoundImmediately(engineReference);
 
 			var middle = getMidpoint();
 			var bloodEmitter = new Blood();
