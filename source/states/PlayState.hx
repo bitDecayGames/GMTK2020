@@ -111,4 +111,14 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		level.update(elapsed);
 	}
+
+	override public function onFocusLost() {
+		super.onFocusLost();
+		Bitlytics.Instance().Pause();
+	}
+
+	override public function onFocus() {
+		super.onFocus();
+		Bitlytics.Instance().Resume();
+	}
 }
