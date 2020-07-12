@@ -1,5 +1,7 @@
 package states;
 
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import collisions.CollisionManager;
 import openfl.filters.BitmapFilter;
 import objectives.ObjectiveManager;
@@ -30,7 +32,7 @@ class TannerState extends FlxState
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
 		FmodManager.RegisterLightning(rainReference);
 
-		FlxG.debugger.drawDebug = true;
+		// FlxG.debugger.drawDebug = true;
 		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
 		add(level.walls);
 		add(level.background);
@@ -57,7 +59,9 @@ class TannerState extends FlxState
 		// add(carB);
 		// carB.setTarget(player);
 
-		FlxG.camera.follow(player, TOPDOWN, 10.1);
+		FlxG.camera.follow(player, TOPDOWN, 0.1);
+		var deadzone = new FlxPoint(100, 50);
+		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
 		//needed to correctly create collision data for things off camera
 		FlxG.worldBounds.set(0,0,2000,2000);
 
