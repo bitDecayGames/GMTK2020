@@ -9,16 +9,20 @@ class Blood extends FlxEmitter {
 
 	public function new() {
 		super();
-		// loadParticles()
+		loadParticles(AssetPaths.gutsParticle__png, true);
+		
 		this.lifespan.set(0.2,0.5);
 		launchMode = CIRCLE;
-		speed.set(10, 100, 0, 0);
-		this.makeParticles(2, 2, FlxColor.RED);
+		speed.set(20, 200, 0, 0);
 	}
 
 	public function blast(angle:Float) {
 		this.launchAngle.set(angle - 15, angle + 15);
-		this.start();
+
+		angle += 90;
+
+		this.angle.set(angle - 15, angle - 15, angle + 15, angle + 15);
+		this.start(true, 0, 5);
 		trace("emitting now");
 	}
 }
