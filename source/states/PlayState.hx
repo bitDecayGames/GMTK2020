@@ -73,6 +73,9 @@ class PlayState extends FlxState
 
 		for(hydrant in level.hydrants)
 			add(hydrant);
+
+		for(trashcan in level.trashcans)
+			add(trashcan);
 		
 		for (spawner in level.carSpawners) {
 			add(spawner);
