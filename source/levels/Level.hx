@@ -93,7 +93,7 @@ class Level {
 		map.loadEntities((entity : EntityData) -> {
 			if (entity.name == "CarSpawn") {
 				var carPath:Array<FlxPoint> = entity.nodes.map((n) -> FlxPoint.get(n.x, n.y));
-				var carSpawn = new CarSpawner(entity.x, entity.y, carPath);
+				var carSpawn = new CarSpawner(entity.x, entity.y, carPath, player);
 				carSpawners.push(carSpawn);
 			}
 		}, "CarPaths");
