@@ -1,5 +1,6 @@
 package states;
 
+import openfl.filters.ShaderFilter;
 import dialogbox.DialogManager;
 import com.bitdecay.analytics.Common;
 import com.bitdecay.analytics.Bitlytics;
@@ -24,26 +25,24 @@ import entities.Player;
 import flixel.math.FlxPoint;
 import shaders.LightShader;
 
-class PlayState extends FlxState
-{
+class PlayState extends FlxState {
 	var rainReference:String;
 
 	var notebookHUD:NotebookHUD;
 	var hud:HUD;
 
-	var boiGroup: FlxGroup;
-	var triggerGroup: FlxGroup;
+	var boiGroup:FlxGroup;
+	var triggerGroup:FlxGroup;
 
-	var checkpointManager: CheckpointManager;
-	var objectiveManager: ObjectiveManager;
-	var shader = new LightShader(); 
+	var checkpointManager:CheckpointManager;
+	var objectiveManager:ObjectiveManager;
+	var shader = new LightShader();
 	var filters:Array<BitmapFilter> = [];
 	var level:Level;
 
 	var dialogManager:dialogbox.DialogManager;
-	
-	override public function create()
-	{
+
+	override public function create() {
 		Bitlytics.Instance().Queue(Common.GameStarted, 1);
 		FmodManager.PlaySong(FmodSongs.MainGame);
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
@@ -53,7 +52,7 @@ class PlayState extends FlxState
 		level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
 		add(level.walls);
 		add(level.background);
-				
+
 		var player:Player;
 		player = level.player;
 		player.setState(this);
@@ -71,12 +70,12 @@ class PlayState extends FlxState
 		}
 		add(notebookHUD);
 
-		for(hydrant in level.hydrants)
+		for (hydrant in level.hydrants)
 			add(hydrant);
 
-		for(trashcan in level.trashcans)
+		for (trashcan in level.trashcans)
 			add(trashcan);
-		
+
 		for (spawner in level.carSpawners) {
 			add(spawner);
 		}
@@ -93,17 +92,18 @@ class PlayState extends FlxState
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 0.1);
 		FlxG.camera.pixelPerfectRender = true;
+		filters.push(new ShaderFilter(shader));
+		FlxG.camera.setFilters(filters);
 		// FlxG.camera.zoom = 0.15;
 		var deadzone = new FlxPoint(100, 50);
-		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
+		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width / 2 - deadzone.x / 2, FlxG.camera.height / 2 - deadzone.y / 2, deadzone.x, deadzone.y);
 
 		super.create();
 	}
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		if (FmodManager.HasLightningStruck(rainReference)) {
-            FlxG.camera.flash(FlxColor.WHITE, 0.5);
+			FlxG.camera.flash(FlxColor.WHITE, 0.5);
 		}
 
 		if (FlxG.keys.justPressed.N) {
@@ -114,8 +114,10 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		level.update(elapsed);
 
-		remove(notebookHUD,true);
+		remove(notebookHUD, true);
 		add(notebookHUD);
+
+		updateLightShader();
 	}
 
 	override public function onFocusLost() {
@@ -126,5 +128,14 @@ class PlayState extends FlxState
 	override public function onFocus() {
 		super.onFocus();
 		Bitlytics.Instance().Resume();
+	}
+
+	private function updateLightShader() {
+		for (car in level.cars) {
+			if (car.alive) {
+				shader.addLight(new LightInfo(car, FlxG.camera));
+			}
+		}
+		shader.setLightData();
 	}
 }
