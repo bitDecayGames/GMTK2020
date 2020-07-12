@@ -12,6 +12,7 @@ import entities.Car;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
+import flixel.math.FlxRandom;
 
 class Level {
 	public var walls:flixel.tile.FlxTilemap;
@@ -21,6 +22,8 @@ class Level {
 	public var cars:Array<Car>;
 	public var hydrants:Array<Hydrant>;
 	public var carSpawners:Array<CarSpawner>;
+
+	private var rnd:FlxRandom = new FlxRandom();
 
 	public var triggers:FlxTypedGroup<Trigger>;
 
@@ -94,7 +97,8 @@ class Level {
 
 	public function spawnCar() {
 		if (carSpawners != null && carSpawners.length > 0) {
-			var car = carSpawners[0].spawn();
+			var car = carSpawners[rnd.int(0, carSpawners.length - 1)].spawn();
+			cars.push(car);
 			if (player != null) {
 				car.setTarget(player);
 			}

@@ -51,7 +51,7 @@ class TannerState extends FlxState
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 
-		var rain = new RainMaker(camera, 250);
+		var rain = new RainMaker(camera, collisions, 250);
 		add(rain);
 
 		// var x = 500.0;
