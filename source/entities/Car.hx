@@ -135,6 +135,20 @@ class Car extends FlxSprite {
 		super.kill();
 		// TODO: FX car explosion
 		// TODO: spawn car explosion
+		FlxG.state.add(new DeadCar(x, y, angle));
+	}
+}
+
+class DeadCar extends FlxSprite {
+	public function new(x:Float, y:Float, angle:Float) {
+		super(x, y, AssetPaths.car1__png);
+		this.angle = angle;
+		health = 3; // 3 seconds to live
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+		hurt(elapsed);
 	}
 }
 
