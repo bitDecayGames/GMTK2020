@@ -1,5 +1,6 @@
 package levels;
 
+import entities.Car;
 import flixel.math.FlxPoint;
 import objectives.ObjectiveManager;
 import checkpoint.CheckpointManager;
@@ -13,8 +14,9 @@ import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 class Level {
 	public var walls:flixel.tile.FlxTilemap;
 	public var background:flixel.tile.FlxTilemap;
-	public var groundType:Map<String, Array<FlxPoint>>;
+	public var groundType:flixel.tile.FlxTilemap;
 	public var player:Player;
+	public var cars:Array<Car>;
 
 	public var triggers:FlxTypedGroup<Trigger>;
 	var checkpointManager:CheckpointManager;
@@ -22,14 +24,16 @@ class Level {
 
 	public function new(map:FlxOgmo3Loader) {
 		background = map.loadTilemap(AssetPaths.cityTiles__png, "Ground");
-		walls = map.loadTilemap(AssetPaths.cityTiles__png, "Walls");
-		walls.setTileProperties(1, FlxObject.ANY);
- 		// walls.setTileProperties(2, FlxObject.ANY);
- 		// walls.setTileProperties(3, FlxObject.ANY);
+		walls = map.loadTilemap(AssetPaths.collisions__png, "Walls");
+		groundType = map.loadTilemap(AssetPaths.groundTypes__png, "GroundType");
+		groundType.setTileProperties(1, FlxObject.ANY, (a,b)->{ player.groundType = "concrete";});
+		groundType.setTileProperties(2, FlxObject.ANY, (a,b)->{ player.groundType = "grass";});
+		groundType.setTileProperties(3, FlxObject.ANY, (a,b)->{ player.groundType = "metal";});
 
 		checkpointManager = new CheckpointManager();
 		objectiveManager = new ObjectiveManager();
 		triggers = new FlxTypedGroup<Trigger>();
+		cars = new Array<Car>();
 		
 		map.loadEntities(function loadEntity(entity:EntityData)
 			{
@@ -51,6 +55,8 @@ class Level {
 						triggers.add(objective);
 						return;
 					default:
+					case "Hydrant":
+						return;
 						throw 'Unrecognized actor type ${entity.name}';
 				}
 			}, "Entities");
