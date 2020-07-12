@@ -9,7 +9,7 @@ class Trash extends FlxEmitter {
 
 	public function new() {
 		super();
-		loadParticles(AssetPaths.trashParticle__png, true);
+		loadParticles(AssetPaths.trashPaticle__png, true);
 		
 		this.lifespan.set(0.2,0.5);
 		launchMode = CIRCLE;
