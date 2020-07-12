@@ -54,6 +54,9 @@ class LukeState extends FlxState
 		for(o in objectiveManager.getObjectives())
 			add(o);
 
+		for(hydrant in level.hydrants)
+			add(hydrant);
+
 		var collisions = new CollisionManager(this);
 		collisions.setLevel(level);
 		

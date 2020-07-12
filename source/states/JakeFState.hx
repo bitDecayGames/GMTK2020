@@ -1,5 +1,11 @@
 package states;
 
+import collisions.CollisionManager;
+import flixel.math.FlxRect;
+import entities.RainMaker;
+import openfl.filters.BitmapFilter;
+import objectives.ObjectiveManager;
+import checkpoint.CheckpointManager;
 import hud.HUD;
 import flixel.util.FlxColor;
 import entities.Car;
@@ -11,11 +17,20 @@ import flixel.FlxState;
 import levels.Loader;
 import entities.Player;
 import flixel.math.FlxPoint;
+import shaders.LightShader;
 
 class JakeFState extends FlxState
 {
 	var rainReference:String;
 	var hud:HUD;
+
+	var boiGroup: FlxGroup;
+	var triggerGroup: FlxGroup;
+
+	var checkpointManager: CheckpointManager;
+	var objectiveManager: ObjectiveManager;
+	var shader = new LightShader(); 
+	var filters:Array<BitmapFilter> = [];
 
 	override public function create()
 	{
@@ -23,29 +38,39 @@ class JakeFState extends FlxState
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
 		FmodManager.RegisterLightning(rainReference);
 
+		// FlxG.debugger.drawDebug = true;
+		var level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
+		add(level.walls);
+		add(level.background);
+				
 		var player:Player;
-
-		player = new Player();
+		player = level.player;
+		add(player);
 		player.screenCenter();
+
+		objectiveManager = level.objectiveManager;
 
 		hud = new HUD(player);
 
-		var x = 500.0;
-		var y = 200.0;
-
-		var carA = new Car(x, y, new FlxPoint(0, 0), 1500, 5, 1000);
-		carA.setTarget(player);
-
-		var carB = new Car(0, 0, new FlxPoint(1000, 1000), 1500, 5, 1000);
-		carB.setTarget(player);
-
-		add(carA);
-		add(carB);
-		add(player);
 		add(hud);
+
+		objectiveManager = level.objectiveManager;
+
+		for(o in objectiveManager.getObjectives())
+			add(o);
+
+		var collisions = new CollisionManager(this);
+		collisions.setLevel(level);
+
+		var rain = new RainMaker(camera, collisions, 250);
+		add(rain);
 
 		// The camera. It's real easy. Flixel is nice.
 		FlxG.camera.follow(player, TOPDOWN, 1);
+		var deadzone = new FlxPoint(100, 50);
+		FlxG.camera.deadzone = new FlxRect(FlxG.camera.width/2 - deadzone.x/2, FlxG.camera.height/2 - deadzone.y/2, deadzone.x, deadzone.y);
+		//needed to correctly create collision data for things off camera
+		FlxG.worldBounds.set(0,0,2000,2000);
 
 		super.create();
 	}

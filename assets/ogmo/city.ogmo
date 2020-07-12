@@ -18,15 +18,6 @@
   "entityTags": ["car"],
   "layers": [
     {
-      "definition": "tile",
-      "name": "Ground",
-      "gridSize": {"x": 50, "y": 50},
-      "exportID": "42242616",
-      "exportMode": 0,
-      "arrayMode": 0,
-      "defaultTileset": "Test Tiles"
-    },
-    {
       "definition": "decal",
       "name": "Foreground",
       "gridSize": {"x": 8, "y": 8},
@@ -70,6 +61,15 @@
       "exportID": "51687498",
       "requiredTags": [],
       "excludedTags": []
+    },
+    {
+      "definition": "tile",
+      "name": "Ground",
+      "gridSize": {"x": 50, "y": 50},
+      "exportID": "42242616",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "Test Tiles"
     },
     {
       "definition": "entity",
@@ -190,8 +190,8 @@
       "values": [
         {"name": "description", "definition": "String", "defaults": "", "maxLength": 255, "trimWhitespace": true}
       ],
-      "texture": "../images/car/car0.png",
-      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAACCCAYAAAAaPKt3AAAELklEQVR42u2di40jMQhAp4t0kTLSRbpIF9tFukgZqSgrn44VSwDjv8kSCd3qZjzwbPwZm7GPQ/69nIvp95Pg8Xi4Fgv8rwRfX1+uhYF/h8UJjoofKDo6/cCmWlswPAvdWH9HA7fU46xNr+v1+rrf76/n8ylKup7uu1wuw4GTjhKbShquf8Dn89kss4BLbCoGri3h2+3WDTg9a3QJ//g/PFxSANcAGGBzku7FYkmTno2BLTaZuiXsDimRpAA/GIDhb004Q/FzNME6LDZRnmydpdCSkckQLddpOsv/SSVHoSWbJB4RGNwNuzcVuJZcbhbw//YhaxPYbwKmdQyDM/WiCDgJfbYlDQPM9suc7Sow3MTVHyHHVGU9herjPFKzWwTWGg0OmqaztLolgvVjnTlYLl0TMK0Gs4A53UOBuZxeBYxtagKWFHoApmmLgXHC3YElu1VgSakErOVwb2BJtwQMQ9liYDwGlnJ5BTDWr9kdwKXAWrcwA5jL8KnAuBsYBZxruAI4gAP4bEqotdAzgKVMHw58Op2WASfd04H/TAnnXs1mAdOMHwqcXIpz6d6w0uAD9E8DnjXKKhltBbAV2PJeuaNLV78PW6ZKLLMNI4E5W7rPaZVOr8wETtIVWHPnVcCSW3cH5lYoVpWwxa2Lga0v/jOALRMB3YG5pY4VQm2pBqaJPJewaW2JS2Rd4lgJzHloEXCugVgNbGlIzcDcGmuuhV4FLBUEZ79pQVxz592Ac/b/aWDRrT8BWApdekukhTjsJlxUQC4qL9vJ7xoqnBsMqcBcrkG0zs7CBKK9CBMfdgjhR+lfnBDeTnYVbKvAkA8mhfgoL985pNKUIvTeuiUJWGoQdhFaV63ARy7ndgNVuh/zVy5vD4Cc2R0WR+vBdBQTxacD41zzBMx5YxdgS4zzSBkCDDfPHkrWDjU1hmbg1QONAA7gDsA71F+tHgdwAAdwAAdwAAdwAAdwAAdwAAdwAAdwAAdwANOJeA/AVRPxdEXOG7CwHwkPzIULeAVGO0HZYzy8AxcHtXwqsLjC772VNm1N82ndUgBrEfHegIsi4qU9qjwDQ8xHAGNgGtLnCZi7RwXmYhi9AsN9AQzAUpSqZ+AkARzAARzAARzAARzAARzAq4E9RMQPBd5BmoBzr4cegZvehz8SWJvikWTlpzsacPMknpcv07rNWq7enUU7K6Yr8K6g2mEcJmBp5cEzcNXaknUToNmbG2hLu02LabtshmDZ3KAZ2Aq9uoS13qQr8E71t9tePBbglXVX24DIdPyQ9DDL9R4jsNz2M7U2dgHuDVsLXQycG0lZ3G0GcI3LS7Fa2b0y4ARMesjTAuAD25LbY0TdmiZ3wBNzEKqosNdbkVTC2BbDwVT8Qa2WFpOW8uiWmqmHRbaqB7YWHnU7+6ziX/oK7W0+ZHn2Ac1dbP0GXLJRxYemRUQAAAAASUVORK5CYII="
+      "texture": "../images/ObjectiveIcon.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAe0lEQVR42u3WQQqAQAhA0ekC3dD7X6B90aZFUuSMOhL/g0vhgRtbo7j25LHhlm1NHSvyWoyuNFBEuoEK6X3SUVwo0gsXgvTGuSKjcC7IaNwQMgvXhczGmZCzcJ+Qs3GvyCo4hTxh1XCP308lnEJWxN2fXCIiIiIiol90AFFAxaOlD1baAAAAAElFTkSuQmCC"
     },
     {
       "exportID": "51664167",
