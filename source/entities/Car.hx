@@ -19,13 +19,14 @@ class Car extends FlxSprite {
 	private var maxTurnRadius:Float;
 	private var visionRadius:Float;
 	private var slowingDistance:Float;
-	private var foundTarget:Bool;
 	private var naturalDeath:Bool = false;
 	private var player:Player;
 	private var engineReference:String;
 
-	public function new( _player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1, visionRadius:Float = 500,
-			slowingDistance:Float = 100) {
+	public var foundTarget:Bool;
+
+	public function new(_player:Player, x:Float, y:Float, destination:FlxPoint = null, maxSpeed:Float = 300, maxTurnRadius:Float = 1,
+			visionRadius:Float = 500, slowingDistance:Float = 100) {
 		super(x, y, AssetPaths.car0__png);
 		width *= .8;
 		height = width;
@@ -178,10 +179,9 @@ class Car extends FlxSprite {
 
 		var distanceFromPlayer:Float = myLocation.distanceTo(playerLocation);
 		var carEngineRange = 500;
-		if (distanceFromPlayer < carEngineRange){
-			FmodManager.SetEventParameterOnSound(engineReference, "CloseToPlayer", 1 - distanceFromPlayer/carEngineRange);
+		if (distanceFromPlayer < carEngineRange) {
+			FmodManager.SetEventParameterOnSound(engineReference, "CloseToPlayer", 1 - distanceFromPlayer / carEngineRange);
 		}
-
 
 		checkForTargetVisibility();
 	}
@@ -194,7 +194,7 @@ class Car extends FlxSprite {
 			var myLocation = new FlxPoint(x, y);
 			var playerLocation = new FlxPoint(player.x, player.y);
 
-			if (myLocation.distanceTo(playerLocation) < 300){
+			if (myLocation.distanceTo(playerLocation) < 300) {
 				FmodManager.PlaySoundOneShot(FmodSFX.CarImpact);
 			}
 
