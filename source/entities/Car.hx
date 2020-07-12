@@ -67,7 +67,6 @@ class Car extends FlxSprite {
 		} else if (angle < -180) {
 			angle += 360;
 		}
-		trace(FlxMath.roundDecimal(angle, 2));
 		velocityToAngle();
 		if (Math.abs(angleDif) < 45) {
 			speedUp(1);
