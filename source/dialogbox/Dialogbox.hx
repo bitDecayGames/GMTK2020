@@ -74,6 +74,7 @@ class Dialogbox extends FlxBasic {
     }
 
     public function continueToNextPage():Void {
+        nextPageTimer.stop();
         canContinueToNextPage = false;
         
         currentPage++;

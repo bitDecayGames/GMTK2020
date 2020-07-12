@@ -1,6 +1,7 @@
 package states;
 
-import entities.NotebookHUD;
+import dialogbox.DialogManager;
+import hud.NotebookHUD;
 import dialogbox.Dialogs;
 import flixel.input.keyboard.FlxKey;
 import dialogbox.Dialogbox;
@@ -31,8 +32,10 @@ class TannerState extends FlxState
 	var shader = new LightShader(); 
 	var filters:Array<BitmapFilter> = [];
 
-	var soundId:String = "";
-	var typeText:Dialogbox;
+	var dialogManager:dialogbox.DialogManager;
+
+	// var soundId:String = "";
+	// var typeText:Dialogbox;
 
 	override public function create()
 	{
@@ -82,11 +85,17 @@ class TannerState extends FlxState
 
 		FlxG.camera.pixelPerfectRender = true;
 		
-		var notebookHUD = new NotebookHUD();
+		var notebookHUD = new NotebookHUD(player);
+		for (o in level.objectiveManager.getObjectives()) {
+			notebookHUD.addObjective(o);
+		}
 		add(notebookHUD);
 
-		typeText = new Dialogbox(this, Dialogs.DialogArray[0], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
-		add(typeText);
+		// typeText = new Dialogbox(this, Dialogs.DialogArray[0], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
+		// add(typeText);
+
+		dialogManager = new DialogManager(this);
+		objectiveManager.setDialogManager(dialogManager);
 
 		super.create();
 	}
@@ -94,18 +103,19 @@ class TannerState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		FmodManager.Update();
+		dialogManager.update();
 
         if (FmodManager.HasLightningStruck(rainReference)) {
             FlxG.camera.flash(FlxColor.WHITE, 0.5);
 		}
 
-		if (typeText.getIsTyping() && soundId == ""){
-			soundId = FmodManager.PlaySoundWithReference(FmodSFX.Typewriter);
-		} 
-		if (!typeText.getIsTyping() && soundId != ""){
-			FmodManager.StopSound(soundId);
-			soundId = "";
-		}
+		// if (typeText.getIsTyping() && soundId == ""){
+		// 	soundId = FmodManager.PlaySoundWithReference(FmodSFX.Typewriter);
+		// } 
+		// if (!typeText.getIsTyping() && soundId != ""){
+		// 	FmodManager.StopSound(soundId);
+		// 	soundId = "";
+		// }
 		
 		super.update(elapsed);
 	}
