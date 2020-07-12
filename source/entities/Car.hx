@@ -72,6 +72,8 @@ class Car extends FlxSprite {
 		if (Math.abs(angleDif) < 45) {
 			speedUp(1);
 		} else {
+			// TODO: FX car is hitting the breaks hard here (every frame though...)
+			// TODO: FX if the car.foundTarget, then it is actively chasing the player
 			speedUp(-3);
 		}
 		clampToSpeed(!foundTarget ? maxSpeed * .3 : maxSpeed);
