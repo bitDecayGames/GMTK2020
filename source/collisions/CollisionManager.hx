@@ -50,7 +50,7 @@ class CollisionManager extends FlxBasic {
 	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap){
 		_player.bonk();
 	}
-}
+	
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {
 		trace("Car collided with wall");
 		_car.kill();
