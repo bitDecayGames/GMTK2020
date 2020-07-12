@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxSprite;
 import flixel.input.keyboard.FlxKey;
 import haxefmod.flixel.FmodFlxUtilities;
 import flixel.text.FlxText;
@@ -33,26 +34,32 @@ class MainMenuState extends FlxUIState {
         FlxG.log.notice("loaded scene");
         bgColor = FlxColor.TRANSPARENT;
 
+        var bgImage = new FlxSprite(AssetPaths.title__png);
+        bgImage.scale.x = FlxG.width / bgImage.width;
+        bgImage.scale.y = FlxG.height / bgImage.height;
+        bgImage.screenCenter();
+        add(bgImage);
+
         _txtTitle = new FlxText();
-        _txtTitle.setPosition(FlxG.width/2, FlxG.height/4);
+        _txtTitle.setPosition(FlxG.width/5, FlxG.height/2);
         _txtTitle.size = 40;
         _txtTitle.alignment = FlxTextAlign.CENTER;
         _txtTitle.text = "Game Title";
         
-        add(_txtTitle);
+        // add(_txtTitle);
 
         _btnPlay = UiHelpers.CreateMenuButton("Play", clickPlay);
-        _btnPlay.setPosition(FlxG.width/2 - _btnPlay.width/2, FlxG.height - _btnPlay.height - 100);
+        _btnPlay.setPosition(FlxG.width/5 - _btnPlay.width/2, FlxG.height/2 + 85);
         _btnPlay.updateHitbox();
         add(_btnPlay);
 
         _btnInstructions = UiHelpers.CreateMenuButton("Instructions", clickInstructions);
-        _btnInstructions.setPosition(FlxG.width/2 - _btnInstructions.width/2, FlxG.height - _btnInstructions.height - 70);
+        _btnInstructions.setPosition(FlxG.width/5 - _btnInstructions.width/2, _btnPlay.y + 30);
         _btnInstructions.updateHitbox();
         add(_btnInstructions);
 
         _btnCredits = UiHelpers.CreateMenuButton("Credits", clickCredits);
-        _btnCredits.setPosition(FlxG.width/2 - _btnCredits.width/2, FlxG.height - _btnCredits.height - 40);
+        _btnCredits.setPosition(FlxG.width/5 - _btnCredits.width/2, _btnInstructions.y + 30);
         _btnCredits.updateHitbox();
         add(_btnCredits);
 
