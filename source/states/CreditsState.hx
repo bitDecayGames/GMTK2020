@@ -1,5 +1,8 @@
 package states;
 
+import analytics.Measurements;
+import com.bitdecay.analytics.Common;
+import com.bitdecay.analytics.Bitlytics;
 import config.Configure;
 import flixel.FlxSprite;
 import flixel.ui.FlxVirtualPad.FlxDPadMode;
@@ -22,8 +25,11 @@ class CreditsState extends FlxUIState {
     var _txtRole:Array<FlxText>;
     var _txtCreator:Array<FlxText>;
 
+    var creditsFinishedReported = false;
+
     override public function create():Void {
         super.create();
+        Bitlytics.Instance().Queue(Measurements.CreditsViewed, 1);
         bgColor = FlxColor.TRANSPARENT;
 
         // Button
@@ -63,7 +69,7 @@ class CreditsState extends FlxUIState {
         creditsTextVerticalOffset = FlxG.height;
 
         for (flxText in _txtCreator) {
-            flxText.setPosition(FlxG.width - 250, creditsTextVerticalOffset);
+            flxText.setPosition(0, creditsTextVerticalOffset);
             creditsTextVerticalOffset += 25;
         } 
 
@@ -115,9 +121,9 @@ class CreditsState extends FlxUIState {
             // Make an offset entry for the roles array
             finalRoleArray.push(new FlxText());
 
-            var creatorText = new FlxText();
-            creatorText.size = 15;
-            creatorText.text = creator;
+            var creatorText = new FlxText(0, 0, FlxG.width, creator, 15);
+            creatorText.autoSize = false;
+            creatorText.alignment = FlxTextAlign.RIGHT;
             add(creatorText);
             finalCreatorsArray.push(creatorText);
             _allCreditElements.push(creatorText);
@@ -129,6 +135,10 @@ class CreditsState extends FlxUIState {
 
         // Stop scrolling when "Thank You" text is in the center of the screen
         if (_txtThankYou.y + _txtThankYou.height/2 < FlxG.height/2){
+            if (!creditsFinishedReported) {
+                Bitlytics.Instance().Queue(Measurements.CreditsCompleted, 1);
+                creditsFinishedReported = true;
+            }
             return;
         }
 

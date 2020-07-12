@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxSprite;
 import flixel.input.keyboard.FlxKey;
 import haxefmod.flixel.FmodFlxUtilities;
 import flixel.text.FlxText;
@@ -25,34 +26,40 @@ class MainMenuState extends FlxUIState {
         if (!FmodManager.IsSongPlaying()) {
             // I know the reference string, so I don't grab it here.
             // Remove the rain from the title screen before releasing the game. It is buggy
-            FmodManager.PlaySoundWithReference(FmodSFX.Rain);
+            // FmodManager.PlaySoundWithReference(FmodSFX.Rain);
         }
-        FmodManager.RegisterLightning(rainReference);
+        // FmodManager.RegisterLightning(rainReference);
         FmodManager.PlaySong(FmodSongs.SomethingIsAmiss);
 
         FlxG.log.notice("loaded scene");
         bgColor = FlxColor.TRANSPARENT;
 
+        var bgImage = new FlxSprite(AssetPaths.title__png);
+        bgImage.scale.x = FlxG.width / bgImage.width;
+        bgImage.scale.y = FlxG.height / bgImage.height;
+        bgImage.screenCenter();
+        add(bgImage);
+
         _txtTitle = new FlxText();
-        _txtTitle.setPosition(FlxG.width/2, FlxG.height/4);
+        _txtTitle.setPosition(FlxG.width/5, FlxG.height/2);
         _txtTitle.size = 40;
         _txtTitle.alignment = FlxTextAlign.CENTER;
         _txtTitle.text = "Game Title";
         
-        add(_txtTitle);
+        // add(_txtTitle);
 
         _btnPlay = UiHelpers.CreateMenuButton("Play", clickPlay);
-        _btnPlay.setPosition(FlxG.width/2 - _btnPlay.width/2, FlxG.height - _btnPlay.height - 100);
+        _btnPlay.setPosition(FlxG.width/5 - _btnPlay.width/2, FlxG.height/2 + 85);
         _btnPlay.updateHitbox();
         add(_btnPlay);
 
         _btnInstructions = UiHelpers.CreateMenuButton("Instructions", clickInstructions);
-        _btnInstructions.setPosition(FlxG.width/2 - _btnInstructions.width/2, FlxG.height - _btnInstructions.height - 70);
+        _btnInstructions.setPosition(FlxG.width/5 - _btnInstructions.width/2, _btnPlay.y + 30);
         _btnInstructions.updateHitbox();
         add(_btnInstructions);
 
         _btnCredits = UiHelpers.CreateMenuButton("Credits", clickCredits);
-        _btnCredits.setPosition(FlxG.width/2 - _btnCredits.width/2, FlxG.height - _btnCredits.height - 40);
+        _btnCredits.setPosition(FlxG.width/5 - _btnCredits.width/2, _btnInstructions.y + 30);
         _btnCredits.updateHitbox();
         add(_btnCredits);
 
@@ -68,15 +75,15 @@ class MainMenuState extends FlxUIState {
         super.update(elapsed);
         FmodManager.Update();
 
-        if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
-            FlxG.camera.flash(FlxColor.WHITE, 0.5);
-        }
+        // if (FmodManager.HasLightningStruck(rainReference) || FlxG.keys.pressed.P) {
+        //     FlxG.camera.flash(FlxColor.WHITE, 0.5);
+        // }
 
         _txtTitle.x = FlxG.width/2 - _txtTitle.width/2;
     }
 
     function clickPlay():Void {
-        FmodFlxUtilities.TransitionToStateAndStopMusic(new VictoryState());
+        FmodFlxUtilities.TransitionToStateAndStopMusic(new PlayState());
     }
 
     function clickCredits():Void {

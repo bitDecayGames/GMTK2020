@@ -61,9 +61,9 @@ class CollisionManager extends FlxBasic {
 	private function handlerPlayerBonk(_player:Player, _wall:FlxTilemap) {
 		_player.attemptBonk();
 	}
-
-	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant) {
-		_hydrant.kill();
+	
+	private function handleCarHydrantOverlap(_car:Car, _hydrant:Hydrant){
+		_hydrant.asplode();
 	}
 
 	private function handleCarCollideWithWall(_car:Car, _wall:Dynamic) {

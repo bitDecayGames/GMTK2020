@@ -1,11 +1,13 @@
 package objectives;
 
+import dialogbox.DialogManager;
 import flixel.FlxSprite;
 import trigger.Trigger;
 import flixel.math.FlxPoint;
 
 class ObjectiveManager{
     var objectives:Array<Objective>;
+    var dialogManager:DialogManager;
 
     public function new() {
         objectives = new Array<Objective>();
@@ -19,6 +21,10 @@ class ObjectiveManager{
         var objective = new Objective(this, desc, index);
         objectives.push(objective);
         return objective;
+    }
+
+    public function setDialogManager(_dialogManager:DialogManager) {
+        dialogManager = _dialogManager;
     }
 
     public static function compare(a:Objective, b:Objective):Int {
@@ -35,6 +41,7 @@ class ObjectiveManager{
         for(o in objectives){
             if(!o.completed){
                 o.revive();
+                dialogManager.loadDialog(o.index-1);
                 return;
             }
         }

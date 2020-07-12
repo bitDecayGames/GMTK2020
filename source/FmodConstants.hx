@@ -26,4 +26,6 @@ class FmodSFX {
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
     public static inline var Rain:String = "event:/SFX/Rain/Rain";
     public static inline var Mystery:String = "event:/SFX/SplashScreens/Mystery";
+    public static inline var Typewriter:String = "event:/SFX/Typewriter/Typewriter";
+    public static inline var TypewriterAsync:String = "event:/SFX/Typewriter/TypewriterAsync";
 }
