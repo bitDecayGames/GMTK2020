@@ -78,7 +78,7 @@ class Player extends FlxSprite {
 
 		animation.add("idle", [0], 5);
 		animation.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 12);
-		animation.add("run", [8, 9, 10, 11, 12], 10);
+		animation.add("run", [8, 9, 10, 11], 10);
 		animation.add("divingAccel", [16, 17], 20, false);
 		animation.add("divingDecel", [18, 19, 20, 21, 22], 10, false);
 		animation.add("bonked", [24, 25, 26], 6, false);
@@ -122,6 +122,10 @@ class Player extends FlxSprite {
 						FlxG.camera.shake(0.01, 0.1);
 					}
 				case "bonked":
+					if (frameNumber == 0) {
+						FmodManager.PlaySoundOneShot(FmodSFX.DiveBonk);
+						FlxG.camera.shake(0.0075, 0.25);
+					}
 				default:
 					throw "No animation case found. SOMETHING HAS GONE WRONG!! : " + name;
 			}
