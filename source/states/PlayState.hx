@@ -1,5 +1,6 @@
 package states;
 
+import haxefmod.FmodEvents.FmodCallback;
 import openfl.filters.ShaderFilter;
 import dialogbox.DialogManager;
 import com.bitdecay.analytics.Common;
@@ -49,10 +50,12 @@ class PlayState extends FlxState {
 	}
 
 	override public function create() {
-		Bitlytics.Instance().Queue(Common.GameStarted, 1);
+		// Bitlytics.Instance().Queue(Common.GameStarted, 1);
 		FmodManager.PlaySong(FmodSongs.MainGame);
 		rainReference = FmodManager.PlaySoundWithReference(FmodSFX.Rain);
-		FmodManager.RegisterLightning(rainReference);
+		FmodManager.RegisterCallbacksForSound(rainReference, ()->{
+			FlxG.camera.flash(FlxColor.WHITE, 0.5);
+		}, FmodCallback.TIMELINE_MARKER);
 
 		// FlxG.debugger.drawDebug = true;
 		level = Loader.loadLevel(AssetPaths.city__ogmo, AssetPaths.CityTest__json);
@@ -111,9 +114,7 @@ class PlayState extends FlxState {
 	}
 
 	override public function update(elapsed:Float) {
-		if (FmodManager.HasLightningStruck(rainReference)) {
-			FlxG.camera.flash(FlxColor.WHITE, 0.5);
-		}
+		FmodManager.Update();
 
 		if (FlxG.keys.justPressed.N) {
 			level.spawnCar();
@@ -133,12 +134,12 @@ class PlayState extends FlxState {
 
 	override public function onFocusLost() {
 		super.onFocusLost();
-		Bitlytics.Instance().Pause();
+		// Bitlytics.Instance().Pause();
 	}
 
 	override public function onFocus() {
 		super.onFocus();
-		Bitlytics.Instance().Resume();
+		// Bitlytics.Instance().Resume();
 	}
 
 	private function updateLightShader() {

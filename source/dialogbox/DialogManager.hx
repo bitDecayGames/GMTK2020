@@ -1,30 +1,33 @@
 package dialogbox;
 
+import haxefmod.FmodEvents.FmodCallback;
+import haxefmod.FmodEvents.FmodEvent;
 import flixel.input.keyboard.FlxKey;
 import flixel.FlxState;
 
 
 class DialogManager {
 
-	var soundId:String = "";
+    var typewriterSoundId:String = "typewriterSoundId";
     var typeText:Dialogbox;
     var parentState:FlxState;
     
     public function new(_parentState:FlxState) {
         parentState = _parentState;
-		typeText = new Dialogbox(parentState, Dialogs.DialogArray[0], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
-		parentState.add(typeText);
+        typeText = new Dialogbox(parentState, Dialogs.DialogArray[0], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
+        parentState.add(typeText);
     }
 
     public function update() {
-		if (typeText.getIsTyping() && soundId == ""){
-			soundId = FmodManager.PlaySoundWithReference(FmodSFX.Typewriter);
-		} 
-		if (typeText == null || !typeText.getIsTyping()){
-            if (soundId != ""){
-                FmodManager.StopSound(soundId);
+        if (typeText.getIsTyping()){
+            if (!FmodManager.IsSoundPlaying(typewriterSoundId)){
+                FmodManager.PlaySoundAndAssignId(FmodSFX.Typewriter, typewriterSoundId);
             }
-			soundId = "";
+        } 
+        if (typeText == null || !typeText.getIsTyping()) {
+            if (FmodManager.IsSoundPlaying(typewriterSoundId)){
+                FmodManager.StopSound(typewriterSoundId);
+            }
         }
     }
 
@@ -33,19 +36,16 @@ class DialogManager {
             typeText.flxTypeText.kill();
             typeText.kill();
         }
-        FmodManager.StopSound(soundId);
-        soundId = "";
-        
         if (index >= Dialogs.DialogArray.length) {
         trace("index out of bounds for dialogs");
         return;
     }
-		typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
-		parentState.add(typeText);
+    typeText = new Dialogbox(parentState, Dialogs.DialogArray[index], FlxKey.SPACE, AssetPaths.joystix_monospace__ttf);
+    parentState.add(typeText);
     }
 
     public function stopSounds() {
-		FmodManager.StopSoundImmediately(soundId);
+        FmodManager.StopSoundImmediately(typewriterSoundId);
     }
 
 }
